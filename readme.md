@@ -1,4 +1,4 @@
-# gitdone (or whatever i end up naming this)
+# onthebloc
 
 > built this so i stop opening netflix at 10am and calling it a "slow start"
 
