@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hemant's Daily Timetable</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --surface2: #1a1a24;
+    --border: #2a2a3a;
+    --text: #e8e8f0;
+    --muted: #6b6b80;
+    --accent: #7c6af7;
+    --accent2: #f7a26a;
+    --accent3: #6af7b8;
+    --accent4: #f76a8a;
+    --mono: 'Space Mono', monospace;
+    --sans: 'Syne', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* BG grid */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(124,106,247,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(124,106,247,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Header */
+  .header {
+    margin-bottom: 48px;
+  }
+
+  .header-tag {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .header-tag::before {
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  h1 {
+    font-size: clamp(32px, 6vw, 52px);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, #fff 0%, #a89ff7 60%, #7c6af7 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 12px;
+  }
+
+  .header-sub {
+    font-size: 15px;
+    color: var(--muted);
+    font-family: var(--mono);
+  }
+
+  /* Stats bar */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 40px;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+    transition: border-color 0.2s;
+  }
+
+  .stat-card:hover { border-color: var(--accent); }
+
+  .stat-num {
+    font-family: var(--mono);
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--accent);
+    display: block;
+  }
+
+  .stat-label {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 4px;
+  }
+
+  /* Mode switcher */
+  .mode-switcher {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 32px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 6px;
+  }
+
+  .mode-btn {
+    flex: 1;
+    padding: 12px 16px;
+    border-radius: 10px;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .mode-btn .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.5;
+  }
+
+  .mode-btn.active {
+    background: var(--surface2);
+    color: var(--text);
+  }
+
+  .mode-btn.active .dot { opacity: 1; }
+
+  .mode-btn[data-mode="regular"].active { color: var(--accent); }
+  .mode-btn[data-mode="light"].active { color: var(--accent3); }
+  .mode-btn[data-mode="grind"].active { color: var(--accent4); }
+
+  /* Day panels */
+  .day-panel { display: none; }
+  .day-panel.active { display: block; animation: fadeIn 0.3s ease; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Section */
+  .section-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin: 32px 0 12px;
+    padding-left: 4px;
+  }
+
+  /* Blocks */
+  .block {
+    display: grid;
+    grid-template-columns: 110px 1fr auto;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 8px;
+    transition: all 0.2s;
+    cursor: default;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .block::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    border-radius: 3px 0 0 3px;
+    background: var(--block-color, var(--border));
+    transition: width 0.2s;
+  }
+
+  .block:hover {
+    border-color: var(--block-color, var(--border));
+    background: var(--surface2);
+    transform: translateX(2px);
+  }
+
+  .block:hover::before { width: 4px; }
+
+  .time {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .block-content {}
+
+  .block-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 3px;
+  }
+
+  .block-note {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 20px;
+    white-space: nowrap;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+  }
+
+  /* Tag colors */
+  .tag-core { background: rgba(124,106,247,0.15); color: #a89ff7; --block-color: #7c6af7; }
+  .tag-flex { background: rgba(106,247,184,0.12); color: #6af7b8; --block-color: #6af7b8; }
+  .tag-break { background: rgba(107,107,128,0.2); color: #9090a8; --block-color: #4a4a60; }
+  .tag-fun { background: rgba(247,162,106,0.15); color: #f7a26a; --block-color: #f7a26a; }
+  .tag-growth { background: rgba(106,184,247,0.15); color: #6ab8f7; --block-color: #6ab8f7; }
+  .tag-job { background: rgba(247,106,138,0.15); color: #f76a8a; --block-color: #f76a8a; }
+
+  .block[data-tag="core"] { --block-color: #7c6af7; }
+  .block[data-tag="flex"] { --block-color: #6af7b8; }
+  .block[data-tag="break"] { --block-color: #4a4a60; }
+  .block[data-tag="fun"] { --block-color: #f7a26a; }
+  .block[data-tag="growth"] { --block-color: #6ab8f7; }
+  .block[data-tag="job"] { --block-color: #f76a8a; }
+
+  /* Night block */
+  .block-night {
+    background: linear-gradient(135deg, var(--surface) 0%, rgba(106,184,247,0.05) 100%);
+    border-color: rgba(106,184,247,0.2);
+  }
+
+  /* Progress tracker */
+  .progress-section {
+    margin-top: 48px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+  }
+
+  .progress-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .progress-sub {
+    font-size: 12px;
+    color: var(--muted);
+    font-family: var(--mono);
+    margin-bottom: 20px;
+  }
+
+  .checklist {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .check-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.15s;
+    user-select: none;
+  }
+
+  .check-item:hover { border-color: var(--accent); }
+
+  .check-item.checked {
+    border-color: var(--accent3);
+    background: rgba(106,247,184,0.05);
+  }
+
+  .check-box {
+    width: 18px;
+    height: 18px;
+    border-radius: 5px;
+    border: 1.5px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.15s;
+    font-size: 11px;
+  }
+
+  .check-item.checked .check-box {
+    background: var(--accent3);
+    border-color: var(--accent3);
+    color: #0a1a10;
+  }
+
+  .check-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+    transition: color 0.15s;
+  }
+
+  .check-item.checked .check-label {
+    color: var(--text);
+    text-decoration: line-through;
+    text-decoration-color: var(--accent3);
+  }
+
+  /* Progress bar */
+  .progress-bar-wrap {
+    margin-top: 16px;
+    background: var(--surface2);
+    border-radius: 8px;
+    height: 6px;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent3));
+    border-radius: 8px;
+    transition: width 0.4s ease;
+  }
+
+  .progress-text {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 8px;
+    text-align: right;
+  }
+
+  /* Reset */
+  .reset-btn {
+    margin-top: 12px;
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .reset-btn:hover { border-color: var(--accent4); color: var(--accent4); }
+
+  /* Night toggle */
+  .night-toggle {
+    margin-top: 32px;
+    background: var(--surface);
+    border: 1px solid rgba(106,184,247,0.2);
+    border-radius: 16px;
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .night-info {}
+
+  .night-label {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .night-desc {
+    font-size: 12px;
+    color: var(--muted);
+    font-family: var(--mono);
+  }
+
+  .toggle-switch {
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 30px;
+    padding: 8px 20px;
+    font-family: var(--mono);
+    font-size: 12px;
+    cursor: pointer;
+    color: var(--muted);
+    transition: all 0.2s;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .toggle-switch.yt { border-color: #f7a26a; color: #f7a26a; background: rgba(247,162,106,0.08); }
+  .toggle-switch.project { border-color: var(--accent3); color: var(--accent3); background: rgba(106,247,184,0.08); }
+
+  /* Legend */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+
+  .leg {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--muted);
+    font-family: var(--mono);
+  }
+
+  .leg-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    .block { grid-template-columns: 90px 1fr; }
+    .tag { display: none; }
+    .checklist { grid-template-columns: 1fr; }
+    .mode-btn span { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="header">
+    <div class="header-tag">placement prep · 2026</div>
+    <h1>Hemant's Daily<br>Timetable</h1>
+    <p class="header-sub">// pick your mode. get it done.</p>
+  </div>
+
+  <div class="stats">
+    <div class="stat-card">
+      <span class="stat-num">3</span>
+      <div class="stat-label">Core hrs / day</div>
+    </div>
+    <div class="stat-card">
+      <span class="stat-num" id="job-count">2–5</span>
+      <div class="stat-label">Jobs applied / day</div>
+    </div>
+    <div class="stat-card">
+      <span class="stat-num">4–6</span>
+      <div class="stat-label">Web dev hrs</div>
+    </div>
+    <div class="stat-card">
+      <span class="stat-num" id="streak">0</span>
+      <div class="stat-label">Day streak 🔥</div>
+    </div>
+  </div>
+
+  <div class="mode-switcher">
+    <button class="mode-btn active" data-mode="regular" onclick="setMode('regular')">
+      <span class="dot"></span><span>Regular</span>
+    </button>
+    <button class="mode-btn" data-mode="light" onclick="setMode('light')">
+      <span class="dot"></span><span>Light day</span>
+    </button>
+    <button class="mode-btn" data-mode="grind" onclick="setMode('grind')">
+      <span class="dot"></span><span>Grind mode</span>
+    </button>
+  </div>
+
+  <div class="legend">
+    <div class="leg"><div class="leg-dot" style="background:#7c6af7"></div>core study</div>
+    <div class="leg"><div class="leg-dot" style="background:#6af7b8"></div>web dev / project</div>
+    <div class="leg"><div class="leg-dot" style="background:#f76a8a"></div>job applications</div>
+    <div class="leg"><div class="leg-dot" style="background:#f7a26a"></div>leisure</div>
+    <div class="leg"><div class="leg-dot" style="background:#6ab8f7"></div>growth content</div>
+    <div class="leg"><div class="leg-dot" style="background:#4a4a60"></div>break</div>
+  </div>
+
+  <!-- REGULAR DAY -->
+  <div class="day-panel active" id="panel-regular">
+    <div class="section-label">— morning</div>
+    <div class="block" data-tag="break"><div class="time">8:00 – 9:00</div><div class="block-content"><div class="block-title">Wake up + morning routine</div><div class="block-note">Breakfast, freshen up. No phone doom-scrolling first thing.</div></div><span class="tag tag-break">break</span></div>
+    <div class="block" data-tag="core"><div class="time">9:00 – 10:00</div><div class="block-content"><div class="block-title">SQL practice</div><div class="block-note">LeetCode SQL problems or concept revision. Brain is sharpest now.</div></div><span class="tag tag-core">core</span></div>
+    <div class="block" data-tag="core"><div class="time">10:00 – 11:00</div><div class="block-content"><div class="block-title">DSA</div><div class="block-note">1–2 LeetCode problems. Patterns > grinding random problems.</div></div><span class="tag tag-core">core</span></div>
+    <div class="block" data-tag="core"><div class="time">11:00 – 12:00</div><div class="block-content"><div class="block-title">Interview prep</div><div class="block-note">Revise Notion notes, practice verbal answers, mock Q&A on one topic.</div></div><span class="tag tag-core">core</span></div>
+
+    <div class="section-label">— midday</div>
+    <div class="block" data-tag="flex"><div class="time">12:00 – 1:30</div><div class="block-content"><div class="block-title">Web dev / project</div><div class="block-note">Angela Yu course, React, Node.js — or active project coding session.</div></div><span class="tag tag-flex">flex</span></div>
+    <div class="block" data-tag="break"><div class="time">1:30 – 2:15</div><div class="block-content"><div class="block-title">Lunch + proper break</div><div class="block-note">Eat away from screen. Quick walk or 10 min rest after.</div></div><span class="tag tag-break">break</span></div>
+    <div class="block" data-tag="flex"><div class="time">2:15 – 3:45</div><div class="block-content"><div class="block-title">Web dev deep session</div><div class="block-note">Uninterrupted build block — components, features, UI work.</div></div><span class="tag tag-flex">flex</span></div>
+    <div class="block" data-tag="job"><div class="time">3:45 – 4:15</div><div class="block-content"><div class="block-title">Job applications</div><div class="block-note">Apply to 2–3 roles on LinkedIn/Naukri. Tailor resume if needed. Track it.</div></div><span class="tag tag-job">jobs</span></div>
+
+    <div class="section-label">— afternoon</div>
+    <div class="block" data-tag="fun"><div class="time">4:15 – 5:30</div><div class="block-content"><div class="block-title">Free time / games / series</div><div class="block-note">Earned downtime. No guilt. Full disconnect.</div></div><span class="tag tag-fun">leisure</span></div>
+    <div class="block" data-tag="break"><div class="time">5:30 – 6:00</div><div class="block-content"><div class="block-title">Tea break</div><div class="block-note">Flexible — shift this block to 5 or 6 depending on your day.</div></div><span class="tag tag-break">break</span></div>
+    <div class="block" data-tag="flex"><div class="time">6:00 – 8:00</div><div class="block-content"><div class="block-title">Project work / web dev</div><div class="block-note">Evening energy varies — use for the part of web dev you enjoy most.</div></div><span class="tag tag-flex">flex</span></div>
+
+    <div class="section-label">— evening</div>
+    <div class="block" data-tag="break"><div class="time">8:00 – 8:30</div><div class="block-content"><div class="block-title">Wind down before dinner</div><div class="block-note">Close tabs. Write 3 lines on what you did today.</div></div><span class="tag tag-break">break</span></div>
+    <div class="block" data-tag="break"><div class="time">8:30 – 9:30</div><div class="block-content"><div class="block-title">Dinner + chill</div><div class="block-note">Eat, rest, light scroll is fine here.</div></div><span class="tag tag-break">break</span></div>
+    <div class="block" data-tag="flex"><div class="time">9:30 – 10:00</div><div class="block-content"><div class="block-title">Light review or free time</div><div class="block-note">Quick skim of what you studied, or just rest. Low pressure.</div></div><span class="tag tag-flex">flex</span></div>
+    <div class="block block-night" data-tag="growth"><div class="time">10:00 – 11:30</div><div class="block-content"><div class="block-title">🌙 Alternating night block</div><div class="block-note">Odd nights: YouTube (finance, geopolitics, tech) &nbsp;|&nbsp; Even nights: Project / web dev overflow</div></div><span class="tag tag-growth">alt</span></div>
+    <div class="block" data-tag="break"><div class="time">11:30 – 12:00</div><div class="block-content"><div class="block-title">Sleep prep</div><div class="block-note">Phone down. No screens 20 min before. Aim for 12am sharp.</div></div><span class="tag tag-break">break</span></div>
+  </div>
+
+  <!-- LIGHT DAY -->
+  <div class="day-panel" id="panel-light">
+    <div class="section-label">— morning (one core only)</div>
+    <div class="block" data-tag="core"><div class="time">9:00 – 10:00</div><div class="block-content"><div class="block-title">One core subject</div><div class="block-note">Pick just one — SQL, DSA, or interview prep. Don't force all three.</div></div><span class="tag tag-core">core</span></div>
+    <div class="block" data-tag="flex"><div class="time">10:00 – 12:00</div><div class="block-content"><div class="block-title">Easy web dev — watch mode</div><div class="block-note">Angela Yu tutorials, just watching without building. Still counts.</div></div><span class="tag tag-flex">flex</span></div>
+    <div class="block" data-tag="fun"><div class="time">12:00 – 1:30</div><div class="block-content"><div class="block-title">Games / series / rest</div><div class="block-note">No guilt. Light days are necessary. Recover properly.</div></div><span class="tag tag-fun">leisure</span></div>
+
+    <div class="section-label">— midday</div>
+    <div class="block" data-tag="break"><div class="time">1:30 – 2:15</div><div class="block-content"><div class="block-title">Lunch</div><div class="block-note">Eat well on light days. Your body needs fuel to recover.</div></div><span class="tag tag-break">break</span></div>
+    <div class="block" data-tag="job"><div class="time">2:15 – 3:30</div><div class="block-content"><div class="block-title">Job applications</div><div class="block-note">Even on light days — apply to 2 roles minimum. Non-negotiable.</div></div><span class="tag tag-job">jobs</span></div>
+    <div class="block" data-tag="fun"><div class="time">3:30 – 6:00</div><div class="block-content"><div class="block-title">Free time</div><div class="block-note">Games, series, walk, whatever recharges you.</div></div><span class="tag tag-fun">leisure</span></div>
+
+    <div class="section-label">— evening</div>
+    <div class="block" data-tag="flex"><div class="time">6:00 – 8:00</div><div class="block-content"><div class="block-title">Catch-up project work</div><div class="block-note">Even 1 hour of project time is a win on a light day.</div></div><span class="tag tag-flex">flex</span></div>
+    <div class="block" data-tag="break"><div class="time">8:30 – 9:30</div><div class="block-content"><div class="block-title">Dinner + rest</div><div class="block-note"></div></div><span class="tag tag-break">break</span></div>
+    <div class="block block-night" data-tag="growth"><div class="time">10:00 – 11:30</div><div class="block-content"><div class="block-title">🌙 YouTube growth content</div><div class="block-note">Perfect for light days — low effort, high signal. Finance, geopolitics, tech.</div></div><span class="tag tag-growth">growth</span></div>
+  </div>
+
+  <!-- GRIND DAY -->
+  <div class="day-panel" id="panel-grind">
+    <div class="section-label">— morning (full core)</div>
+    <div class="block" data-tag="core"><div class="time">8:30 – 9:30</div><div class="block-content"><div class="block-title">SQL — timed practice</div><div class="block-note">Set a 1hr timer, solve 3–5 problems. Simulate exam pressure.</div></div><span class="tag tag-core">core</span></div>
+    <div class="block" data-tag="core"><div class="time">9:30 – 10:30</div><div class="block-content"><div class="block-title">DSA — push harder</div><div class="block-note">Go for medium/hard problems. Document approach in Notion.</div></div><span class="tag tag-core">core</span></div>
+    <div class="block" data-tag="core"><div class="time">10:30 – 11:30</div><div class="block-content"><div class="block-title">Interview prep — mock verbal</div><div class="block-note">Say answers out loud. Record yourself if possible. Simulate it.</div></div><span class="tag tag-core">core</span></div>
+    <div class="block" data-tag="flex"><div class="time">11:30 – 1:30</div><div class="block-content"><div class="block-title">Project — feature sprint</div><div class="block-note">Pick one feature. Finish it end-to-end today. No half-done stuff.</div></div><span class="tag tag-flex">flex</span></div>
+
+    <div class="section-label">— midday</div>
+    <div class="block" data-tag="break"><div class="time">1:30 – 2:00</div><div class="block-content"><div class="block-title">Lunch — short</div><div class="block-note">Eat fast, rest 15 min. Don't zone out for an hour.</div></div><span class="tag tag-break">break</span></div>
+    <div class="block" data-tag="flex"><div class="time">2:00 – 4:00</div><div class="block-content"><div class="block-title">Web dev — deep build</div><div class="block-note">No interruptions. Phone on silent. Full focus mode.</div></div><span class="tag tag-flex">flex</span></div>
+    <div class="block" data-tag="job"><div class="time">4:00 – 4:30</div><div class="block-content"><div class="block-title">Job applications</div><div class="block-note">Apply to 3–5 roles. Extra effort on grind days.</div></div><span class="tag tag-job">jobs</span></div>
+
+    <div class="section-label">— afternoon</div>
+    <div class="block" data-tag="fun"><div class="time">4:30 – 5:30</div><div class="block-content"><div class="block-title">Break — games or walk</div><div class="block-note">Hard reset. Don't skip this or your evening session tanks.</div></div><span class="tag tag-fun">break</span></div>
+    <div class="block" data-tag="flex"><div class="time">5:30 – 8:00</div><div class="block-content"><div class="block-title">Evening project session</div><div class="block-note">Longest block of the day. Ship something visible. Push a commit.</div></div><span class="tag tag-flex">flex</span></div>
+
+    <div class="section-label">— evening</div>
+    <div class="block" data-tag="break"><div class="time">8:30 – 9:30</div><div class="block-content"><div class="block-title">Dinner + debrief</div><div class="block-note">Write what you completed today. 3 lines. Resets tomorrow's plan.</div></div><span class="tag tag-break">break</span></div>
+    <div class="block" data-tag="flex"><div class="time">9:30 – 11:00</div><div class="block-content"><div class="block-title">Overflow / pending</div><div class="block-note">Anything unfinished from today. Or job applications overflow.</div></div><span class="tag tag-flex">flex</span></div>
+    <div class="block" data-tag="fun"><div class="time">11:00 – 1:00</div><div class="block-content"><div class="block-title">Games / series / YouTube</div><div class="block-note">You earned it on a grind day. Extended to 1am allowed.</div></div><span class="tag tag-fun">leisure</span></div>
+  </div>
+
+  <!-- Night block toggle -->
+  <div class="night-toggle">
+    <div class="night-info">
+      <div class="night-label">🌙 Tonight's night block</div>
+      <div class="night-desc" id="night-desc">// tap to alternate between YouTube or project work</div>
+    </div>
+    <button class="toggle-switch" id="night-btn" onclick="toggleNight()">tap to set</button>
+  </div>
+
+  <!-- Daily checklist -->
+  <div class="progress-section">
+    <div class="progress-title">Today's non-negotiables</div>
+    <div class="progress-sub">// check off as you go — resets daily</div>
+
+    <div class="checklist" id="checklist">
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-label">SQL (1 hr)</div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-label">DSA (1 hr)</div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-label">Interview prep (1 hr)</div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-label">Job applications (2+ min)</div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-label">Web dev / project work</div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-label">Night block done</div></div>
+    </div>
+
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-fill" id="progress-fill" style="width: 0%"></div>
+    </div>
+    <div class="progress-text" id="progress-text">0 / 6 done</div>
+    <button class="reset-btn" onclick="resetChecklist()">↺ reset for tomorrow</button>
+  </div>
+
+</div>
+
+<script>
+  // Mode switcher
+  function setMode(mode) {
+    document.querySelectorAll('.day-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('panel-' + mode).classList.add('active');
+    document.querySelector('[data-mode="' + mode + '"]').classList.add('active');
+    // Update job count stat
+    const jobCount = document.getElementById('job-count');
+    if (mode === 'grind') jobCount.textContent = '3–5';
+    else jobCount.textContent = '2–5';
+    localStorage.setItem('tt-mode', mode);
+  }
+
+  // Night block toggle
+  let nightMode = localStorage.getItem('tt-night') || 'unset';
+  function updateNightUI() {
+    const btn = document.getElementById('night-btn');
+    const desc = document.getElementById('night-desc');
+    if (nightMode === 'yt') {
+      btn.textContent = '▶ YouTube night';
+      btn.className = 'toggle-switch yt';
+      desc.textContent = '// finance · geopolitics · tech videos';
+    } else if (nightMode === 'project') {
+      btn.textContent = '⌨ Project night';
+      btn.className = 'toggle-switch project';
+      desc.textContent = '// web dev · project work · overflow tasks';
+    } else {
+      btn.textContent = 'tap to set';
+      btn.className = 'toggle-switch';
+      desc.textContent = '// alternate: YouTube one night, project work the next';
+    }
+  }
+
+  function toggleNight() {
+    if (nightMode === 'yt') nightMode = 'project';
+    else nightMode = 'yt';
+    localStorage.setItem('tt-night', nightMode);
+    updateNightUI();
+  }
+
+  // Checklist
+  function toggleCheck(el) {
+    el.classList.toggle('checked');
+    saveChecklist();
+    updateProgress();
+  }
+
+  function updateProgress() {
+    const items = document.querySelectorAll('.check-item');
+    const done = document.querySelectorAll('.check-item.checked').length;
+    const pct = Math.round((done / items.length) * 100);
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-text').textContent = done + ' / ' + items.length + ' done';
+    // Update streak
+    if (done === items.length) {
+      let streak = parseInt(localStorage.getItem('tt-streak') || '0');
+      const lastDone = localStorage.getItem('tt-last-done');
+      const today = new Date().toDateString();
+      if (lastDone !== today) {
+        streak++;
+        localStorage.setItem('tt-streak', streak);
+        localStorage.setItem('tt-last-done', today);
+        document.getElementById('streak').textContent = streak;
+      }
+    }
+  }
+
+  function saveChecklist() {
+    const states = [];
+    document.querySelectorAll('.check-item').forEach(el => {
+      states.push(el.classList.contains('checked') ? '1' : '0');
+    });
+    const today = new Date().toDateString();
+    localStorage.setItem('tt-checks', JSON.stringify({ date: today, states }));
+  }
+
+  function loadChecklist() {
+    const saved = localStorage.getItem('tt-checks');
+    if (!saved) return;
+    const { date, states } = JSON.parse(saved);
+    if (date !== new Date().toDateString()) return; // new day, fresh start
+    document.querySelectorAll('.check-item').forEach((el, i) => {
+      if (states[i] === '1') el.classList.add('checked');
+    });
+    updateProgress();
+  }
+
+  function resetChecklist() {
+    document.querySelectorAll('.check-item').forEach(el => el.classList.remove('checked'));
+    localStorage.removeItem('tt-checks');
+    updateProgress();
+  }
+
+  // Load streak
+  function loadStreak() {
+    const streak = localStorage.getItem('tt-streak') || '0';
+    document.getElementById('streak').textContent = streak;
+  }
+
+  // Init
+  const savedMode = localStorage.getItem('tt-mode');
+  if (savedMode) setMode(savedMode);
+  updateNightUI();
+  loadChecklist();
+  loadStreak();
+</script>
+</body>
+</html>
