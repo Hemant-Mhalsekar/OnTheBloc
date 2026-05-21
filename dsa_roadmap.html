@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DSA Roadmap — onthebloc</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Epilogue:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#080810;--surface:#0f0f1a;--surface2:#161625;--surface3:#1e1e30;
+    --border:#252538;--border2:#2e2e48;--text:#e2e2f0;--muted:#5a5a78;--muted2:#7a7a98;
+    --accent:#4ade80;--accent-glow:rgba(74,222,128,0.12);
+    --green:#4ade80;--green-dim:rgba(74,222,128,0.1);
+    --yellow:#fbbf24;--yellow-dim:rgba(251,191,36,0.1);
+    --red:#f87171;--red-dim:rgba(248,113,113,0.1);
+    --blue:#60a5fa;--purple:#a855f7;--orange:#f59e0b;--pink:#f472b6;--teal:#2dd4bf;
+    --mono:'JetBrains Mono',monospace;--display:'Epilogue',sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:var(--mono);min-height:100vh;overflow-x:hidden;scroll-behavior:smooth;}
+  body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.03) 2px,rgba(0,0,0,0.03) 4px);pointer-events:none;z-index:9999;}
+  body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(74,222,128,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(74,222,128,0.025) 1px,transparent 1px);background-size:32px 32px;pointer-events:none;z-index:0;}
+  .app{position:relative;z-index:1;}
+
+  header{padding:32px 24px 0;max-width:1100px;margin:0 auto;}
+  .breadcrumb{font-size:11px;color:var(--muted);margin-bottom:20px;display:flex;align-items:center;gap:8px;}
+  .breadcrumb a{color:var(--accent);text-decoration:none;transition:opacity 0.2s;}
+  .breadcrumb a:hover{opacity:0.7;}
+  .eyebrow{font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+  .eyebrow::before{content:'';display:inline-block;width:24px;height:1px;background:var(--accent);}
+  h1{font-family:var(--display);font-size:clamp(28px,5vw,48px);font-weight:900;letter-spacing:-0.03em;line-height:1;margin-bottom:6px;}
+  h1 span{background:linear-gradient(90deg,var(--accent),#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  .header-desc{font-size:12px;color:var(--muted2);margin-top:6px;}
+
+  /* XP */
+  .xp-bar-wrap{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 18px;margin:20px 0 8px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
+  .xp-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;white-space:nowrap;}
+  .xp-track{flex:1;min-width:120px;background:var(--surface3);border-radius:4px;height:8px;overflow:hidden;}
+  .xp-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--accent),#60a5fa,var(--purple));transition:width 0.6s ease;}
+  .xp-num{font-size:14px;font-weight:700;color:var(--accent);white-space:nowrap;font-family:var(--display);}
+  .xp-level{font-size:11px;color:var(--muted2);}
+
+  /* Stats */
+  .stats-bar{display:flex;gap:6px;flex-wrap:wrap;margin:16px 0;}
+  .stat-pill{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 14px;}
+  .stat-num{font-size:18px;font-weight:700;color:var(--text);font-family:var(--display);display:block;}
+  .stat-label{color:var(--muted);font-size:10px;margin-top:2px;}
+  .stat-pill.highlight{border-color:var(--accent);background:var(--accent-glow);}
+  .stat-pill.highlight .stat-num{color:var(--accent);}
+  .stat-pill.streak-pill{border-color:rgba(245,158,11,0.4);background:rgba(245,158,11,0.08);}
+  .stat-pill.streak-pill .stat-num{color:var(--orange);}
+
+  /* Toolbar */
+  .toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:16px;}
+  .eta-pill{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 14px;font-size:11px;color:var(--muted2);display:flex;align-items:center;gap:6px;cursor:pointer;}
+  .eta-pill span{color:var(--accent);font-weight:600;}
+  .search-wrap{flex:1;min-width:180px;max-width:320px;position:relative;}
+  .search-input{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 14px 8px 34px;font-family:var(--mono);font-size:12px;color:var(--text);outline:none;transition:border-color 0.2s;}
+  .search-input:focus{border-color:var(--accent);}
+  .search-input::placeholder{color:var(--muted);}
+  .search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--muted);pointer-events:none;}
+  .search-clear{position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:11px;color:var(--muted);cursor:pointer;display:none;}
+
+  /* Progress */
+  .overall-progress{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin-bottom:20px;}
+  .op-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+  .op-label{font-size:11px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;}
+  .op-pct{font-size:13px;font-weight:600;color:var(--accent);}
+  .progress-track{background:var(--surface3);border-radius:4px;height:6px;overflow:hidden;}
+  .progress-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--accent),#60a5fa,var(--purple));transition:width 0.5s ease;}
+
+  /* Phase tabs */
+  .phase-tabs{display:flex;gap:6px;margin-bottom:20px;flex-wrap:wrap;}
+  .phase-tab{font-family:var(--mono);font-size:11px;padding:7px 12px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--muted2);cursor:pointer;transition:all 0.15s;display:flex;align-items:center;gap:5px;}
+  .phase-tab .tab-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+  .phase-tab:hover{border-color:var(--border2);color:var(--text);}
+  .phase-tab.active{color:var(--text);background:var(--surface2);}
+
+  /* Error log */
+  .error-log-section{background:var(--surface);border:1px solid rgba(248,113,113,0.2);border-radius:12px;padding:16px 20px;margin-bottom:20px;}
+  .error-log-title{font-size:12px;font-weight:600;color:var(--red);margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+  .error-log-input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-family:var(--mono);font-size:12px;color:var(--muted2);resize:vertical;min-height:60px;outline:none;transition:border-color 0.2s;line-height:1.6;}
+  .error-log-input:focus{border-color:var(--red);color:var(--text);}
+  .error-log-input::placeholder{color:var(--muted);}
+  .error-log-saved{font-size:10px;color:var(--green);margin-top:4px;opacity:0;transition:opacity 0.3s;}
+  .error-log-saved.show{opacity:1;}
+
+  /* Main */
+  .main{max-width:1100px;margin:0 auto;padding:0 24px 120px;}
+  .phase-section{margin-bottom:40px;}
+  .phase-section.hidden{display:none;}
+  .phase-header{display:flex;align-items:center;gap:12px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border);}
+  .phase-badge{font-size:10px;letter-spacing:0.12em;text-transform:uppercase;padding:4px 10px;border-radius:4px;font-weight:600;}
+  .phase-title{font-family:var(--display);font-size:16px;font-weight:700;}
+  .phase-duration{font-size:11px;color:var(--muted);margin-left:4px;}
+  .phase-xp{font-size:11px;color:var(--orange);margin-left:auto;}
+  .phase-progress-text{font-size:11px;color:var(--muted);margin-left:8px;}
+
+  /* Day grid */
+  .day-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:10px;}
+
+  /* Day card */
+  .day-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:border-color 0.2s;position:relative;}
+  .day-card:hover{border-color:var(--border2);}
+  .day-card.completed{border-color:rgba(74,222,128,0.3);background:rgba(74,222,128,0.03);}
+  .day-card.moved{border-color:rgba(251,191,36,0.3);background:rgba(251,191,36,0.03);}
+  .day-card.revision-card{border-color:rgba(168,85,247,0.3);background:rgba(168,85,247,0.03);}
+  .day-card.today-card{border-color:rgba(74,222,128,0.5);box-shadow:0 0 0 1px rgba(74,222,128,0.15);}
+  .today-badge{position:absolute;top:10px;right:10px;font-size:9px;background:var(--accent);color:#0a1a10;padding:2px 7px;border-radius:10px;letter-spacing:0.08em;text-transform:uppercase;font-weight:700;}
+  .search-highlight{border-color:rgba(251,191,36,0.5)!important;box-shadow:0 0 0 1px rgba(251,191,36,0.2);}
+  .task-text mark{background:rgba(251,191,36,0.2);color:var(--yellow);border-radius:2px;padding:0 2px;}
+
+  .day-header{display:flex;align-items:center;gap:10px;padding:14px 16px 10px;cursor:pointer;user-select:none;}
+  .day-num{font-size:10px;font-weight:600;letter-spacing:0.1em;color:var(--muted);min-width:48px;flex-shrink:0;}
+  .phase-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+  .day-title{font-size:13px;font-weight:600;flex:1;line-height:1.3;}
+  .day-status{font-size:11px;margin-left:auto;flex-shrink:0;}
+  .status-done{color:var(--green);}
+  .status-moved{color:var(--yellow);}
+  .status-pending{color:var(--muted);}
+  .chevron{font-size:10px;color:var(--muted);transition:transform 0.2s;margin-left:6px;flex-shrink:0;}
+  .day-card.open .chevron{transform:rotate(180deg);}
+  .day-mini-bar{height:2px;background:var(--surface3);margin:0 16px;}
+  .day-mini-fill{height:100%;transition:width 0.3s;border-radius:2px;}
+  .day-card.completed .day-mini-fill{background:var(--green)!important;}
+  .task-count{font-size:10px;color:var(--muted);padding:4px 16px 4px;}
+  .day-xp-badge{font-size:10px;color:var(--orange);padding:0 16px 8px;}
+
+  /* Tasks */
+  .day-tasks{display:none;padding:8px 16px 14px;border-top:1px solid var(--border);margin-top:4px;}
+  .day-card.open .day-tasks{display:block;animation:slideDown 0.2s ease;}
+  @keyframes slideDown{from{opacity:0;transform:translateY(-4px);}to{opacity:1;transform:translateY(0);}}
+
+  .task-item{display:flex;align-items:flex-start;gap:10px;padding:8px 6px;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.15s;border-radius:4px;}
+  .task-item:last-of-type{border-bottom:none;}
+  .task-item:hover{background:var(--surface2);}
+  .task-check{width:16px;height:16px;border-radius:4px;border:1.5px solid var(--border2);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;font-size:10px;transition:all 0.15s;}
+  .task-item.done .task-check{background:var(--green);border-color:var(--green);color:#0a1a10;}
+  .task-text{font-size:12px;color:var(--muted2);line-height:1.5;flex:1;}
+  .task-item.done .task-text{color:var(--muted);text-decoration:line-through;text-decoration-color:rgba(74,222,128,0.4);}
+
+  /* Stuck flag */
+  .stuck-btn{font-family:var(--mono);font-size:10px;padding:2px 8px;border-radius:4px;border:1px solid rgba(248,113,113,0.3);background:transparent;color:var(--muted);cursor:pointer;transition:all 0.15s;margin-left:auto;flex-shrink:0;}
+  .stuck-btn:hover,.task-item.stuck .stuck-btn{background:var(--red-dim);color:var(--red);border-color:rgba(248,113,113,0.5);}
+  .task-item.stuck .task-text{color:var(--red)!important;text-decoration:none!important;}
+  .task-item.stuck .task-check{border-color:var(--red);}
+
+  /* Notes */
+  .day-notes-wrap{margin-top:10px;padding-top:10px;border-top:1px solid var(--border);}
+  .notes-label{font-size:10px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;}
+  .notes-textarea{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-family:var(--mono);font-size:12px;color:var(--muted2);resize:vertical;min-height:70px;outline:none;transition:border-color 0.2s;line-height:1.6;}
+  .notes-textarea:focus{border-color:var(--accent);color:var(--text);}
+  .notes-textarea::placeholder{color:var(--muted);}
+  .notes-saved{font-size:10px;color:var(--green);margin-top:4px;opacity:0;transition:opacity 0.3s;}
+  .notes-saved.show{opacity:1;}
+
+  /* Actions */
+  .day-actions{display:flex;gap:6px;margin-top:12px;padding-top:12px;border-top:1px solid var(--border);flex-wrap:wrap;}
+  .action-btn{font-family:var(--mono);font-size:10px;padding:5px 10px;border-radius:6px;border:1px solid var(--border);background:var(--surface2);color:var(--muted2);cursor:pointer;transition:all 0.15s;}
+  .action-btn:hover{color:var(--text);border-color:var(--border2);}
+  .action-btn.complete-all{border-color:rgba(74,222,128,0.3);color:var(--green);}
+  .action-btn.complete-all:hover{background:var(--green-dim);}
+  .action-btn.move-day{border-color:rgba(251,191,36,0.3);color:var(--yellow);}
+  .action-btn.move-day:hover{background:var(--yellow-dim);}
+  .action-btn.reset-day{border-color:rgba(248,113,113,0.3);color:var(--red);}
+  .action-btn.reset-day:hover{background:var(--red-dim);}
+  .revise-btn{font-family:var(--mono);font-size:10px;padding:5px 10px;border-radius:6px;border:1px solid rgba(168,85,247,0.3);background:rgba(168,85,247,0.08);color:var(--purple);cursor:pointer;transition:all 0.15s;}
+  .revise-btn:hover{background:rgba(168,85,247,0.15);}
+  .moved-notice{font-size:11px;color:var(--yellow);padding:6px 10px;background:var(--yellow-dim);border-radius:6px;margin-top:8px;border:1px solid rgba(251,191,36,0.2);}
+
+  /* Celebration */
+  .celebration{display:none;position:fixed;inset:0;z-index:10000;pointer-events:none;overflow:hidden;}
+  .celebration.show{display:block;}
+  .confetti-piece{position:absolute;width:8px;height:8px;border-radius:2px;animation:confettiFall linear forwards;}
+  @keyframes confettiFall{0%{transform:translateY(-20px) rotate(0deg);opacity:1;}100%{transform:translateY(110vh) rotate(720deg);opacity:0;}}
+  .phase-complete-banner{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:var(--surface2);border:1px solid var(--accent);border-radius:16px;padding:32px 40px;text-align:center;z-index:10001;animation:popIn 0.4s ease;pointer-events:all;max-width:400px;width:90%;}
+  @keyframes popIn{from{transform:translate(-50%,-50%) scale(0.8);opacity:0;}to{transform:translate(-50%,-50%) scale(1);opacity:1;}}
+  .phase-complete-banner h2{font-family:var(--display);font-size:26px;font-weight:900;background:linear-gradient(90deg,var(--accent),#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px;}
+  .phase-complete-banner p{font-size:13px;color:var(--muted2);margin-bottom:20px;line-height:1.6;}
+  .phase-complete-banner button{font-family:var(--mono);font-size:12px;padding:10px 24px;border-radius:8px;border:1px solid var(--accent);background:var(--accent-glow);color:var(--accent);cursor:pointer;}
+
+  /* Toast */
+  .toast{position:fixed;bottom:80px;right:24px;background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:12px 18px;font-size:12px;color:var(--text);z-index:9998;transform:translateY(80px);opacity:0;transition:all 0.3s ease;max-width:300px;}
+  .toast.show{transform:translateY(0);opacity:1;}
+  .toast.green{border-color:rgba(74,222,128,0.4);}
+  .toast.yellow{border-color:rgba(251,191,36,0.4);}
+  .toast.purple{border-color:rgba(168,85,247,0.4);}
+  .toast.red{border-color:rgba(248,113,113,0.4);}
+
+  /* Back to top */
+  .back-top{position:fixed;bottom:24px;right:24px;background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:10px 14px;font-family:var(--mono);font-size:11px;color:var(--muted2);cursor:pointer;transition:all 0.2s;z-index:500;opacity:0;pointer-events:none;}
+  .back-top.visible{opacity:1;pointer-events:all;}
+  .back-top:hover{color:var(--text);border-color:var(--accent);}
+
+  .search-results-info{font-size:11px;color:var(--yellow);padding:8px 0;display:none;}
+  .no-results{text-align:center;padding:40px;color:var(--muted);font-size:13px;display:none;}
+
+  @media(max-width:600px){
+    .day-grid{grid-template-columns:1fr;}
+    .phase-tabs{gap:4px;}
+    .toolbar{flex-direction:column;align-items:stretch;}
+    .search-wrap{max-width:100%;}
+  }
+  ::-webkit-scrollbar{width:6px;}
+  ::-webkit-scrollbar-track{background:var(--bg);}
+  ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px;}
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="breadcrumb">
+      <a href="index.html">← onthebloc</a>
+      <span>/</span>
+      <span>dsa_roadmap</span>
+    </div>
+    <div class="eyebrow">10-phase roadmap</div>
+    <h1>DSA in <span>Java</span></h1>
+    <div class="header-desc">// 1 hr/day · campus placements · arrays → dp</div>
+
+    <div class="xp-bar-wrap">
+      <div class="xp-label">XP</div>
+      <div class="xp-track"><div class="xp-fill" id="xp-fill" style="width:0%"></div></div>
+      <div>
+        <div class="xp-num" id="xp-num">0 XP</div>
+        <div class="xp-level" id="xp-level">Beginner</div>
+      </div>
+    </div>
+
+    <div class="stats-bar">
+      <div class="stat-pill highlight">
+        <span class="stat-num" id="stat-done">0</span>
+        <div class="stat-label">topics done</div>
+      </div>
+      <div class="stat-pill">
+        <span class="stat-num" id="stat-tasks">0</span>
+        <div class="stat-label">problems done</div>
+      </div>
+      <div class="stat-pill">
+        <span class="stat-num" id="stat-remaining">0</span>
+        <div class="stat-label">topics left</div>
+      </div>
+      <div class="stat-pill">
+        <span class="stat-num" id="stat-stuck">0</span>
+        <div class="stat-label">flagged stuck</div>
+      </div>
+      <div class="stat-pill streak-pill">
+        <span class="stat-num" id="stat-streak">0🔥</span>
+        <div class="stat-label">day streak</div>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <div class="eta-pill" onclick="setStartDate()">
+        <span id="start-label">⚙ set start date</span>
+      </div>
+      <div class="eta-pill">📅 ETA: <span id="eta-text">—</span></div>
+      <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input class="search-input" id="search-input" type="text" placeholder="search... (e.g. BFS, Kadane, DP)" oninput="handleSearch(this.value)">
+        <span class="search-clear" id="search-clear" onclick="clearSearch()">✕</span>
+      </div>
+    </div>
+    <div class="search-results-info" id="search-info"></div>
+
+    <div class="overall-progress">
+      <div class="op-top">
+        <span class="op-label">overall progress</span>
+        <span class="op-pct" id="op-pct">0%</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="op-fill" style="width:0%"></div></div>
+    </div>
+
+    <!-- Error log -->
+    <div class="error-log-section">
+      <div class="error-log-title">📋 Error log — patterns I keep forgetting</div>
+      <textarea class="error-log-input" id="error-log" placeholder="e.g. Keep forgetting Floyd's cycle detection condition... Two pointer setup for sorted arrays... " oninput="saveErrorLog(this.value)"></textarea>
+      <div class="error-log-saved" id="error-log-saved">saved ✓</div>
+    </div>
+
+    <div class="phase-tabs" id="phase-tabs">
+      <button class="phase-tab active" data-phase="all" onclick="filterPhase('all')">
+        <span class="tab-dot" style="background:var(--muted2)"></span> All
+      </button>
+    </div>
+  </header>
+
+  <div class="main">
+    <div class="no-results" id="no-results">No topics match your search 🤷</div>
+    <div id="main-content"></div>
+  </div>
+</div>
+
+<button class="back-top" id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ top</button>
+<div class="toast" id="toast"></div>
+<div class="celebration" id="celebration">
+  <div class="phase-complete-banner" id="celebration-banner">
+    <h2 id="celebration-title">Phase Complete!</h2>
+    <p id="celebration-msg">Keep going.</p>
+    <button onclick="closeCelebration()">continue →</button>
+  </div>
+</div>
+
+<script>
+const PHASES = [
+  {
+    id:1, name:'Arrays', color:'#5e6ad2', duration:'4–5 weeks', xpPer:15,
+    note:'The longest phase intentionally. Arrays are the base of everything.',
+    topics:[
+      {title:'Basic Operations',tasks:['Traversal — iterate through array, print all elements','Sum of all elements','Find minimum element','Find maximum element','Reverse an array in-place']},
+      {title:'Searching',tasks:['Linear search — find index of target','Find duplicates in array','Frequency count of each element']},
+      {title:'Sorting-based Problems',tasks:['Sort array of 0s, 1s, 2s (Dutch National Flag)','Merge two sorted arrays','Check if array is sorted']},
+      {title:'Two Pointer Technique',tasks:['Two Sum — find pair with given sum','Move zeros to end','Move all negatives to left side']},
+      {title:'Sliding Window',tasks:['Maximum sum of K consecutive elements','Maximum consecutive 1s','Longest subarray with given sum']},
+      {title:'Prefix Sum',tasks:['Equilibrium point — index where left sum = right sum','Subarray with given sum using prefix','Count subarrays with equal 0s and 1s']},
+      {title:'Rotation',tasks:['Left rotate array by K positions','Right rotate array by K positions']},
+      {title:'Bit Manipulation on Arrays',tasks:['XOR tricks — what XOR of same number gives','Find missing number using XOR','Find duplicate + missing number','Swap two numbers without temp variable']},
+      {title:'Classic Hard Problems',tasks:["Kadane's algorithm — maximum subarray sum","Stock buy and sell — maximum profit","Trapping rainwater — water between bars","Product of array except self — no division"]},
+      {title:'2D Matrix',tasks:['Traversal — row by row and column by column','Transpose a matrix','Rotate matrix 90 degrees','Spiral order traversal','Diagonal traversal','Search in row-wise and column-wise sorted matrix']},
+    ]
+  },
+  {
+    id:2, name:'Strings', color:'#f472b6', duration:'2–3 weeks', xpPer:15,
+    note:'Java strings have their own quirks — immutability, StringBuilder, String pool.',
+    topics:[
+      {title:'Java String Basics',tasks:['Immutability — why Strings are immutable in Java','StringBuilder vs String — when to use each','charAt(), substring(), length(), indexOf()','String comparison — equals() vs == (important in Java)','String to char array and back']},
+      {title:'Classic Operations',tasks:['Reverse a string','Palindrome check','Anagram check — two strings have same characters']},
+      {title:'Character Frequency',tasks:['Frequency count using array (for lowercase a-z)','Frequency count using HashMap']},
+      {title:'Pattern Problems',tasks:['Isomorphic strings — one string maps to another','Valid anagram — confirm using sorted chars or map','Longest substring without repeating characters (sliding window)']},
+      {title:'String Manipulation',tasks:['String compression — aabccc → a2bc3','Count vowels and consonants in a string','Longest common prefix from array of strings']},
+      {title:'Stack-based String',tasks:['Valid parentheses — intro to stack thinking with strings']},
+    ]
+  },
+  {
+    id:3, name:'HashMap + HashSet', color:'#2dd4bf', duration:'2 weeks', xpPer:12,
+    note:'Core data structures for O(1) lookup. Used everywhere in interviews.',
+    topics:[
+      {title:'Frequency Problems',tasks:['Count frequency of digits in a number','Count frequency of characters in a string','Count frequency of elements in an array']},
+      {title:'Classic HashMap Problems',tasks:['Two Sum using HashMap — store complement','Majority element — element appearing > n/2 times','First element with frequency >= K']},
+      {title:'HashSet Problems',tasks:['Find distinct elements in array','Subset check — is every element of A in B','Array equality check using sets','Intersection of two arrays — common elements','Any pair summing to K using HashSet']},
+      {title:'Sliding Window with HashMap',tasks:['Longest substring without repeating characters — revisit using HashSet/HashMap','Understand difference from string approach']},
+    ]
+  },
+  {
+    id:4, name:'Linked List', color:'#f59e0b', duration:'3 weeks', xpPer:18,
+    note:'Most placement exams have at least one LL question.',
+    topics:[
+      {title:'Singly Linked List Basics',tasks:['Node structure in Java — class with data and next','Insert at head, tail, and middle','Delete node by value and by position','Traverse and print all nodes','Search for a value']},
+      {title:'Classic LL Operations',tasks:['Reverse a linked list — iterative approach','Reverse a linked list — recursive approach','Find middle of LL using slow/fast pointer']},
+      {title:'Cycle Problems',tasks:["Detect loop using Floyd's cycle detection algorithm","Remove loop after detecting it"]},
+      {title:'Merge and Split',tasks:['Merge two sorted linked lists','Remove Nth node from end of list']},
+      {title:'Advanced LL Problems',tasks:['Check if linked list is palindrome','Add two numbers represented as linked lists']},
+      {title:'Doubly Linked List',tasks:['Node structure — data, prev, next','Insert at head and tail','Delete a node','Reverse a doubly linked list']},
+    ]
+  },
+  {
+    id:5, name:'Stack + Queue', color:'#a855f7', duration:'2–3 weeks', xpPer:15,
+    note:'Stack and Queue underlie a surprising number of interview problems.',
+    topics:[
+      {title:'Stack Implementation',tasks:['Stack using array — push, pop, peek, isEmpty','Stack using Java Stack class — same operations','Know time complexity of each operation']},
+      {title:'Queue Implementation',tasks:['Queue using array — enqueue, dequeue, front, isEmpty','Queue using Java Queue interface (LinkedList)','Know time complexity of each operation']},
+      {title:'Stack Problems',tasks:['Valid parentheses — classic stack application','Balanced brackets — extension of parentheses','Next greater element — monotonic stack','Min stack — getMin in O(1)']},
+      {title:'Infix/Postfix',tasks:['Understand infix, postfix, prefix notation','Infix to postfix conversion using stack']},
+      {title:'Queue Problems',tasks:['First non-repeating character in a stream']},
+      {title:'Deque and Advanced',tasks:['Deque concept — operations at both ends','Sliding window maximum using Deque']},
+      {title:'Implement One Using Other',tasks:['Implement stack using two queues','Implement queue using two stacks']},
+    ]
+  },
+  {
+    id:6, name:'Recursion + Backtracking', color:'#f87171', duration:'2 weeks', xpPer:20,
+    note:"Don't skip this. Recursion underlies trees, graphs, and DP.",
+    topics:[
+      {title:'Recursion Basics',tasks:['Factorial using recursion','Fibonacci using recursion — understand exponential time','Sum of digits of a number','Power function — x to the n']},
+      {title:'Recursion on Arrays/Strings',tasks:['Binary search using recursion','Print all subsets of an array']},
+      {title:'String Permutations',tasks:['Generate all permutations of a string','Understand how recursion tree grows']},
+      {title:'Classic Recursion',tasks:['Tower of Hanoi — understand the pattern','Reverse a string using recursion']},
+      {title:'Backtracking Introduction',tasks:['What backtracking is — try, fail, undo, try again','N-Queens problem — understand the approach, trace through manually','Rat in a maze — grid backtracking']},
+    ]
+  },
+  {
+    id:7, name:'Binary Search', color:'#60a5fa', duration:'1–2 weeks', xpPer:15,
+    note:'Binary search is deceptively tricky. Get the boundary conditions right.',
+    topics:[
+      {title:'Classic Binary Search',tasks:['Binary search on sorted array — iterative','Binary search on sorted array — recursive','Find boundary conditions — lo, hi, mid, when to update']},
+      {title:'Variants',tasks:['Search in rotated sorted array','First occurrence of element in sorted array','Last occurrence of element in sorted array','Find peak element — element greater than neighbors']},
+      {title:'Binary Search on Answer',tasks:['Find square root of a number (integer part)','Allocate books — minimize max pages assigned','Aggressive cows — maximize minimum distance']},
+    ]
+  },
+  {
+    id:8, name:'Trees', color:'#4ade80', duration:'3–4 weeks', xpPer:20,
+    note:'Trees are heavily tested. Get comfortable with recursion first.',
+    topics:[
+      {title:'Binary Tree Basics',tasks:['Node structure in Java — data, left, right','Insert into binary tree','Inorder traversal (Left Root Right)','Preorder traversal (Root Left Right)','Postorder traversal (Left Right Root)','Level order traversal (BFS using queue)']},
+      {title:'Tree Properties',tasks:['Height of binary tree','Diameter of binary tree — longest path between two nodes','Count total nodes','Count leaf nodes']},
+      {title:'Tree Checks',tasks:['Check if tree is balanced — height difference at every node','Check if two trees are identical','Check if tree is symmetric / mirror of itself']},
+      {title:'Tree Paths',tasks:['Lowest common ancestor of two nodes','Path from root to a given node']},
+      {title:'Binary Search Tree',tasks:['Insert into BST','Delete from BST','Search in BST','Validate BST — check BST property','Convert BST to sorted array']},
+      {title:'BST Problems',tasks:['Kth smallest element in BST','Check if two BSTs have same set of elements']},
+      {title:'Advanced Traversals',tasks:['Zigzag / spiral level order traversal','Boundary traversal of binary tree']},
+    ]
+  },
+  {
+    id:9, name:'Graphs', color:'#f59e0b', duration:'2–3 weeks', xpPer:20,
+    note:'Graphs feel hard but most problems are BFS/DFS variations. Learn those well.',
+    topics:[
+      {title:'Graph Representation',tasks:['Adjacency matrix — 2D array, space O(V²)','Adjacency list — ArrayList of lists, space O(V+E)','When to use which representation']},
+      {title:'Graph Traversals',tasks:['BFS — iterative using queue, level by level','DFS — iterative using stack','DFS — recursive approach','Print BFS and DFS order for a given graph']},
+      {title:'Cycle Detection',tasks:['Detect cycle in undirected graph — BFS approach','Detect cycle in undirected graph — DFS approach','Detect cycle in directed graph — DFS with visited + recStack']},
+      {title:'Topological Sort',tasks:['What topological sort is — ordering of vertices','Topological sort using DFS','Topological sort using Kahn\'s BFS algorithm (in-degree)']},
+      {title:'Shortest Path',tasks:["Dijkstra's algorithm — shortest path from source","Understand why Dijkstra fails with negative edges"]},
+      {title:'Island and Component Problems',tasks:['Number of islands — classic grid BFS/DFS','Count connected components in a graph']},
+    ]
+  },
+  {
+    id:10, name:'Dynamic Programming', color:'#a855f7', duration:'3–4 weeks', xpPer:25,
+    note:'Start only after recursion is solid. DP = recursion + memory.',
+    topics:[
+      {title:'DP Fundamentals',tasks:['What memoization is — top-down, store results of subproblems','What tabulation is — bottom-up, fill table iteratively','When to use DP — overlapping subproblems + optimal substructure','Identify DP problems — choices at each step, minimize/maximize']},
+      {title:'1D DP',tasks:['Fibonacci with memoization — compare to pure recursion','Climbing stairs — how many ways to reach nth step','House robber — max sum with no two adjacent elements']},
+      {title:'2D DP',tasks:['0/1 Knapsack — include or exclude each item','Subset sum — can we get target sum from array','Longest common subsequence — classic 2D DP']},
+      {title:'String DP',tasks:['Edit distance — min operations to convert one string to another','Longest palindromic subsequence']},
+      {title:'DP on Grids',tasks:['Minimum path sum — grid from top-left to bottom-right','Unique paths — count ways to reach bottom-right corner']},
+    ]
+  },
+];
+
+// Revision weeks (after every 2 phases)
+const REVISION_TOPICS = [
+  {afterPhase:2, title:'Revision Week 1 — Arrays + Strings', color:'#a855f7', tasks:['Re-solve 3 array problems without hints','Re-solve 2 string problems without hints','Pick 2 mixed problems from Arrays + Strings','Update error log — patterns you kept forgetting']},
+  {afterPhase:4, title:'Revision Week 2 — HashMap + LL', color:'#a855f7', tasks:['Re-solve 2 HashMap problems without hints','Re-solve 2 Linked List problems without hints','Pick 3 mixed problems from all 4 phases','Update error log']},
+  {afterPhase:6, title:'Revision Week 3 — Stack + Recursion', color:'#a855f7', tasks:['Re-solve 2 Stack/Queue problems without hints','Re-solve 2 recursion problems without hints','Pick 3 mixed problems from all 6 phases','Update error log']},
+  {afterPhase:8, title:'Revision Week 4 — Trees + Binary Search', color:'#a855f7', tasks:['Re-solve 3 tree problems without hints','Re-solve 2 binary search variants without hints','Pick 4 mixed problems from all 8 phases','Update error log']},
+  {afterPhase:10, title:'Final Revision — All Phases', color:'#4ade80', tasks:['Pick 2 random problems from each phase — do without hints','Solve 5 mixed medium problems from LeetCode','Review entire error log — fix blind spots','Time yourself — aim to solve mediums in under 20 mins']},
+];
+
+const XP_LEVELS=[
+  {min:0,label:'Beginner'},{min:100,label:'Novice'},{min:300,label:'Apprentice'},
+  {min:600,label:'Practitioner'},{min:1000,label:'Intermediate'},{min:1500,label:'Advanced'},
+  {min:2000,label:'Expert'},{min:2500,label:'Master'},{min:3000,label:'DSA God 🔥'}
+];
+
+// Build flat topic list with IDs
+let TOPICS = [];
+let topicId = 0;
+PHASES.forEach(phase => {
+  phase.topics.forEach(topic => {
+    TOPICS.push({...topic, id: topicId++, phase: phase.id, phaseColor: phase.color, xp: phase.xpPer});
+  });
+  // Insert revision after phase if applicable
+  const rev = REVISION_TOPICS.find(r => r.afterPhase === phase.id);
+  if(rev) {
+    TOPICS.push({title: rev.title, tasks: rev.tasks, id: topicId++, phase: phase.id + 0.5, phaseColor: rev.color, xp: 30, isRevision: true, revisionTitle: rev.title});
+  }
+});
+
+const MAX_XP = TOPICS.reduce((s,t)=>s+t.xp, 0);
+
+function save(k,v){try{localStorage.setItem('dsa_'+k,JSON.stringify(v));}catch(e){}}
+function load(k,d){try{const v=localStorage.getItem('dsa_'+k);return v!==null?JSON.parse(v):d;}catch(e){return d;}}
+
+let taskState=load('tasks',{});
+let stuckState=load('stuck',{});
+let movedTopics=load('moved',{});
+let topicNotes=load('notes',{});
+let startDate=load('startdate',null);
+let streakData=load('streak',{count:0,last:null});
+let completedPhases=load('completedPhases',{});
+let reviseModes={};
+let currentFilter='all';
+let errorLog=load('errorlog','');
+
+let toastTimer;
+function showToast(msg,type=''){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.className='toast show '+type;
+  clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+function toggleTask(tid,taskIdx){
+  const key=tid+'_'+taskIdx;
+  taskState[key]=!taskState[key];
+  save('tasks',taskState);
+  const el=document.querySelector(`[data-task="${key}"]`);
+  if(el){el.classList.toggle('done',taskState[key]);el.querySelector('.task-check').textContent=taskState[key]?'✓':'';}
+  updateTopicCard(tid);updateStats();updateStreak();
+  const topic=TOPICS.find(t=>t.id===tid);
+  if(topic)checkPhaseComplete(Math.floor(topic.phase));
+}
+
+function toggleStuck(tid,taskIdx,e){
+  e.stopPropagation();
+  const key=tid+'_'+taskIdx;
+  stuckState[key]=!stuckState[key];
+  save('stuck',stuckState);
+  const el=document.querySelector(`[data-task="${key}"]`);
+  if(el){
+    el.classList.toggle('stuck',stuckState[key]);
+    const btn=el.querySelector('.stuck-btn');
+    if(btn)btn.textContent=stuckState[key]?'unstuck':'stuck?';
+  }
+  updateStats();
+  if(stuckState[key])showToast('Flagged as stuck — note it, move on, come back 📝','red');
+}
+
+function completeAll(tid){
+  const topic=TOPICS.find(t=>t.id===tid);
+  topic.tasks.forEach((_,i)=>{
+    const key=tid+'_'+i;taskState[key]=true;
+    const el=document.querySelector(`[data-task="${key}"]`);
+    if(el){el.classList.add('done');el.querySelector('.task-check').textContent='✓';}
+  });
+  save('tasks',taskState);updateTopicCard(tid);updateStats();updateStreak();
+  checkPhaseComplete(Math.floor(topic.phase));
+  showToast(topic.title+' done! +'+topic.xp+' XP 🔥','green');
+}
+
+function resetTopic(tid){
+  const topic=TOPICS.find(t=>t.id===tid);
+  topic.tasks.forEach((_,i)=>{
+    const key=tid+'_'+i;taskState[key]=false;stuckState[key]=false;
+    const el=document.querySelector(`[data-task="${key}"]`);
+    if(el){el.classList.remove('done','stuck');el.querySelector('.task-check').textContent='';const b=el.querySelector('.stuck-btn');if(b)b.textContent='stuck?';}
+  });
+  reviseModes[tid]=false;
+  const card=document.querySelector(`[data-topic="${tid}"]`);
+  if(card)card.classList.remove('revising','completed');
+  save('tasks',taskState);save('stuck',stuckState);updateTopicCard(tid);updateStats();
+  showToast('Reset','');
+}
+
+function moveToNext(tid){
+  movedTopics[tid]=true;save('moved',movedTopics);
+  const card=document.querySelector(`[data-topic="${tid}"]`);
+  if(card){
+    card.classList.add('moved');card.classList.remove('completed');
+    const s=card.querySelector('.day-status');if(s)s.innerHTML='<span class="status-moved">→ moved</span>';
+  }
+  updateStats();showToast('Moved — come back to it 📅','yellow');
+}
+
+function toggleRevise(tid){
+  reviseModes[tid]=!reviseModes[tid];
+  const card=document.querySelector(`[data-topic="${tid}"]`);
+  if(card)card.classList.toggle('revising',reviseModes[tid]);
+  const topic=TOPICS.find(t=>t.id===tid);
+  if(reviseModes[tid]){
+    topic.tasks.forEach((_,i)=>{
+      const key=tid+'_'+i;taskState[key]=false;
+      const el=document.querySelector(`[data-task="${key}"]`);
+      if(el){el.classList.remove('done');el.querySelector('.task-check').textContent='';}
+    });
+    save('tasks',taskState);updateTopicCard(tid);
+    showToast('Revise mode — redo without hints 📖','purple');
+  }
+  const btn=card&&card.querySelector('.revise-btn');
+  if(btn)btn.textContent=reviseModes[tid]?'exit revise':'📖 revise';
+}
+
+function toggleCard(tid){
+  const card=document.querySelector(`[data-topic="${tid}"]`);
+  if(card)card.classList.toggle('open');
+}
+
+function saveNote(tid,val){
+  topicNotes[tid]=val;save('notes',topicNotes);
+  const saved=document.querySelector(`[data-notes-saved="${tid}"]`);
+  if(saved){saved.classList.add('show');setTimeout(()=>saved.classList.remove('show'),1400);}
+}
+
+function saveErrorLog(val){
+  errorLog=val;save('errorlog',val);
+  const s=document.getElementById('error-log-saved');
+  if(s){s.classList.add('show');setTimeout(()=>s.classList.remove('show'),1400);}
+}
+
+function setStartDate(){
+  const d=prompt('Enter start date (YYYY-MM-DD):',new Date().toISOString().slice(0,10));
+  if(d&&/^\d{4}-\d{2}-\d{2}$/.test(d)){
+    startDate=d;save('startdate',d);updateETA();updateTodayHighlight();
+    showToast('Start date set!','green');
+    document.getElementById('start-label').textContent='📅 started: '+d;
+  }
+}
+
+function updateETA(){
+  const el=document.getElementById('eta-text');
+  if(!startDate){el.textContent='set start date';return;}
+  document.getElementById('start-label').textContent='📅 started: '+startDate;
+  const doneTopics=TOPICS.filter(t=>t.tasks.every((_,i)=>taskState[t.id+'_'+i])).length;
+  const start=new Date(startDate);const today=new Date();
+  const elapsed=Math.max(1,Math.round((today-start)/86400000));
+  const pace=doneTopics/elapsed;const remaining=TOPICS.length-doneTopics;
+  if(pace<=0){el.textContent='finish at least 1 topic';return;}
+  const daysNeeded=Math.ceil(remaining/pace);
+  const eta=new Date(today.getTime()+daysNeeded*86400000);
+  el.textContent=eta.toLocaleDateString('en-IN',{month:'short',day:'numeric',year:'numeric'})+' ('+daysNeeded+'d at current pace)';
+}
+
+function updateTodayHighlight(){
+  document.querySelectorAll('.day-card').forEach(c=>c.classList.remove('today-card'));
+  document.querySelectorAll('.today-badge').forEach(b=>b.remove());
+  if(!startDate)return;
+  const start=new Date(startDate);start.setHours(0,0,0,0);
+  const today=new Date();today.setHours(0,0,0,0);
+  const dayNum=Math.round((today-start)/86400000);
+  // Highlight the current topic based on roughly 1 topic every 2 days
+  const topicIdx=Math.min(Math.floor(dayNum/2),TOPICS.length-1);
+  if(topicIdx>=0){
+    const card=document.querySelector(`[data-topic="${TOPICS[topicIdx].id}"]`);
+    if(card){
+      card.classList.add('today-card');
+      const badge=document.createElement('div');badge.className='today-badge';badge.textContent='current';
+      card.appendChild(badge);
+    }
+  }
+}
+
+function updateStreak(){
+  const today=new Date().toDateString();
+  const doneAny=Object.values(taskState).some(v=>v);
+  if(doneAny&&streakData.last!==today){
+    const yesterday=new Date();yesterday.setDate(yesterday.getDate()-1);
+    streakData.count=streakData.last===yesterday.toDateString()?streakData.count+1:1;
+    streakData.last=today;save('streak',streakData);
+  }
+  const el=document.getElementById('stat-streak');
+  if(el)el.textContent=streakData.count+'🔥';
+}
+
+function getTotalXP(){
+  return TOPICS.reduce((s,t)=>s+(t.tasks.every((_,i)=>taskState[t.id+'_'+i])?t.xp:0),0);
+}
+
+function updateXP(){
+  const xp=getTotalXP();const pct=Math.round((xp/MAX_XP)*100);
+  const fill=document.getElementById('xp-fill');if(fill)fill.style.width=pct+'%';
+  const num=document.getElementById('xp-num');if(num)num.textContent=xp+' / '+MAX_XP+' XP';
+  const levelEl=document.getElementById('xp-level');
+  let level=XP_LEVELS[0].label;
+  for(const l of XP_LEVELS)if(xp>=l.min)level=l.label;
+  if(levelEl)levelEl.textContent='Level: '+level;
+}
+
+function checkPhaseComplete(phaseNum){
+  const phaseTopics=TOPICS.filter(t=>Math.floor(t.phase)===phaseNum&&!t.isRevision);
+  const allDone=phaseTopics.every(t=>t.tasks.every((_,i)=>taskState[t.id+'_'+i]));
+  if(allDone&&!completedPhases[phaseNum]){
+    completedPhases[phaseNum]=true;save('completedPhases',completedPhases);
+    setTimeout(()=>showCelebration(phaseNum),500);
+  }
+}
+
+function showCelebration(phaseNum){
+  const phase=PHASES.find(p=>p.id===phaseNum);
+  const msgs={
+    1:['Arrays ✓','Foundation complete. Every other topic builds on this.'],
+    2:['Strings ✓','Java string quirks mastered. StringBuilder is your friend.'],
+    3:['HashMap + HashSet ✓','O(1) lookup in your toolkit. Half of interview problems just got easier.'],
+    4:['Linked List ✓','Pointers, cycles, merges. LL done.'],
+    5:['Stack + Queue ✓','Monotonic stack, sliding window deque. Solid.'],
+    6:['Recursion + Backtracking ✓','If you understand this, trees and DP will click faster.'],
+    7:['Binary Search ✓','The boundary condition is always the tricky part. You got it.'],
+    8:['Trees ✓','BST, DFS, BFS, LCA. Trees done. Graphs up next.'],
+    9:['Graphs ✓','BFS, DFS, Dijkstra, topo sort. Graph chapter closed.'],
+    10:['DP ✓','All 10 phases complete. That\'s the full DSA roadmap 👑']
+  };
+  const [title,msg]=msgs[phaseNum]||['Phase Complete!','Keep going.'];
+  document.getElementById('celebration-title').textContent=title;
+  document.getElementById('celebration-msg').textContent=msg;
+  spawnConfetti(phase?phase.color:'#4ade80');
+  document.getElementById('celebration').classList.add('show');
+}
+
+function closeCelebration(){document.getElementById('celebration').classList.remove('show');}
+
+function spawnConfetti(mainColor){
+  const cel=document.getElementById('celebration');
+  const colors=[mainColor,'#4ade80','#60a5fa','#fbbf24','#f87171','#a855f7'];
+  for(let i=0;i<70;i++){
+    const p=document.createElement('div');p.className='confetti-piece';
+    p.style.cssText=`left:${Math.random()*100}%;background:${colors[Math.floor(Math.random()*colors.length)]};width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;animation-duration:${2+Math.random()*2}s;animation-delay:${Math.random()*0.6}s;border-radius:${Math.random()>0.5?'50%':'2px'};`;
+    cel.appendChild(p);
+  }
+  setTimeout(()=>document.querySelectorAll('.confetti-piece').forEach(p=>p.remove()),4500);
+}
+
+// Search
+let searchTimer;
+function handleSearch(val){
+  clearTimeout(searchTimer);searchTimer=setTimeout(()=>doSearch(val),150);
+  document.getElementById('search-clear').style.display=val?'block':'none';
+}
+
+function doSearch(val){
+  const term=val.trim().toLowerCase();
+  const info=document.getElementById('search-info');
+  const noRes=document.getElementById('no-results');
+  if(!term){
+    document.querySelectorAll('.day-card').forEach(c=>{c.style.display='';c.classList.remove('search-highlight');});
+    document.querySelectorAll('.task-text mark').forEach(m=>{const t=m.parentNode;t.innerHTML=t.textContent;});
+    document.querySelectorAll('.phase-section').forEach(s=>{if(currentFilter==='all'||s.dataset.phase===currentFilter)s.classList.remove('hidden');});
+    if(info)info.style.display='none';if(noRes)noRes.style.display='none';
+    return;
+  }
+  let matchCount=0;
+  document.querySelectorAll('.day-card').forEach(card=>{
+    const tid=parseInt(card.dataset.topic);const topic=TOPICS.find(t=>t.id===tid);
+    let hasMatch=false;
+    card.querySelectorAll('.task-text').forEach(t=>{t.innerHTML=t.textContent;});
+    topic.tasks.forEach((task,i)=>{
+      const taskEl=card.querySelector(`[data-task="${tid+'_'+i}"] .task-text`);
+      if(taskEl&&task.toLowerCase().includes(term)){
+        hasMatch=true;
+        taskEl.innerHTML=task.replace(new RegExp(`(${term.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`,'gi'),'<mark>$1</mark>');
+      }
+    });
+    if(topic.title.toLowerCase().includes(term))hasMatch=true;
+    card.style.display=hasMatch?'':'none';
+    card.classList.toggle('search-highlight',hasMatch);
+    if(hasMatch){matchCount++;if(!card.classList.contains('open'))card.classList.add('open');}
+  });
+  document.querySelectorAll('.phase-section').forEach(s=>{
+    const visible=Array.from(s.querySelectorAll('.day-card')).some(c=>c.style.display!=='none');
+    s.classList.toggle('hidden',!visible);
+  });
+  if(info){info.style.display='block';info.textContent=matchCount+' topic(s) match "'+val+'"';}
+  if(noRes)noRes.style.display=matchCount===0?'block':'none';
+}
+
+function clearSearch(){
+  document.getElementById('search-input').value='';doSearch('');
+  document.getElementById('search-clear').style.display='none';
+}
+
+function filterPhase(phase){
+  currentFilter=phase;clearSearch();
+  document.querySelectorAll('.phase-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelector(`[data-phase="${phase}"]`).classList.add('active');
+  document.querySelectorAll('.phase-section').forEach(s=>{
+    s.classList.toggle('hidden',phase!=='all'&&s.dataset.phase!==phase);
+  });
+}
+
+function updateTopicCard(tid){
+  const topic=TOPICS.find(t=>t.id===tid);
+  const total=topic.tasks.length;
+  const done=topic.tasks.filter((_,i)=>taskState[tid+'_'+i]).length;
+  const pct=Math.round((done/total)*100);
+  const isComplete=done===total;
+  const card=document.querySelector(`[data-topic="${tid}"]`);
+  if(!card)return;
+  card.classList.toggle('completed',isComplete&&!reviseModes[tid]);
+  if(isComplete)card.classList.remove('moved');
+  const fill=card.querySelector('.day-mini-fill');if(fill)fill.style.width=pct+'%';
+  const countEl=card.querySelector('.task-count');if(countEl)countEl.textContent=done+' / '+total+' done';
+  const xpEl=card.querySelector('.day-xp-badge');if(xpEl)xpEl.textContent=isComplete?'✓ +'+topic.xp+' XP':'⚡ '+topic.xp+' XP';
+  const statusEl=card.querySelector('.day-status');
+  if(statusEl&&!movedTopics[tid]){
+    if(isComplete)statusEl.innerHTML='<span class="status-done">✓ done</span>';
+    else if(done>0)statusEl.innerHTML=`<span class="status-pending">${pct}%</span>`;
+    else statusEl.innerHTML='<span class="status-pending">pending</span>';
+  }
+  updateXP();
+}
+
+function updateStats(){
+  let totalTasks=0,doneTasks=0,doneTopics=0,stuckCount=0;
+  TOPICS.forEach(topic=>{
+    const total=topic.tasks.length;
+    const done=topic.tasks.filter((_,i)=>taskState[topic.id+'_'+i]).length;
+    totalTasks+=total;doneTasks+=done;
+    if(done===total)doneTopics++;
+    topic.tasks.forEach((_,i)=>{if(stuckState[topic.id+'_'+i])stuckCount++;});
+  });
+  const pct=totalTasks>0?Math.round((doneTasks/totalTasks)*100):0;
+  document.getElementById('stat-done').textContent=doneTopics;
+  document.getElementById('stat-tasks').textContent=doneTasks;
+  document.getElementById('stat-remaining').textContent=TOPICS.length-doneTopics;
+  document.getElementById('stat-stuck').textContent=stuckCount;
+  document.getElementById('op-pct').textContent=pct+'%';
+  document.getElementById('op-fill').style.width=pct+'%';
+  updateETA();updateXP();
+}
+
+window.addEventListener('scroll',()=>{
+  const btn=document.getElementById('back-top');
+  if(btn)btn.classList.toggle('visible',window.scrollY>400);
+});
+
+document.addEventListener('keydown',e=>{
+  if(e.code==='Escape'){clearSearch();}
+});
+
+function buildPhaseTabs(){
+  const tabsEl=document.getElementById('phase-tabs');
+  PHASES.forEach(phase=>{
+    const btn=document.createElement('button');
+    btn.className='phase-tab';btn.dataset.phase=String(phase.id);
+    btn.onclick=()=>filterPhase(String(phase.id));
+    btn.innerHTML=`<span class="tab-dot" style="background:${phase.color}"></span> P${phase.id}: ${phase.name}`;
+    tabsEl.appendChild(btn);
+  });
+}
+
+function render(){
+  buildPhaseTabs();
+  const container=document.getElementById('main-content');
+
+  // Group topics by phase
+  const phaseGroups={};
+  PHASES.forEach(p=>{phaseGroups[p.id]=[];});
+
+  TOPICS.forEach(topic=>{
+    const phaseId=Math.floor(topic.phase);
+    if(!phaseGroups[phaseId])phaseGroups[phaseId]=[];
+    phaseGroups[phaseId].push(topic);
+  });
+
+  container.innerHTML=PHASES.map(phase=>{
+    const topics=phaseGroups[phase.id]||[];
+    const phaseXP=topics.reduce((s,t)=>s+t.xp,0);
+    return `
+      <div class="phase-section" data-phase="${phase.id}">
+        <div class="phase-header">
+          <span class="phase-badge" style="background:${phase.color}22;color:${phase.color};border:1px solid ${phase.color}44;">Phase ${phase.id}</span>
+          <span class="phase-title">${phase.name}</span>
+          <span class="phase-duration">${phase.duration}</span>
+          <span class="phase-xp">⚡ ${phaseXP} XP</span>
+          <span class="phase-progress-text">${topics.length} topics</span>
+        </div>
+        ${phase.note?`<div style="font-size:12px;color:var(--muted2);margin-bottom:14px;padding:10px 14px;background:var(--surface);border-radius:8px;border-left:3px solid ${phase.color};">// ${phase.note}</div>`:''}
+        <div class="day-grid">${topics.map(topic=>renderTopicCard(topic,phase.color)).join('')}</div>
+      </div>
+    `;
+  }).join('');
+
+  TOPICS.forEach(t=>updateTopicCard(t.id));
+  updateStats();updateStreak();updateTodayHighlight();
+
+  // Load error log
+  const elInput=document.getElementById('error-log');
+  if(elInput&&errorLog)elInput.value=errorLog;
+}
+
+function renderTopicCard(topic,phaseColor){
+  const total=topic.tasks.length;
+  const done=topic.tasks.filter((_,i)=>taskState[topic.id+'_'+i]).length;
+  const pct=Math.round((done/total)*100);
+  const isComplete=done===total;
+  const isMoved=movedTopics[topic.id];
+  const note=topicNotes[topic.id]||'';
+  const statusHtml=isMoved&&!isComplete
+    ?'<span class="status-moved">→ moved</span>'
+    :isComplete?'<span class="status-done">✓ done</span>'
+    :done>0?`<span class="status-pending">${pct}%</span>`
+    :'<span class="status-pending">pending</span>';
+  const color=topic.phaseColor||phaseColor;
+  return `
+    <div class="day-card ${isComplete?'completed':''} ${isMoved&&!isComplete?'moved':''} ${topic.isRevision?'revision-card':''}" data-topic="${topic.id}">
+      <div class="day-header" onclick="toggleCard(${topic.id})">
+        <span class="day-num">${topic.isRevision?'REV':'TOPIC'}</span>
+        <span class="phase-dot" style="background:${color}"></span>
+        <span class="day-title">${topic.title}</span>
+        <span class="day-status">${statusHtml}</span>
+        <span class="chevron">▼</span>
+      </div>
+      <div class="day-mini-bar"><div class="day-mini-fill" style="width:${pct}%;background:${color};"></div></div>
+      <div class="task-count">${done} / ${total} done</div>
+      <div class="day-xp-badge">${isComplete?'✓ +'+topic.xp+' XP':'⚡ '+topic.xp+' XP'}</div>
+      <div class="day-tasks">
+        ${topic.tasks.map((task,i)=>{
+          const key=topic.id+'_'+i;const isDone=taskState[key];const isStuck=stuckState[key];
+          return `<div class="task-item ${isDone?'done':''} ${isStuck?'stuck':''}" data-task="${key}" onclick="toggleTask(${topic.id},${i})">
+            <div class="task-check">${isDone?'✓':''}</div>
+            <div class="task-text">${task}</div>
+            <button class="stuck-btn" onclick="toggleStuck(${topic.id},${i},event)">${isStuck?'unstuck':'stuck?'}</button>
+          </div>`;
+        }).join('')}
+        ${isMoved&&!isComplete?`<div class="moved-notice">📅 Moved — catch up when you can</div>`:''}
+        <div class="day-notes-wrap">
+          <div class="notes-label">📝 notes</div>
+          <textarea class="notes-textarea" placeholder="What you learned, patterns to remember, mistakes..." oninput="saveNote(${topic.id},this.value)" onclick="event.stopPropagation()">${note}</textarea>
+          <div class="notes-saved" data-notes-saved="${topic.id}">saved ✓</div>
+        </div>
+        <div class="day-actions">
+          <button class="action-btn complete-all" onclick="event.stopPropagation();completeAll(${topic.id})">✓ complete all</button>
+          <button class="action-btn move-day" onclick="event.stopPropagation();moveToNext(${topic.id})">→ move</button>
+          ${isComplete?`<button class="revise-btn" onclick="event.stopPropagation();toggleRevise(${topic.id})">📖 revise</button>`:''}
+          <button class="action-btn reset-day" onclick="event.stopPropagation();resetTopic(${topic.id})">↺ reset</button>
+        </div>
+      </div>
+    </div>`;
+}
+
+render();
+</script>
+</body>
+</html>

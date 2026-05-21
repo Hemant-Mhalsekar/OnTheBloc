@@ -7,591 +7,286 @@
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Epilogue:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #080810;
-    --surface: #0f0f1a;
-    --surface2: #161625;
-    --surface3: #1e1e30;
-    --border: #252538;
-    --border2: #2e2e48;
-    --text: #e2e2f0;
-    --muted: #5a5a78;
-    --muted2: #7a7a98;
-    --accent: #5e6ad2;
-    --accent-glow: rgba(94,106,210,0.15);
-    --green: #4ade80;
-    --green-dim: rgba(74,222,128,0.1);
-    --yellow: #fbbf24;
-    --yellow-dim: rgba(251,191,36,0.1);
-    --red: #f87171;
-    --red-dim: rgba(248,113,113,0.1);
-    --phase1: #5e6ad2;
-    --phase2: #a855f7;
-    --phase3: #f59e0b;
-    --mono: 'JetBrains Mono', monospace;
-    --display: 'Epilogue', sans-serif;
+    --bg:#080810;--surface:#0f0f1a;--surface2:#161625;--surface3:#1e1e30;
+    --border:#252538;--border2:#2e2e48;--text:#e2e2f0;--muted:#5a5a78;--muted2:#7a7a98;
+    --accent:#5e6ad2;--accent-glow:rgba(94,106,210,0.15);
+    --green:#4ade80;--green-dim:rgba(74,222,128,0.1);
+    --yellow:#fbbf24;--yellow-dim:rgba(251,191,36,0.1);
+    --red:#f87171;--red-dim:rgba(248,113,113,0.1);
+    --purple:#a855f7;--orange:#f59e0b;
+    --phase1:#5e6ad2;--phase2:#a855f7;--phase3:#f59e0b;
+    --mono:'JetBrains Mono',monospace;--display:'Epilogue',sans-serif;
   }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:var(--mono);min-height:100vh;overflow-x:hidden;scroll-behavior:smooth;}
+  body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.03) 2px,rgba(0,0,0,0.03) 4px);pointer-events:none;z-index:9999;}
+  body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(94,106,210,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(94,106,210,0.03) 1px,transparent 1px);background-size:32px 32px;pointer-events:none;z-index:0;}
+  .app{position:relative;z-index:1;}
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  /* HEADER */
+  header{padding:32px 24px 0;max-width:1100px;margin:0 auto;}
+  .breadcrumb{font-size:11px;color:var(--muted);margin-bottom:20px;display:flex;align-items:center;gap:8px;}
+  .breadcrumb a{color:var(--accent);text-decoration:none;transition:opacity 0.2s;}
+  .breadcrumb a:hover{opacity:0.7;}
+  .header-row{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+  .eyebrow{font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+  .eyebrow::before{content:'';display:inline-block;width:24px;height:1px;background:var(--accent);}
+  h1{font-family:var(--display);font-size:clamp(28px,5vw,48px);font-weight:900;letter-spacing:-0.03em;line-height:1;margin-bottom:6px;}
+  h1 span{background:linear-gradient(90deg,var(--accent),#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  .header-desc{font-size:12px;color:var(--muted2);margin-top:6px;}
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--mono);
-    min-height: 100vh;
-    overflow-x: hidden;
+  /* XP BAR */
+  .xp-bar-wrap{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 18px;margin:20px 0 8px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
+  .xp-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;white-space:nowrap;}
+  .xp-track{flex:1;min-width:120px;background:var(--surface3);border-radius:4px;height:8px;overflow:hidden;}
+  .xp-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,#f59e0b,#f87171,#a855f7);transition:width 0.6s ease;}
+  .xp-num{font-size:14px;font-weight:700;color:var(--orange);white-space:nowrap;font-family:var(--display);}
+  .xp-level{font-size:11px;color:var(--muted2);}
+
+  /* STATS BAR */
+  .stats-bar{display:flex;gap:6px;flex-wrap:wrap;margin:16px 0;}
+  .stat-pill{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:12px;}
+  .stat-num{font-size:18px;font-weight:700;color:var(--text);font-family:var(--display);display:block;}
+  .stat-label{color:var(--muted);font-size:10px;margin-top:2px;}
+  .stat-pill.highlight{border-color:var(--accent);background:var(--accent-glow);}
+  .stat-pill.highlight .stat-num{color:var(--accent);}
+  .stat-pill.streak-pill{border-color:rgba(245,158,11,0.4);background:rgba(245,158,11,0.08);}
+  .stat-pill.streak-pill .stat-num{color:var(--orange);}
+
+  /* ETA + SEARCH ROW */
+  .toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:16px;}
+  .eta-pill{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 14px;font-size:11px;color:var(--muted2);display:flex;align-items:center;gap:6px;}
+  .eta-pill span{color:var(--green);font-weight:600;}
+  .search-wrap{flex:1;min-width:180px;max-width:320px;position:relative;}
+  .search-input{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 14px 8px 34px;font-family:var(--mono);font-size:12px;color:var(--text);outline:none;transition:border-color 0.2s;}
+  .search-input:focus{border-color:var(--accent);}
+  .search-input::placeholder{color:var(--muted);}
+  .search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--muted);pointer-events:none;}
+  .search-clear{position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:11px;color:var(--muted);cursor:pointer;display:none;}
+
+  /* OVERALL PROGRESS */
+  .overall-progress{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin-bottom:20px;}
+  .op-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+  .op-label{font-size:11px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;}
+  .op-pct{font-size:13px;font-weight:600;color:var(--accent);}
+  .progress-track{background:var(--surface3);border-radius:4px;height:6px;overflow:hidden;}
+  .progress-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--accent),#a78bfa,var(--green));transition:width 0.5s ease;}
+
+  /* PHASE TABS */
+  .phase-tabs{display:flex;gap:6px;margin-bottom:20px;flex-wrap:wrap;}
+  .phase-tab{font-family:var(--mono);font-size:11px;padding:7px 14px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--muted2);cursor:pointer;transition:all 0.15s;display:flex;align-items:center;gap:6px;}
+  .phase-tab .tab-dot{width:6px;height:6px;border-radius:50%;}
+  .phase-tab:hover{border-color:var(--border2);color:var(--text);}
+  .phase-tab.active{color:var(--text);}
+  .phase-tab[data-phase="all"].active{border-color:var(--muted2);background:var(--surface2);}
+  .phase-tab[data-phase="1"].active{border-color:var(--phase1);background:rgba(94,106,210,0.1);color:var(--phase1);}
+  .phase-tab[data-phase="2"].active{border-color:var(--phase2);background:rgba(168,85,247,0.1);color:var(--phase2);}
+  .phase-tab[data-phase="3"].active{border-color:var(--phase3);background:rgba(245,158,11,0.1);color:var(--phase3);}
+
+  /* MAIN */
+  .main{max-width:1100px;margin:0 auto;padding:0 24px 120px;}
+  .phase-section{margin-bottom:40px;}
+  .phase-section.hidden{display:none;}
+  .phase-header{display:flex;align-items:center;gap:12px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border);}
+  .phase-badge{font-size:10px;letter-spacing:0.15em;text-transform:uppercase;padding:4px 10px;border-radius:4px;font-weight:600;}
+  .phase-badge.p1{background:rgba(94,106,210,0.15);color:var(--phase1);border:1px solid rgba(94,106,210,0.3);}
+  .phase-badge.p2{background:rgba(168,85,247,0.15);color:var(--phase2);border:1px solid rgba(168,85,247,0.3);}
+  .phase-badge.p3{background:rgba(245,158,11,0.15);color:var(--phase3);border:1px solid rgba(245,158,11,0.3);}
+  .phase-title{font-family:var(--display);font-size:16px;font-weight:700;}
+  .phase-progress-text{margin-left:auto;font-size:11px;color:var(--muted);}
+  .phase-xp{font-size:11px;color:var(--orange);margin-left:8px;}
+
+  /* DAY GRID */
+  .day-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:10px;}
+
+  /* DAY CARD */
+  .day-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:border-color 0.2s;position:relative;}
+  .day-card:hover{border-color:var(--border2);}
+  .day-card.completed{border-color:rgba(74,222,128,0.3);background:rgba(74,222,128,0.03);}
+  .day-card.moved{border-color:rgba(251,191,36,0.3);background:rgba(251,191,36,0.03);}
+  .day-card.today-card{border-color:rgba(94,106,210,0.5);box-shadow:0 0 0 1px rgba(94,106,210,0.2);}
+  .today-badge{position:absolute;top:10px;right:10px;font-size:9px;background:var(--accent);color:#fff;padding:2px 7px;border-radius:10px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;}
+  .search-highlight{border-color:rgba(251,191,36,0.5)!important;box-shadow:0 0 0 1px rgba(251,191,36,0.2);}
+  .task-text mark{background:rgba(251,191,36,0.25);color:var(--yellow);border-radius:2px;padding:0 2px;}
+
+  .day-header{display:flex;align-items:center;gap:10px;padding:14px 16px 10px;cursor:pointer;user-select:none;}
+  .day-num{font-size:10px;font-weight:600;letter-spacing:0.1em;color:var(--muted);min-width:36px;}
+  .day-type{font-size:9px;padding:2px 7px;border-radius:3px;text-transform:uppercase;letter-spacing:0.1em;font-weight:600;}
+  .day-type.theory{background:rgba(94,106,210,0.15);color:var(--phase1);}
+  .day-type.practical{background:rgba(74,222,128,0.12);color:var(--green);}
+  .day-title{font-size:13px;font-weight:600;flex:1;line-height:1.3;}
+  .day-status{font-size:11px;margin-left:auto;}
+  .status-done{color:var(--green);}
+  .status-moved{color:var(--yellow);}
+  .status-pending{color:var(--muted);}
+  .chevron{font-size:10px;color:var(--muted);transition:transform 0.2s;margin-left:6px;}
+  .day-card.open .chevron{transform:rotate(180deg);}
+  .day-mini-bar{height:2px;background:var(--surface3);margin:0 16px;}
+  .day-mini-fill{height:100%;background:var(--accent);transition:width 0.3s;border-radius:2px;}
+  .day-card.completed .day-mini-fill{background:var(--green);}
+  .task-count{font-size:10px;color:var(--muted);padding:4px 16px 8px;}
+  .day-xp-badge{font-size:10px;color:var(--orange);padding:0 16px 6px;}
+
+  /* TASKS */
+  .day-tasks{display:none;padding:8px 16px 14px;border-top:1px solid var(--border);margin-top:6px;}
+  .day-card.open .day-tasks{display:block;animation:slideDown 0.2s ease;}
+  @keyframes slideDown{from{opacity:0;transform:translateY(-4px);}to{opacity:1;transform:translateY(0);}}
+
+  .task-item{display:flex;align-items:flex-start;gap:10px;padding:8px 6px;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.15s;border-radius:4px;}
+  .task-item:last-of-type{border-bottom:none;}
+  .task-item:hover{background:var(--surface2);}
+  .task-check{width:16px;height:16px;border-radius:4px;border:1.5px solid var(--border2);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;font-size:10px;transition:all 0.15s;}
+  .task-item.done .task-check{background:var(--green);border-color:var(--green);color:#0a1a10;}
+  .task-text{font-size:12px;color:var(--muted2);line-height:1.5;flex:1;}
+  .task-item.done .task-text{color:var(--muted);text-decoration:line-through;text-decoration-color:rgba(74,222,128,0.4);}
+
+  /* NOTES */
+  .day-notes-wrap{margin-top:10px;padding-top:10px;border-top:1px solid var(--border);}
+  .notes-label{font-size:10px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;}
+  .notes-textarea{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-family:var(--mono);font-size:12px;color:var(--muted2);resize:vertical;min-height:70px;outline:none;transition:border-color 0.2s;line-height:1.6;}
+  .notes-textarea:focus{border-color:var(--accent);color:var(--text);}
+  .notes-textarea::placeholder{color:var(--muted);}
+  .notes-saved{font-size:10px;color:var(--green);margin-top:4px;opacity:0;transition:opacity 0.3s;}
+  .notes-saved.show{opacity:1;}
+
+  /* REVISION MODE */
+  .revise-btn{font-family:var(--mono);font-size:10px;padding:4px 10px;border-radius:6px;border:1px solid rgba(168,85,247,0.3);background:rgba(168,85,247,0.08);color:var(--purple);cursor:pointer;transition:all 0.15s;}
+  .revise-btn:hover{background:rgba(168,85,247,0.15);}
+  .revise-mode-banner{font-size:11px;color:var(--purple);padding:6px 10px;background:rgba(168,85,247,0.08);border-radius:6px;margin-bottom:8px;border:1px solid rgba(168,85,247,0.2);display:none;}
+  .day-card.revising .revise-mode-banner{display:block;}
+  .day-card.revising .task-item.done{opacity:0.7;}
+  .day-card.revising .task-item.done .task-check{background:rgba(168,85,247,0.3);border-color:var(--purple);color:var(--purple);}
+
+  /* ACTIONS */
+  .day-actions{display:flex;gap:6px;margin-top:12px;padding-top:12px;border-top:1px solid var(--border);flex-wrap:wrap;}
+  .action-btn{font-family:var(--mono);font-size:10px;padding:5px 10px;border-radius:6px;border:1px solid var(--border);background:var(--surface2);color:var(--muted2);cursor:pointer;transition:all 0.15s;display:flex;align-items:center;gap:4px;}
+  .action-btn:hover{color:var(--text);border-color:var(--border2);}
+  .action-btn.complete-all{border-color:rgba(74,222,128,0.3);color:var(--green);}
+  .action-btn.complete-all:hover{background:var(--green-dim);}
+  .action-btn.move-day{border-color:rgba(251,191,36,0.3);color:var(--yellow);}
+  .action-btn.move-day:hover{background:var(--yellow-dim);}
+  .action-btn.reset-day{border-color:rgba(248,113,113,0.3);color:var(--red);}
+  .action-btn.reset-day:hover{background:var(--red-dim);}
+
+  .moved-notice{font-size:11px;color:var(--yellow);padding:6px 10px;background:var(--yellow-dim);border-radius:6px;margin-top:8px;border:1px solid rgba(251,191,36,0.2);}
+
+  /* CELEBRATION OVERLAY */
+  .celebration{display:none;position:fixed;inset:0;z-index:10000;pointer-events:none;overflow:hidden;}
+  .celebration.show{display:block;}
+  .confetti-piece{position:absolute;width:8px;height:8px;border-radius:2px;animation:confettiFall linear forwards;}
+  @keyframes confettiFall{0%{transform:translateY(-20px) rotate(0deg);opacity:1;}100%{transform:translateY(110vh) rotate(720deg);opacity:0;}}
+  .phase-complete-banner{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:var(--surface2);border:1px solid var(--accent);border-radius:16px;padding:32px 40px;text-align:center;z-index:10001;animation:popIn 0.4s ease;pointer-events:all;}
+  @keyframes popIn{from{transform:translate(-50%,-50%) scale(0.8);opacity:0;}to{transform:translate(-50%,-50%) scale(1);opacity:1;}}
+  .phase-complete-banner h2{font-family:var(--display);font-size:28px;font-weight:900;background:linear-gradient(90deg,var(--accent),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px;}
+  .phase-complete-banner p{font-size:13px;color:var(--muted2);margin-bottom:20px;}
+  .phase-complete-banner button{font-family:var(--mono);font-size:12px;padding:10px 24px;border-radius:8px;border:1px solid var(--accent);background:var(--accent-glow);color:var(--accent);cursor:pointer;}
+
+  /* TOAST */
+  .toast{position:fixed;bottom:80px;right:24px;background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:12px 18px;font-size:12px;color:var(--text);z-index:9998;transform:translateY(80px);opacity:0;transition:all 0.3s ease;max-width:300px;}
+  .toast.show{transform:translateY(0);opacity:1;}
+  .toast.green{border-color:rgba(74,222,128,0.4);}
+  .toast.yellow{border-color:rgba(251,191,36,0.4);}
+  .toast.purple{border-color:rgba(168,85,247,0.4);}
+
+  /* BACK TO TOP */
+  .back-top{position:fixed;bottom:24px;right:24px;background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:10px 14px;font-family:var(--mono);font-size:11px;color:var(--muted2);cursor:pointer;transition:all 0.2s;z-index:500;opacity:0;pointer-events:none;}
+  .back-top.visible{opacity:1;pointer-events:all;}
+  .back-top:hover{color:var(--text);border-color:var(--accent);}
+
+  /* SEARCH RESULTS COUNT */
+  .search-results-info{font-size:11px;color:var(--yellow);padding:8px 0;display:none;}
+
+  /* NO RESULTS */
+  .no-results{text-align:center;padding:40px;color:var(--muted);font-size:13px;display:none;}
+
+  @media(max-width:600px){
+    .day-grid{grid-template-columns:1fr;}
+    .stats-bar{gap:6px;}
+    .toolbar{flex-direction:column;align-items:stretch;}
+    .search-wrap{max-width:100%;}
   }
-
-  /* Scanline overlay */
-  body::after {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background: repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 2px,
-      rgba(0,0,0,0.03) 2px,
-      rgba(0,0,0,0.03) 4px
-    );
-    pointer-events: none;
-    z-index: 9999;
-  }
-
-  /* Grid bg */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(94,106,210,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(94,106,210,0.03) 1px, transparent 1px);
-    background-size: 32px 32px;
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  .app { position: relative; z-index: 1; }
-
-  /* ── HEADER ── */
-  header {
-    padding: 32px 24px 0;
-    max-width: 1100px;
-    margin: 0 auto;
-  }
-
-  .breadcrumb {
-    font-size: 11px;
-    color: var(--muted);
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .breadcrumb a {
-    color: var(--accent);
-    text-decoration: none;
-    transition: opacity 0.2s;
-  }
-  .breadcrumb a:hover { opacity: 0.7; }
-  .breadcrumb span { color: var(--muted); }
-
-  .header-top {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 24px;
-    flex-wrap: wrap;
-  }
-
-  .header-left {}
-
-  .eyebrow {
-    font-size: 10px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .eyebrow::before {
-    content: '';
-    display: inline-block;
-    width: 24px;
-    height: 1px;
-    background: var(--accent);
-  }
-
-  h1 {
-    font-family: var(--display);
-    font-size: clamp(28px, 5vw, 48px);
-    font-weight: 900;
-    letter-spacing: -0.03em;
-    line-height: 1;
-    color: var(--text);
-    margin-bottom: 8px;
-  }
-
-  h1 span {
-    background: linear-gradient(90deg, var(--accent), #a78bfa);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .header-desc {
-    font-size: 12px;
-    color: var(--muted2);
-    margin-top: 8px;
-  }
-
-  /* Stats bar */
-  .stats-bar {
-    display: flex;
-    gap: 4px;
-    flex-wrap: wrap;
-    margin: 28px 0;
-  }
-
-  .stat-pill {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 10px 16px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 12px;
-  }
-
-  .stat-num {
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--text);
-    font-family: var(--display);
-  }
-
-  .stat-label { color: var(--muted); font-size: 11px; }
-
-  .stat-pill.highlight { border-color: var(--accent); background: var(--accent-glow); }
-  .stat-pill.highlight .stat-num { color: var(--accent); }
-
-  /* Overall progress */
-  .overall-progress {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 16px 20px;
-    margin-bottom: 32px;
-  }
-
-  .op-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-
-  .op-label { font-size: 11px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
-  .op-pct { font-size: 13px; font-weight: 600; color: var(--accent); }
-
-  .progress-track {
-    background: var(--surface3);
-    border-radius: 4px;
-    height: 6px;
-    overflow: hidden;
-  }
-
-  .progress-fill {
-    height: 100%;
-    border-radius: 4px;
-    background: linear-gradient(90deg, var(--accent), #a78bfa, var(--green));
-    transition: width 0.5s ease;
-  }
-
-  /* Phase tabs */
-  .phase-tabs {
-    display: flex;
-    gap: 6px;
-    margin-bottom: 24px;
-    flex-wrap: wrap;
-  }
-
-  .phase-tab {
-    font-family: var(--mono);
-    font-size: 11px;
-    padding: 8px 16px;
-    border-radius: 6px;
-    border: 1px solid var(--border);
-    background: var(--surface);
-    color: var(--muted2);
-    cursor: pointer;
-    transition: all 0.15s;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-
-  .phase-tab .tab-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-  }
-
-  .phase-tab:hover { border-color: var(--border2); color: var(--text); }
-  .phase-tab.active { color: var(--text); }
-  .phase-tab[data-phase="all"].active { border-color: var(--muted2); background: var(--surface2); }
-  .phase-tab[data-phase="1"].active { border-color: var(--phase1); background: rgba(94,106,210,0.1); color: var(--phase1); }
-  .phase-tab[data-phase="2"].active { border-color: var(--phase2); background: rgba(168,85,247,0.1); color: var(--phase2); }
-  .phase-tab[data-phase="3"].active { border-color: var(--phase3); background: rgba(245,158,11,0.1); color: var(--phase3); }
-
-  /* Main layout */
-  .main {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 0 24px 80px;
-  }
-
-  /* Phase section */
-  .phase-section { margin-bottom: 40px; }
-  .phase-section.hidden { display: none; }
-
-  .phase-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 16px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .phase-badge {
-    font-size: 10px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    padding: 4px 10px;
-    border-radius: 4px;
-    font-weight: 600;
-  }
-
-  .phase-badge.p1 { background: rgba(94,106,210,0.15); color: var(--phase1); border: 1px solid rgba(94,106,210,0.3); }
-  .phase-badge.p2 { background: rgba(168,85,247,0.15); color: var(--phase2); border: 1px solid rgba(168,85,247,0.3); }
-  .phase-badge.p3 { background: rgba(245,158,11,0.15); color: var(--phase3); border: 1px solid rgba(245,158,11,0.3); }
-
-  .phase-title {
-    font-family: var(--display);
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--text);
-  }
-
-  .phase-progress-text { margin-left: auto; font-size: 11px; color: var(--muted); }
-
-  /* Day grid */
-  .day-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 10px;
-  }
-
-  /* Day card */
-  .day-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    overflow: hidden;
-    transition: border-color 0.2s, box-shadow 0.2s;
-  }
-
-  .day-card:hover { border-color: var(--border2); }
-  .day-card.completed { border-color: rgba(74,222,128,0.3); background: rgba(74,222,128,0.03); }
-  .day-card.moved { border-color: rgba(251,191,36,0.3); background: rgba(251,191,36,0.03); }
-
-  .day-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 14px 16px 10px;
-    cursor: pointer;
-    user-select: none;
-  }
-
-  .day-num {
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    color: var(--muted);
-    min-width: 36px;
-  }
-
-  .day-type {
-    font-size: 9px;
-    padding: 2px 7px;
-    border-radius: 3px;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    font-weight: 600;
-  }
-
-  .day-type.theory { background: rgba(94,106,210,0.15); color: var(--phase1); }
-  .day-type.practical { background: rgba(74,222,128,0.12); color: var(--green); }
-
-  .day-title {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text);
-    flex: 1;
-    line-height: 1.3;
-  }
-
-  .day-status {
-    font-size: 11px;
-    margin-left: auto;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
-
-  .status-done { color: var(--green); }
-  .status-moved { color: var(--yellow); }
-  .status-pending { color: var(--muted); }
-
-  .chevron {
-    font-size: 10px;
-    color: var(--muted);
-    transition: transform 0.2s;
-    margin-left: 6px;
-  }
-
-  .day-card.open .chevron { transform: rotate(180deg); }
-
-  /* Day progress bar */
-  .day-mini-bar {
-    height: 2px;
-    background: var(--surface3);
-    margin: 0 16px 0;
-  }
-
-  .day-mini-fill {
-    height: 100%;
-    background: var(--accent);
-    transition: width 0.3s;
-    border-radius: 2px;
-  }
-
-  .day-card.completed .day-mini-fill { background: var(--green); }
-
-  /* Tasks */
-  .day-tasks {
-    display: none;
-    padding: 8px 16px 14px;
-    border-top: 1px solid var(--border);
-    margin-top: 10px;
-  }
-
-  .day-card.open .day-tasks { display: block; animation: slideDown 0.2s ease; }
-
-  @keyframes slideDown {
-    from { opacity: 0; transform: translateY(-4px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .task-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    padding: 8px 0;
-    border-bottom: 1px solid var(--border);
-    cursor: pointer;
-    transition: background 0.15s;
-    border-radius: 4px;
-  }
-
-  .task-item:last-of-type { border-bottom: none; }
-  .task-item:hover { background: var(--surface2); padding-left: 6px; padding-right: 6px; margin: 0 -6px; }
-
-  .task-check {
-    width: 16px;
-    height: 16px;
-    border-radius: 4px;
-    border: 1.5px solid var(--border2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    margin-top: 1px;
-    font-size: 10px;
-    transition: all 0.15s;
-  }
-
-  .task-item.done .task-check {
-    background: var(--green);
-    border-color: var(--green);
-    color: #0a1a10;
-  }
-
-  .task-text {
-    font-size: 12px;
-    color: var(--muted2);
-    line-height: 1.5;
-    flex: 1;
-    transition: color 0.15s;
-  }
-
-  .task-item.done .task-text {
-    color: var(--muted);
-    text-decoration: line-through;
-    text-decoration-color: rgba(74,222,128,0.4);
-  }
-
-  /* Day actions */
-  .day-actions {
-    display: flex;
-    gap: 8px;
-    margin-top: 12px;
-    padding-top: 12px;
-    border-top: 1px solid var(--border);
-  }
-
-  .action-btn {
-    font-family: var(--mono);
-    font-size: 10px;
-    padding: 6px 12px;
-    border-radius: 6px;
-    border: 1px solid var(--border);
-    background: var(--surface2);
-    color: var(--muted2);
-    cursor: pointer;
-    transition: all 0.15s;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-  }
-
-  .action-btn:hover { color: var(--text); border-color: var(--border2); }
-
-  .action-btn.complete-all { border-color: rgba(74,222,128,0.3); color: var(--green); }
-  .action-btn.complete-all:hover { background: var(--green-dim); }
-
-  .action-btn.move-day { border-color: rgba(251,191,36,0.3); color: var(--yellow); }
-  .action-btn.move-day:hover { background: var(--yellow-dim); }
-
-  .action-btn.reset-day { border-color: rgba(248,113,113,0.3); color: var(--red); }
-  .action-btn.reset-day:hover { background: var(--red-dim); }
-
-  /* Moved notice */
-  .moved-notice {
-    font-size: 11px;
-    color: var(--yellow);
-    padding: 6px 10px;
-    background: var(--yellow-dim);
-    border-radius: 6px;
-    margin-top: 8px;
-    border: 1px solid rgba(251,191,36,0.2);
-  }
-
-  /* Task count */
-  .task-count {
-    font-size: 10px;
-    color: var(--muted);
-    padding: 4px 16px 8px;
-  }
-
-  /* Toast */
-  .toast {
-    position: fixed;
-    bottom: 24px;
-    right: 24px;
-    background: var(--surface2);
-    border: 1px solid var(--border2);
-    border-radius: 10px;
-    padding: 12px 18px;
-    font-size: 12px;
-    color: var(--text);
-    z-index: 1000;
-    transform: translateY(80px);
-    opacity: 0;
-    transition: all 0.3s ease;
-    max-width: 300px;
-  }
-
-  .toast.show { transform: translateY(0); opacity: 1; }
-  .toast.green { border-color: rgba(74,222,128,0.4); }
-  .toast.yellow { border-color: rgba(251,191,36,0.4); }
-
-  /* Responsive */
-  @media (max-width: 600px) {
-    .day-grid { grid-template-columns: 1fr; }
-    .stats-bar { gap: 6px; }
-    .phase-tabs { gap: 4px; }
-  }
-
-  /* Scrollbar */
-  ::-webkit-scrollbar { width: 6px; }
-  ::-webkit-scrollbar-track { background: var(--bg); }
-  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+  ::-webkit-scrollbar{width:6px;}
+  ::-webkit-scrollbar-track{background:var(--bg);}
+  ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px;}
 </style>
 </head>
 <body>
 <div class="app">
-
   <header>
     <div class="breadcrumb">
       <a href="index.html">← onthebloc</a>
       <span>/</span>
       <span>sql_roadmap</span>
     </div>
-    <div class="header-top">
-      <div class="header-left">
+    <div class="header-row">
+      <div>
         <div class="eyebrow">36-day roadmap</div>
         <h1>MySQL <span>Mastery</span></h1>
         <div class="header-desc">// 1 hr/day · e-commerce schema · theory + practical alternating</div>
       </div>
     </div>
 
-    <div class="stats-bar">
-      <div class="stat-pill highlight">
-        <div>
-          <div class="stat-num" id="stat-done">0</div>
-          <div class="stat-label">days done</div>
-        </div>
-      </div>
-      <div class="stat-pill">
-        <div>
-          <div class="stat-num" id="stat-tasks">0</div>
-          <div class="stat-label">tasks done</div>
-        </div>
-      </div>
-      <div class="stat-pill">
-        <div>
-          <div class="stat-num" id="stat-remaining">36</div>
-          <div class="stat-label">days left</div>
-        </div>
-      </div>
-      <div class="stat-pill">
-        <div>
-          <div class="stat-num" id="stat-moved">0</div>
-          <div class="stat-label">moved</div>
-        </div>
+    <!-- XP Bar -->
+    <div class="xp-bar-wrap">
+      <div class="xp-label">XP</div>
+      <div class="xp-track"><div class="xp-fill" id="xp-fill" style="width:0%"></div></div>
+      <div>
+        <div class="xp-num" id="xp-num">0 XP</div>
+        <div class="xp-level" id="xp-level">Beginner</div>
       </div>
     </div>
 
+    <!-- Stats -->
+    <div class="stats-bar">
+      <div class="stat-pill highlight">
+        <span class="stat-num" id="stat-done">0</span>
+        <div class="stat-label">days done</div>
+      </div>
+      <div class="stat-pill">
+        <span class="stat-num" id="stat-tasks">0</span>
+        <div class="stat-label">tasks done</div>
+      </div>
+      <div class="stat-pill">
+        <span class="stat-num" id="stat-remaining">36</span>
+        <div class="stat-label">days left</div>
+      </div>
+      <div class="stat-pill">
+        <span class="stat-num" id="stat-moved">0</span>
+        <div class="stat-label">moved</div>
+      </div>
+      <div class="stat-pill streak-pill">
+        <span class="stat-num" id="stat-streak">0🔥</span>
+        <div class="stat-label">day streak</div>
+      </div>
+    </div>
+
+    <!-- Toolbar: ETA + Search -->
+    <div class="toolbar">
+      <div class="eta-pill">📅 ETA: <span id="eta-text">set start date first</span></div>
+      <div class="eta-pill" id="start-wrap" style="cursor:pointer;gap:4px;" onclick="setStartDate()">
+        <span id="start-label" style="color:var(--muted)">⚙ set start date</span>
+      </div>
+      <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input class="search-input" id="search-input" type="text" placeholder="search tasks... (e.g. JOIN, EXPLAIN)" oninput="handleSearch(this.value)">
+        <span class="search-clear" id="search-clear" onclick="clearSearch()">✕</span>
+      </div>
+    </div>
+    <div class="search-results-info" id="search-info"></div>
+
+    <!-- Overall progress -->
     <div class="overall-progress">
       <div class="op-top">
         <span class="op-label">overall progress</span>
         <span class="op-pct" id="op-pct">0%</span>
       </div>
-      <div class="progress-track">
-        <div class="progress-fill" id="op-fill" style="width:0%"></div>
-      </div>
+      <div class="progress-track"><div class="progress-fill" id="op-fill" style="width:0%"></div></div>
     </div>
 
+    <!-- Phase tabs -->
     <div class="phase-tabs">
       <button class="phase-tab active" data-phase="all" onclick="filterPhase('all')">
-        <span class="tab-dot" style="background:var(--muted2)"></span> All days
+        <span class="tab-dot" style="background:var(--muted2)"></span> All
       </button>
       <button class="phase-tab" data-phase="1" onclick="filterPhase('1')">
         <span class="tab-dot" style="background:var(--phase1)"></span> Phase 1 — Foundations
@@ -605,708 +300,477 @@
     </div>
   </header>
 
-  <div class="main" id="main-content"></div>
-
+  <div class="main">
+    <div class="no-results" id="no-results">No tasks match your search 🤷</div>
+    <div id="main-content"></div>
+  </div>
 </div>
 
+<!-- Back to top -->
+<button class="back-top" id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ top</button>
+
+<!-- Toast -->
 <div class="toast" id="toast"></div>
+
+<!-- Celebration overlay -->
+<div class="celebration" id="celebration">
+  <div class="phase-complete-banner" id="celebration-banner">
+    <h2 id="celebration-title">Phase Complete!</h2>
+    <p id="celebration-msg">You finished a phase. Respect.</p>
+    <button onclick="closeCelebration()">continue →</button>
+  </div>
+</div>
 
 <script>
 const ROADMAP = [
-  {
-    phase: 1, day: 1, type: 'theory', title: 'What is MySQL & How it Works',
-    tasks: [
-      'What is a database, what is a DBMS, what is an RDBMS',
-      'How MySQL works — client/server model, what happens when you run a query',
-      'Tables, rows, columns — the building blocks',
-      'Primary key concept — why every table needs one',
-      'What is a schema',
-      'Take handwritten notes — keep them simple, focus on understanding not definitions'
-    ]
-  },
-  {
-    phase: 1, day: 2, type: 'practical', title: 'Setup & Schema Creation',
-    tasks: [
-      'Install MySQL Community Server + MySQL Workbench, OR use db-fiddle.com (MySQL 8.0)',
-      'Connect via CLI: mysql -u root -p',
-      'Run SELECT version(); and SHOW DATABASES;',
-      'Create database: CREATE DATABASE ecommerce; then USE ecommerce;',
-      'Create users table — id, name, email, phone, role, created_at',
-      'Create categories table — id, name, description',
-      'Create products table — id, name, description, price, stock_quantity, category_id, created_at',
-      'Create orders table — id, user_id, status, total_amount, created_at',
-      'Create order_items table — id, order_id, product_id, quantity, unit_price',
-      'Create payments table — id, order_id, amount, method, status, paid_at',
-      'Create reviews table — id, user_id, product_id, rating, comment, created_at',
-      'Run DESCRIBE table_name; on each of the 7 tables to verify',
-      'Insert 2–3 dummy rows into users and categories manually'
-    ]
-  },
-  {
-    phase: 1, day: 3, type: 'theory', title: 'Data Types & NULL',
-    tasks: [
-      'Numeric types: INT, BIGINT, DECIMAL(p,s) — when to use each',
-      'String types: VARCHAR(n) vs CHAR(n) vs TEXT — differences and use cases',
-      'Date types: DATE, DATETIME, TIMESTAMP — key differences',
-      'BOOLEAN in MySQL — stored as TINYINT(1)',
-      'What NULL actually means — unknown, not zero, not empty string',
-      'NOT NULL and DEFAULT — when and why to use them',
-      'Take handwritten notes on each type with a real example'
-    ]
-  },
-  {
-    phase: 1, day: 4, type: 'practical', title: 'Data Types & Inserting Data',
-    tasks: [
-      'Drop and recreate all 7 tables with proper, well-thought-out data types',
-      'Add NOT NULL and DEFAULT where it makes sense (e.g. created_at DEFAULT NOW())',
-      'Insert 10 users — mix of customers and admins',
-      'Insert 5 categories — electronics, clothing, books, food, accessories',
-      'Insert 15 products spread across categories',
-      'Insert 10 orders',
-      'Insert 20 order_items',
-      'Insert 10 payments',
-      'Insert 10 reviews',
-      'Verify all inserts with SELECT * FROM each table'
-    ]
-  },
-  {
-    phase: 1, day: 5, type: 'theory', title: 'SELECT & Filtering',
-    tasks: [
-      'SELECT * vs selecting specific columns — why * is bad in production',
-      'WHERE clause and how it works',
-      'Comparison operators: =, !=, >, <, >=, <=',
-      'BETWEEN — inclusive on both ends',
-      'IN and NOT IN',
-      'IS NULL and IS NOT NULL',
-      'Combining conditions with AND, OR, NOT',
-      'Take notes with examples for each operator'
-    ]
-  },
-  {
-    phase: 1, day: 6, type: 'practical', title: 'SELECT & Filtering — Queries',
-    tasks: [
-      'Fetch all users',
-      'Fetch only name and email of users',
-      'Fetch all products with price greater than 500',
-      'Fetch products with price between 200 and 1000',
-      'Fetch orders with status delivered or shipped',
-      'Fetch users where phone is NULL',
-      'Fetch products that belong to category_id IN (1, 2, 3)',
-      'Fetch all orders that are NOT cancelled',
-      'Combine: products in a specific category AND price below 500',
-      'Write at least 1 more query mixing different operators — total 10+ queries'
-    ]
-  },
-  {
-    phase: 1, day: 7, type: 'theory', title: 'Sorting, Limiting & LIKE',
-    tasks: [
-      'ORDER BY column ASC and DESC',
-      'Ordering by multiple columns and how it resolves ties',
-      'LIMIT n — cap the number of results',
-      'LIMIT n OFFSET m — how pagination works, what offset means',
-      'LIKE operator — pattern matching',
-      '% wildcard — matches zero or more characters',
-      '_ wildcard — matches exactly one character',
-      'NOT LIKE — inverse matching',
-      'Take notes with example queries for each'
-    ]
-  },
-  {
-    phase: 1, day: 8, type: 'practical', title: 'Sorting, Limiting & LIKE — Queries',
-    tasks: [
-      'Fetch all products sorted by price highest to lowest',
-      'Fetch all orders sorted by created_at newest first',
-      'Fetch the 5 most expensive products',
-      'Fetch products ranked 6 to 10 by price using OFFSET',
-      'Find all products whose name contains the word "pro"',
-      'Find all users whose email ends with @gmail.com',
-      'Find all users whose name starts with A',
-      'Find products whose name is exactly 5 characters using _____',
-      'Sort users alphabetically and fetch only first page of 5',
-      'Combine LIKE + ORDER BY + LIMIT in one query'
-    ]
-  },
-  {
-    phase: 1, day: 9, type: 'theory', title: 'Constraints & Keys',
-    tasks: [
-      'PRIMARY KEY — what it enforces, auto_increment',
-      'FOREIGN KEY — what referential integrity means',
-      'UNIQUE constraint — what it does',
-      'CHECK constraint — enforcing value rules',
-      'ON DELETE CASCADE vs ON DELETE SET NULL vs ON DELETE RESTRICT',
-      'ALTER TABLE — adding and dropping constraints after table creation',
-      'Take notes with real examples for each constraint type'
-    ]
-  },
-  {
-    phase: 1, day: 10, type: 'practical', title: 'Constraints & Keys — Applied',
-    tasks: [
-      'Recreate all 7 tables with proper PRIMARY KEY and FOREIGN KEY constraints',
-      'Add UNIQUE constraint on users.email',
-      'Add CHECK on products: price > 0 and stock_quantity >= 0',
-      'Add CHECK on reviews: rating BETWEEN 1 AND 5',
-      'Test FK enforcement: insert order_item with non-existent product_id — observe error',
-      'Test UNIQUE: insert two users with same email — observe error',
-      'Test CHECK: insert product with price = -100 — observe error',
-      'Test ON DELETE CASCADE: delete a user, verify their orders are gone',
-      'Run SHOW CREATE TABLE orders; to see full table definition with constraints'
-    ]
-  },
-  {
-    phase: 1, day: 11, type: 'theory', title: 'UPDATE & DELETE',
-    tasks: [
-      'UPDATE table SET col = val WHERE condition — always need WHERE',
-      'What happens if you skip WHERE in UPDATE — all rows updated',
-      'Updating multiple columns in one statement',
-      'DELETE FROM table WHERE condition',
-      'What happens if you skip WHERE in DELETE — all rows deleted',
-      'DELETE vs TRUNCATE vs DROP — key differences',
-      'MySQL safe update mode — what it is and how to disable temporarily'
-    ]
-  },
-  {
-    phase: 1, day: 12, type: 'practical', title: 'UPDATE & DELETE — Applied',
-    tasks: [
-      'Update a specific user\'s phone number',
-      'Update all products in a category: increase price by 10% using price * 1.10',
-      'Update an order status from pending to shipped',
-      'Update stock_quantity after an order — reduce by a specific number',
-      'Delete a specific review by id',
-      'Delete all cancelled orders',
-      'Try UPDATE without WHERE inside START TRANSACTION then ROLLBACK — verify nothing changed',
-      'Use TRUNCATE on a temp table, observe it cannot be rolled back',
-      'Run SELECT before and after each operation to verify changes'
-    ]
-  },
-  {
-    phase: 1, day: 13, type: 'theory', title: 'Aggregate Functions & GROUP BY',
-    tasks: [
-      'COUNT(*) vs COUNT(column) — how NULLs affect count',
-      'SUM, AVG, MIN, MAX — what each does',
-      'GROUP BY — how it collapses rows into groups',
-      'Using multiple columns in GROUP BY',
-      'HAVING — filtering after grouping',
-      'Critical rule: WHERE filters rows before grouping, HAVING filters groups after',
-      'Using aliases with AS',
-      'Take notes with clear examples showing WHERE vs HAVING difference'
-    ]
-  },
-  {
-    phase: 1, day: 14, type: 'practical', title: 'Aggregate Functions & GROUP BY — Queries',
-    tasks: [
-      'Count total number of users',
-      'Count total number of orders per status',
-      'Find total revenue: SUM(total_amount) from orders',
-      'Find average product price per category',
-      'Find the most expensive product in each category using MAX',
-      'Find categories with more than 3 products using HAVING',
-      'Find total quantity sold per product using order_items',
-      'Find users who have placed more than 2 orders',
-      'Find average rating per product from reviews',
-      'Find products with average rating above 4 using HAVING'
-    ]
-  },
-  {
-    phase: 1, day: 15, type: 'theory', title: 'JOINs',
-    tasks: [
-      'Why JOINs exist — data is split across tables for a reason',
-      'INNER JOIN — only matching rows from both tables',
-      'LEFT JOIN — all rows from left, NULLs where no match on right',
-      'RIGHT JOIN — opposite of LEFT JOIN',
-      'Venn diagram mental model for visualising JOINs',
-      'ON keyword — specifying the join condition',
-      'Joining more than two tables in one query',
-      'Table aliases to keep queries clean (e.g. u for users)'
-    ]
-  },
-  {
-    phase: 1, day: 16, type: 'practical', title: 'JOINs — Queries',
-    tasks: [
-      'JOIN users and orders — show user name with their orders',
-      'JOIN orders, order_items, products — show order id, product name, quantity, unit_price',
-      'JOIN products and categories — show product name with its category name',
-      'JOIN reviews and products — show product name with all reviews and ratings',
-      'LEFT JOIN users and orders — find users who have NEVER placed an order (WHERE orders.id IS NULL)',
-      'LEFT JOIN products and order_items — find products never ordered',
-      'Add GROUP BY and aggregates: total amount spent per user',
-      'Add GROUP BY: total items per order',
-      'Write at least 8 JOIN queries total'
-    ]
-  },
-  {
-    phase: 1, day: 17, type: 'theory', title: 'Subqueries',
-    tasks: [
-      'What a subquery is — a query inside a query',
-      'Subquery in WHERE: WHERE id IN (SELECT ...)',
-      'Subquery in SELECT: computing a value for each row',
-      'Subquery in FROM: using a query result as a temporary table',
-      'Correlated subquery — references the outer query, runs once per outer row',
-      'When to use subquery vs JOIN — readability and performance tradeoffs',
-      'Take notes with one example for each type'
-    ]
-  },
-  {
-    phase: 1, day: 18, type: 'practical', title: 'Subqueries — Queries',
-    tasks: [
-      'Find all products that have never been reviewed (subquery in WHERE with NOT IN)',
-      'Find users who spent more than the average order amount (subquery for average)',
-      'Find top 3 products by total quantity sold using subquery in FROM',
-      'For each product show its price AND average price of its category side by side (subquery in SELECT)',
-      'Find orders where total_amount > user\'s average order amount (correlated subquery)',
-      'Rewrite two of the above using JOINs instead — compare readability'
-    ]
-  },
-  {
-    phase: 1, day: 19, type: 'theory', title: 'String & Date Functions',
-    tasks: [
-      'String: CONCAT and CONCAT_WS',
-      'String: UPPER, LOWER, TRIM, LENGTH',
-      'String: SUBSTRING, REPLACE, LEFT, RIGHT',
-      'Date: NOW(), CURDATE()',
-      'Date: DATE_FORMAT, DATEDIFF, TIMESTAMPDIFF',
-      'Date: DATE_ADD, DATE_SUB, YEAR(), MONTH(), DAY()',
-      'NULL handling: IFNULL — returns fallback if NULL',
-      'NULL handling: NULLIF — returns NULL if two values are equal',
-      'NULL handling: COALESCE — returns first non-NULL from a list'
-    ]
-  },
-  {
-    phase: 1, day: 20, type: 'practical', title: 'String & Date Functions — Queries',
-    tasks: [
-      'Show full user name in uppercase using UPPER',
-      'Concatenate user name and email with " | " separator using CONCAT_WS',
-      'Show only the first 10 characters of product description',
-      'Find all orders placed in the current month using MONTH() and YEAR()',
-      'Calculate how many days ago each order was placed using DATEDIFF',
-      'Find orders placed in the last 7 days using DATE_SUB',
-      'Format created_at as DD-Mon-YYYY using DATE_FORMAT',
-      'Replace NULL phone numbers with "Not provided" using COALESCE',
-      'Find users who registered more than 30 days ago',
-      'Add 7 days to each order\'s created_at to simulate a delivery date using DATE_ADD'
-    ]
-  },
-  {
-    phase: 2, day: 21, type: 'theory', title: 'Indexes & Query Performance',
-    tasks: [
-      'What an index is and how it works internally — B-tree concept (just conceptual)',
-      'Why indexes speed up reads but slow down writes',
-      'Types: PRIMARY (auto), UNIQUE (auto), regular index',
-      'CREATE INDEX and composite indexes — column order matters',
-      'When NOT to use an index — low cardinality columns like status, boolean',
-      'EXPLAIN statement — what type, key, rows columns mean',
-      'SHOW INDEXES FROM table — how to inspect existing indexes'
-    ]
-  },
-  {
-    phase: 2, day: 22, type: 'practical', title: 'Indexes & Query Performance — Applied',
-    tasks: [
-      'Run EXPLAIN SELECT * FROM products WHERE price > 500 — note rows scanned',
-      'Run EXPLAIN SELECT * FROM orders WHERE user_id = 3 — note no index on user_id',
-      'Add index on orders.user_id, run EXPLAIN again, compare rows scanned',
-      'Add index on products.price, run EXPLAIN, compare',
-      'Add composite index on order_items(order_id, product_id)',
-      'Run SHOW INDEXES FROM orders; and SHOW INDEXES FROM products;',
-      'Write 3 queries, use EXPLAIN on each, verify index is being used in the key column'
-    ]
-  },
-  {
-    phase: 2, day: 23, type: 'theory', title: 'Views',
-    tasks: [
-      'What a view is — saved SELECT query, not stored data',
-      'CREATE VIEW, DROP VIEW, CREATE OR REPLACE VIEW',
-      'Why views are useful — simplify complex queries, hide sensitive columns, reusable',
-      'Updatable views — when you can INSERT/UPDATE through a view',
-      'Non-updatable views — when GROUP BY, DISTINCT, JOINs make it non-updatable',
-      'WITH CHECK OPTION — what it enforces'
-    ]
-  },
-  {
-    phase: 2, day: 24, type: 'practical', title: 'Views — Applied',
-    tasks: [
-      'Create view customer_orders — joins users + orders, shows name, email, status, total',
-      'Create view product_catalogue — joins products + categories, shows name, category, price, stock',
-      'Create view low_stock_products — products where stock_quantity < 10',
-      'Create view revenue_by_category — total revenue per category (non-updatable)',
-      'Query all four views like normal tables',
-      'Try inserting through low_stock_products with stock = 50 — test WITH CHECK OPTION behavior',
-      'Use CREATE OR REPLACE VIEW to modify one of your views'
-    ]
-  },
-  {
-    phase: 2, day: 25, type: 'theory', title: 'Stored Procedures & Functions',
-    tasks: [
-      'Difference between stored procedure and stored function',
-      'DELIMITER $$ — why you need it',
-      'BEGIN … END block structure',
-      'Parameters: IN, OUT, INOUT — what each does',
-      'DECLARE and SET for variables inside procedures',
-      'IF … THEN … ELSE … END IF — conditional logic',
-      'How to CALL a procedure',
-      'How to use a stored function inside SELECT'
-    ]
-  },
-  {
-    phase: 2, day: 26, type: 'practical', title: 'Stored Procedures & Functions — Applied',
-    tasks: [
-      'Write procedure place_order(IN u_id INT, IN total DECIMAL) — inserts into orders',
-      'Write procedure cancel_order(IN o_id INT) — updates order status to cancelled',
-      'Write procedure get_order_count(IN u_id INT, OUT total INT) and CALL it',
-      'Write function get_total_spent(u_id INT) — returns total amount spent by a user',
-      'Use that function in SELECT: SELECT name, get_total_spent(id) FROM users',
-      'Write procedure apply_discount(IN o_id INT) — IF total > 1000 apply 10% ELSE apply 5%'
-    ]
-  },
-  {
-    phase: 2, day: 27, type: 'theory', title: 'Triggers',
-    tasks: [
-      'What a trigger is — auto-executes on INSERT, UPDATE, DELETE',
-      'BEFORE vs AFTER triggers — when to use each',
-      'NEW pseudo-row — new data coming in',
-      'OLD pseudo-row — existing data before change',
-      'Common use cases: audit logging, auto timestamps, data validation',
-      'SHOW TRIGGERS and DROP TRIGGER',
-      'SIGNAL SQLSTATE — raising a custom error from a trigger'
-    ]
-  },
-  {
-    phase: 2, day: 28, type: 'practical', title: 'Triggers — Applied',
-    tasks: [
-      'Create order_audit table: id, order_id, old_status, new_status, changed_at',
-      'Write AFTER UPDATE trigger on orders: log old and new status into order_audit on status change',
-      'Write BEFORE INSERT trigger on reviews: if rating not between 1 and 5, raise SIGNAL SQLSTATE error',
-      'Write AFTER INSERT trigger on order_items: reduce stock_quantity in products by ordered quantity',
-      'Write AFTER DELETE trigger on users: log deleted user\'s name and email into deleted_users_log table',
-      'Test all 4 triggers and verify results with SELECT queries'
-    ]
-  },
-  {
-    phase: 2, day: 29, type: 'theory', title: 'Transactions & ACID',
-    tasks: [
-      'What a transaction is — operations that succeed or fail together',
-      'Atomicity — all or nothing',
-      'Consistency — DB stays valid before and after',
-      'Isolation — concurrent transactions don\'t interfere',
-      'Durability — committed data survives crashes',
-      'START TRANSACTION, COMMIT, ROLLBACK',
-      'SAVEPOINT and ROLLBACK TO SAVEPOINT',
-      'Autocommit in MySQL — what it is and how to control it',
-      'Isolation levels: READ UNCOMMITTED, READ COMMITTED, REPEATABLE READ, SERIALIZABLE — conceptually'
-    ]
-  },
-  {
-    phase: 2, day: 30, type: 'practical', title: 'Transactions & ACID — Applied',
-    tasks: [
-      'Create accounts table with user_id and balance',
-      'Simulate successful payment: debit buyer, credit seller, COMMIT — verify balances',
-      'Simulate failed payment: debit buyer, force error before crediting seller, ROLLBACK — verify unchanged',
-      'Order placement transaction: insert order, insert order_items, update stock — all in one, rollback if any fails',
-      'Use SAVEPOINT: two inserts, savepoint, third insert, ROLLBACK TO SAVEPOINT — verify only third is gone',
-      'SET autocommit = 0, run inserts, close connection without COMMIT — reconnect and verify inserts are gone'
-    ]
-  },
-  {
-    phase: 3, day: 31, type: 'theory', title: 'Window Functions',
-    tasks: [
-      'What window functions are — aggregates without collapsing rows',
-      'OVER() clause — what it defines',
-      'PARTITION BY — splits rows into groups within the window',
-      'ORDER BY inside OVER — row order within the window',
-      'ROW_NUMBER() — unique sequential number',
-      'RANK() — same rank for ties, gaps after',
-      'DENSE_RANK() — same rank for ties, no gaps',
-      'LAG(col, n) and LEAD(col, n) — previous and next row values',
-      'SUM() OVER(...) — running totals',
-      'FIRST_VALUE() and LAST_VALUE()'
-    ]
-  },
-  {
-    phase: 3, day: 32, type: 'practical', title: 'Window Functions — Queries',
-    tasks: [
-      'Rank products by price within each category using RANK() — observe ties',
-      'Same query using DENSE_RANK() — compare how ties are handled differently',
-      'Use ROW_NUMBER() to number orders per user by date',
-      'Calculate running total of payments using SUM(amount) OVER(ORDER BY paid_at)',
-      'Use LAG to find previous order\'s total for each user — show growth or decline',
-      'Find top 1 product by revenue per category using ROW_NUMBER() in a subquery',
-      'Use FIRST_VALUE to show cheapest product in the category alongside each product row',
-      'Write at least 6 window function queries total'
-    ]
-  },
-  {
-    phase: 3, day: 33, type: 'theory', title: 'CTEs (Common Table Expressions)',
-    tasks: [
-      'What a CTE is — named temporary result, lives only for that query',
-      'Syntax: WITH cte_name AS (SELECT ...) SELECT * FROM cte_name',
-      'Why CTEs over subqueries — readability, ability to reference multiple times',
-      'Chaining CTEs: WITH a AS (...), b AS (...) SELECT ...',
-      'Recursive CTE structure: anchor member UNION ALL recursive member',
-      'When to use recursive CTEs: org charts, category trees, hierarchical data',
-      'Termination condition — how to avoid infinite loops in recursive CTEs'
-    ]
-  },
-  {
-    phase: 3, day: 34, type: 'practical', title: 'CTEs — Queries',
-    tasks: [
-      'Rewrite a complex subquery from Day 18 as a CTE',
-      'CTE: get total revenue per product, outer query filters products above average revenue',
-      'Chain two CTEs: first gets top 3 users by spending, second gets their order count — join both in outer query',
-      'CTE: average rating per product, outer query finds products rated above 4 with more than 2 reviews',
-      'Recursive CTE: generate numbers 1 to 20',
-      'Add parent_category_id to categories table, then write recursive CTE to show full category hierarchy'
-    ]
-  },
-  {
-    phase: 3, day: 35, type: 'theory', title: 'Query Optimisation & Best Practices',
-    tasks: [
-      'How MySQL executes a query — parsing, optimisation, execution',
-      'Actual execution order: FROM → JOIN → WHERE → GROUP BY → HAVING → SELECT → ORDER BY → LIMIT',
-      'Why SELECT * is bad in production',
-      'Using indexes effectively — covering indexes',
-      'Avoiding functions on indexed columns in WHERE (defeats the index)',
-      'N+1 query problem — what it is and how JOINs solve it',
-      'Interview pattern: top N per group',
-      'Interview pattern: running totals',
-      'Interview pattern: year-over-year comparison',
-      'Interview pattern: finding duplicates',
-      'Interview pattern: finding gaps in sequences'
-    ]
-  },
-  {
-    phase: 3, day: 36, type: 'practical', title: 'Final Project — No Notes Allowed 🔥',
-    tasks: [
-      'Build all 7 tables from memory with correct data types, constraints, PKs and FKs',
-      'Seed realistic data into all 7 tables',
-      'Query: Total revenue generated this month',
-      'Query: Top 5 best-selling products by quantity sold',
-      'Query: Users who placed orders but never left a review',
-      'Query: Products with low stock (< 10) ordered in last 30 days',
-      'Query: Month-wise revenue for current year',
-      'Query: Average order value per user, only for users with more than 3 orders',
-      'Query: Products that have never been ordered',
-      'Query: Top 3 users by total spending with their order count',
-      'Create view: pending_orders — all pending orders with user name and email',
-      'Create stored procedure: process_payment(order_id, amount, method)',
-      'Create trigger: when payment status updated to refunded, auto-cancel the order',
-      'Create index on orders.created_at and verify with EXPLAIN',
-      'If you did all of this without help — you\'re genuinely good at SQL 🎉'
-    ]
-  }
+  {phase:1,day:1,type:'theory',title:'What is MySQL & How it Works',xp:10,tasks:['What is a database, what is a DBMS, what is an RDBMS','How MySQL works — client/server model, what happens when you run a query','Tables, rows, columns — the building blocks','Primary key concept — why every table needs one','What is a schema','Take handwritten notes — keep them simple, focus on understanding not definitions']},
+  {phase:1,day:2,type:'practical',title:'Setup & Schema Creation',xp:20,tasks:['Install MySQL Community Server + MySQL Workbench, OR use db-fiddle.com (MySQL 8.0)','Connect via CLI: mysql -u root -p','Run SELECT version(); and SHOW DATABASES;','Create database: CREATE DATABASE ecommerce; then USE ecommerce;','Create users table — id, name, email, phone, role, created_at','Create categories table — id, name, description','Create products table — id, name, description, price, stock_quantity, category_id, created_at','Create orders table — id, user_id, status, total_amount, created_at','Create order_items table — id, order_id, product_id, quantity, unit_price','Create payments table — id, order_id, amount, method, status, paid_at','Create reviews table — id, user_id, product_id, rating, comment, created_at','Run DESCRIBE table_name; on each of the 7 tables to verify','Insert 2–3 dummy rows into users and categories manually']},
+  {phase:1,day:3,type:'theory',title:'Data Types & NULL',xp:10,tasks:['Numeric types: INT, BIGINT, DECIMAL(p,s) — when to use each','String types: VARCHAR(n) vs CHAR(n) vs TEXT — differences and use cases','Date types: DATE, DATETIME, TIMESTAMP — key differences','BOOLEAN in MySQL — stored as TINYINT(1)','What NULL actually means — unknown, not zero, not empty string','NOT NULL and DEFAULT — when and why to use them','Take handwritten notes on each type with a real example']},
+  {phase:1,day:4,type:'practical',title:'Data Types & Inserting Data',xp:20,tasks:['Drop and recreate all 7 tables with proper, well-thought-out data types','Add NOT NULL and DEFAULT where it makes sense (e.g. created_at DEFAULT NOW())','Insert 10 users — mix of customers and admins','Insert 5 categories — electronics, clothing, books, food, accessories','Insert 15 products spread across categories','Insert 10 orders','Insert 20 order_items','Insert 10 payments','Insert 10 reviews','Verify all inserts with SELECT * FROM each table']},
+  {phase:1,day:5,type:'theory',title:'SELECT & Filtering',xp:10,tasks:['SELECT * vs selecting specific columns — why * is bad in production','WHERE clause and how it works','Comparison operators: =, !=, >, <, >=, <=','BETWEEN — inclusive on both ends','IN and NOT IN','IS NULL and IS NOT NULL','Combining conditions with AND, OR, NOT','Take notes with examples for each operator']},
+  {phase:1,day:6,type:'practical',title:'SELECT & Filtering — Queries',xp:20,tasks:['Fetch all users','Fetch only name and email of users','Fetch all products with price greater than 500','Fetch products with price between 200 and 1000','Fetch orders with status delivered or shipped','Fetch users where phone is NULL','Fetch products that belong to category_id IN (1, 2, 3)','Fetch all orders that are NOT cancelled','Combine: products in a specific category AND price below 500','Write at least 1 more query mixing different operators — total 10+ queries']},
+  {phase:1,day:7,type:'theory',title:'Sorting, Limiting & LIKE',xp:10,tasks:['ORDER BY column ASC and DESC','Ordering by multiple columns and how it resolves ties','LIMIT n — cap the number of results','LIMIT n OFFSET m — how pagination works, what offset means','LIKE operator — pattern matching','% wildcard — matches zero or more characters','_ wildcard — matches exactly one character','NOT LIKE — inverse matching','Take notes with example queries for each']},
+  {phase:1,day:8,type:'practical',title:'Sorting, Limiting & LIKE — Queries',xp:20,tasks:['Fetch all products sorted by price highest to lowest','Fetch all orders sorted by created_at newest first','Fetch the 5 most expensive products','Fetch products ranked 6 to 10 by price using OFFSET','Find all products whose name contains the word "pro"','Find all users whose email ends with @gmail.com','Find all users whose name starts with A','Find products whose name is exactly 5 characters using _____','Sort users alphabetically and fetch only first page of 5','Combine LIKE + ORDER BY + LIMIT in one query']},
+  {phase:1,day:9,type:'theory',title:'Constraints & Keys',xp:10,tasks:['PRIMARY KEY — what it enforces, auto_increment','FOREIGN KEY — what referential integrity means','UNIQUE constraint — what it does','CHECK constraint — enforcing value rules','ON DELETE CASCADE vs ON DELETE SET NULL vs ON DELETE RESTRICT','ALTER TABLE — adding and dropping constraints after table creation','Take notes with real examples for each constraint type']},
+  {phase:1,day:10,type:'practical',title:'Constraints & Keys — Applied',xp:20,tasks:['Recreate all 7 tables with proper PRIMARY KEY and FOREIGN KEY constraints','Add UNIQUE constraint on users.email','Add CHECK on products: price > 0 and stock_quantity >= 0','Add CHECK on reviews: rating BETWEEN 1 AND 5','Test FK enforcement: insert order_item with non-existent product_id — observe error','Test UNIQUE: insert two users with same email — observe error','Test CHECK: insert product with price = -100 — observe error','Test ON DELETE CASCADE: delete a user, verify their orders are gone','Run SHOW CREATE TABLE orders; to see full table definition with constraints']},
+  {phase:1,day:11,type:'theory',title:'UPDATE & DELETE',xp:10,tasks:['UPDATE table SET col = val WHERE condition — always need WHERE','What happens if you skip WHERE in UPDATE — all rows updated','Updating multiple columns in one statement','DELETE FROM table WHERE condition','What happens if you skip WHERE in DELETE — all rows deleted','DELETE vs TRUNCATE vs DROP — key differences','MySQL safe update mode — what it is and how to disable temporarily']},
+  {phase:1,day:12,type:'practical',title:'UPDATE & DELETE — Applied',xp:20,tasks:["Update a specific user's phone number","Update all products in a category: increase price by 10% using price * 1.10","Update an order status from pending to shipped","Update stock_quantity after an order — reduce by a specific number","Delete a specific review by id","Delete all cancelled orders","Try UPDATE without WHERE inside START TRANSACTION then ROLLBACK — verify nothing changed","Use TRUNCATE on a temp table, observe it cannot be rolled back","Run SELECT before and after each operation to verify changes"]},
+  {phase:1,day:13,type:'theory',title:'Aggregate Functions & GROUP BY',xp:10,tasks:['COUNT(*) vs COUNT(column) — how NULLs affect count','SUM, AVG, MIN, MAX — what each does','GROUP BY — how it collapses rows into groups','Using multiple columns in GROUP BY','HAVING — filtering after grouping','Critical rule: WHERE filters rows before grouping, HAVING filters groups after','Using aliases with AS','Take notes with clear examples showing WHERE vs HAVING difference']},
+  {phase:1,day:14,type:'practical',title:'Aggregate Functions & GROUP BY — Queries',xp:20,tasks:['Count total number of users','Count total number of orders per status','Find total revenue: SUM(total_amount) from orders','Find average product price per category','Find the most expensive product in each category using MAX','Find categories with more than 3 products using HAVING','Find total quantity sold per product using order_items','Find users who have placed more than 2 orders','Find average rating per product from reviews','Find products with average rating above 4 using HAVING']},
+  {phase:1,day:15,type:'theory',title:'JOINs',xp:10,tasks:['Why JOINs exist — data is split across tables for a reason','INNER JOIN — only matching rows from both tables','LEFT JOIN — all rows from left, NULLs where no match on right','RIGHT JOIN — opposite of LEFT JOIN','Venn diagram mental model for visualising JOINs','ON keyword — specifying the join condition','Joining more than two tables in one query','Table aliases to keep queries clean (e.g. u for users)']},
+  {phase:1,day:16,type:'practical',title:'JOINs — Queries',xp:20,tasks:['JOIN users and orders — show user name with their orders','JOIN orders, order_items, products — show order id, product name, quantity, unit_price','JOIN products and categories — show product name with its category name','JOIN reviews and products — show product name with all reviews and ratings','LEFT JOIN users and orders — find users who have NEVER placed an order (WHERE orders.id IS NULL)','LEFT JOIN products and order_items — find products never ordered','Add GROUP BY and aggregates: total amount spent per user','Add GROUP BY: total items per order','Write at least 8 JOIN queries total']},
+  {phase:1,day:17,type:'theory',title:'Subqueries',xp:10,tasks:['What a subquery is — a query inside a query','Subquery in WHERE: WHERE id IN (SELECT ...)','Subquery in SELECT: computing a value for each row','Subquery in FROM: using a query result as a temporary table','Correlated subquery — references the outer query, runs once per outer row','When to use subquery vs JOIN — readability and performance tradeoffs','Take notes with one example for each type']},
+  {phase:1,day:18,type:'practical',title:'Subqueries — Queries',xp:20,tasks:['Find all products that have never been reviewed (subquery in WHERE with NOT IN)',"Find users who spent more than the average order amount (subquery for average)","Find top 3 products by total quantity sold using subquery in FROM","For each product show its price AND average price of its category side by side (subquery in SELECT)","Find orders where total_amount > user's average order amount (correlated subquery)","Rewrite two of the above using JOINs instead — compare readability"]},
+  {phase:1,day:19,type:'theory',title:'String & Date Functions',xp:10,tasks:['String: CONCAT and CONCAT_WS','String: UPPER, LOWER, TRIM, LENGTH','String: SUBSTRING, REPLACE, LEFT, RIGHT','Date: NOW(), CURDATE()','Date: DATE_FORMAT, DATEDIFF, TIMESTAMPDIFF','Date: DATE_ADD, DATE_SUB, YEAR(), MONTH(), DAY()','NULL handling: IFNULL — returns fallback if NULL','NULL handling: NULLIF — returns NULL if two values are equal','NULL handling: COALESCE — returns first non-NULL from a list']},
+  {phase:1,day:20,type:'practical',title:'String & Date Functions — Queries',xp:20,tasks:['Show full user name in uppercase using UPPER','Concatenate user name and email with " | " separator using CONCAT_WS','Show only the first 10 characters of product description','Find all orders placed in the current month using MONTH() and YEAR()','Calculate how many days ago each order was placed using DATEDIFF','Find orders placed in the last 7 days using DATE_SUB','Format created_at as DD-Mon-YYYY using DATE_FORMAT','Replace NULL phone numbers with "Not provided" using COALESCE','Find users who registered more than 30 days ago',"Add 7 days to each order's created_at to simulate a delivery date using DATE_ADD"]},
+  {phase:2,day:21,type:'theory',title:'Indexes & Query Performance',xp:10,tasks:['What an index is and how it works internally — B-tree concept (just conceptual)','Why indexes speed up reads but slow down writes','Types: PRIMARY (auto), UNIQUE (auto), regular index','CREATE INDEX and composite indexes — column order matters','When NOT to use an index — low cardinality columns like status, boolean','EXPLAIN statement — what type, key, rows columns mean','SHOW INDEXES FROM table — how to inspect existing indexes']},
+  {phase:2,day:22,type:'practical',title:'Indexes & Query Performance — Applied',xp:20,tasks:['Run EXPLAIN SELECT * FROM products WHERE price > 500 — note rows scanned','Run EXPLAIN SELECT * FROM orders WHERE user_id = 3 — note no index on user_id','Add index on orders.user_id, run EXPLAIN again, compare rows scanned','Add index on products.price, run EXPLAIN, compare','Add composite index on order_items(order_id, product_id)','Run SHOW INDEXES FROM orders; and SHOW INDEXES FROM products;','Write 3 queries, use EXPLAIN on each, verify index is being used in the key column']},
+  {phase:2,day:23,type:'theory',title:'Views',xp:10,tasks:['What a view is — saved SELECT query, not stored data','CREATE VIEW, DROP VIEW, CREATE OR REPLACE VIEW','Why views are useful — simplify complex queries, hide sensitive columns, reusable','Updatable views — when you can INSERT/UPDATE through a view','Non-updatable views — when GROUP BY, DISTINCT, JOINs make it non-updatable','WITH CHECK OPTION — what it enforces']},
+  {phase:2,day:24,type:'practical',title:'Views — Applied',xp:20,tasks:['Create view customer_orders — joins users + orders, shows name, email, status, total','Create view product_catalogue — joins products + categories, shows name, category, price, stock','Create view low_stock_products — products where stock_quantity < 10','Create view revenue_by_category — total revenue per category (non-updatable)','Query all four views like normal tables','Try inserting through low_stock_products with stock = 50 — test WITH CHECK OPTION behavior','Use CREATE OR REPLACE VIEW to modify one of your views']},
+  {phase:2,day:25,type:'theory',title:'Stored Procedures & Functions',xp:10,tasks:['Difference between stored procedure and stored function','DELIMITER $$ — why you need it','BEGIN … END block structure','Parameters: IN, OUT, INOUT — what each does','DECLARE and SET for variables inside procedures','IF … THEN … ELSE … END IF — conditional logic','How to CALL a procedure','How to use a stored function inside SELECT']},
+  {phase:2,day:26,type:'practical',title:'Stored Procedures & Functions — Applied',xp:20,tasks:['Write procedure place_order(IN u_id INT, IN total DECIMAL) — inserts into orders','Write procedure cancel_order(IN o_id INT) — updates order status to cancelled','Write procedure get_order_count(IN u_id INT, OUT total INT) and CALL it','Write function get_total_spent(u_id INT) — returns total amount spent by a user','Use that function in SELECT: SELECT name, get_total_spent(id) FROM users','Write procedure apply_discount(IN o_id INT) — IF total > 1000 apply 10% ELSE apply 5%']},
+  {phase:2,day:27,type:'theory',title:'Triggers',xp:10,tasks:['What a trigger is — auto-executes on INSERT, UPDATE, DELETE','BEFORE vs AFTER triggers — when to use each','NEW pseudo-row — new data coming in','OLD pseudo-row — existing data before change','Common use cases: audit logging, auto timestamps, data validation','SHOW TRIGGERS and DROP TRIGGER','SIGNAL SQLSTATE — raising a custom error from a trigger']},
+  {phase:2,day:28,type:'practical',title:'Triggers — Applied',xp:20,tasks:['Create order_audit table: id, order_id, old_status, new_status, changed_at','Write AFTER UPDATE trigger on orders: log old and new status into order_audit on status change','Write BEFORE INSERT trigger on reviews: if rating not between 1 and 5, raise SIGNAL SQLSTATE error','Write AFTER INSERT trigger on order_items: reduce stock_quantity in products by ordered quantity',"Write AFTER DELETE trigger on users: log deleted user's name and email into deleted_users_log table",'Test all 4 triggers and verify results with SELECT queries']},
+  {phase:2,day:29,type:'theory',title:'Transactions & ACID',xp:10,tasks:['What a transaction is — operations that succeed or fail together','Atomicity — all or nothing','Consistency — DB stays valid before and after','Isolation — concurrent transactions do not interfere','Durability — committed data survives crashes','START TRANSACTION, COMMIT, ROLLBACK','SAVEPOINT and ROLLBACK TO SAVEPOINT','Autocommit in MySQL — what it is and how to control it','Isolation levels: READ UNCOMMITTED, READ COMMITTED, REPEATABLE READ, SERIALIZABLE — conceptually']},
+  {phase:2,day:30,type:'practical',title:'Transactions & ACID — Applied',xp:20,tasks:['Create accounts table with user_id and balance','Simulate successful payment: debit buyer, credit seller, COMMIT — verify balances','Simulate failed payment: debit buyer, force error before crediting seller, ROLLBACK — verify unchanged','Order placement transaction: insert order, insert order_items, update stock — all in one, rollback if any fails','Use SAVEPOINT: two inserts, savepoint, third insert, ROLLBACK TO SAVEPOINT — verify only third is gone','SET autocommit = 0, run inserts, close connection without COMMIT — reconnect and verify inserts are gone']},
+  {phase:3,day:31,type:'theory',title:'Window Functions',xp:10,tasks:['What window functions are — aggregates without collapsing rows','OVER() clause — what it defines','PARTITION BY — splits rows into groups within the window','ORDER BY inside OVER — row order within the window','ROW_NUMBER() — unique sequential number','RANK() — same rank for ties, gaps after','DENSE_RANK() — same rank for ties, no gaps','LAG(col, n) and LEAD(col, n) — previous and next row values','SUM() OVER(...) — running totals','FIRST_VALUE() and LAST_VALUE()']},
+  {phase:3,day:32,type:'practical',title:'Window Functions — Queries',xp:20,tasks:['Rank products by price within each category using RANK() — observe ties','Same query using DENSE_RANK() — compare how ties are handled differently','Use ROW_NUMBER() to number orders per user by date','Calculate running total of payments using SUM(amount) OVER(ORDER BY paid_at)',"Use LAG to find previous order's total for each user — show growth or decline",'Find top 1 product by revenue per category using ROW_NUMBER() in a subquery','Use FIRST_VALUE to show cheapest product in the category alongside each product row','Write at least 6 window function queries total']},
+  {phase:3,day:33,type:'theory',title:'CTEs (Common Table Expressions)',xp:10,tasks:['What a CTE is — named temporary result, lives only for that query','Syntax: WITH cte_name AS (SELECT ...) SELECT * FROM cte_name','Why CTEs over subqueries — readability, ability to reference multiple times','Chaining CTEs: WITH a AS (...), b AS (...) SELECT ...','Recursive CTE structure: anchor member UNION ALL recursive member','When to use recursive CTEs: org charts, category trees, hierarchical data','Termination condition — how to avoid infinite loops in recursive CTEs']},
+  {phase:3,day:34,type:'practical',title:'CTEs — Queries',xp:20,tasks:['Rewrite a complex subquery from Day 18 as a CTE','CTE: get total revenue per product, outer query filters products above average revenue','Chain two CTEs: first gets top 3 users by spending, second gets their order count — join both in outer query','CTE: average rating per product, outer query finds products rated above 4 with more than 2 reviews','Recursive CTE: generate numbers 1 to 20','Add parent_category_id to categories table, then write recursive CTE to show full category hierarchy']},
+  {phase:3,day:35,type:'theory',title:'Query Optimisation & Best Practices',xp:10,tasks:['How MySQL executes a query — parsing, optimisation, execution','Actual execution order: FROM → JOIN → WHERE → GROUP BY → HAVING → SELECT → ORDER BY → LIMIT','Why SELECT * is bad in production','Using indexes effectively — covering indexes','Avoiding functions on indexed columns in WHERE (defeats the index)','N+1 query problem — what it is and how JOINs solve it','Interview pattern: top N per group','Interview pattern: running totals','Interview pattern: year-over-year comparison','Interview pattern: finding duplicates','Interview pattern: finding gaps in sequences']},
+  {phase:3,day:36,type:'practical',title:'Final Project — No Notes Allowed 🔥',xp:50,tasks:['Build all 7 tables from memory with correct data types, constraints, PKs and FKs','Seed realistic data into all 7 tables','Query: Total revenue generated this month','Query: Top 5 best-selling products by quantity sold','Query: Users who placed orders but never left a review','Query: Products with low stock (< 10) ordered in last 30 days','Query: Month-wise revenue for current year','Query: Average order value per user, only for users with more than 3 orders','Query: Products that have never been ordered','Query: Top 3 users by total spending with their order count','Create view: pending_orders — all pending orders with user name and email','Create stored procedure: process_payment(order_id, amount, method)','Create trigger: when payment status updated to refunded, auto-cancel the order','Create index on orders.created_at and verify with EXPLAIN',"If you did all of this without help — you're genuinely good at SQL 🎉"]}
 ];
 
-// Storage helpers
-function save(key, val) {
-  try { localStorage.setItem('sql_' + key, JSON.stringify(val)); } catch(e) {}
-}
+const XP_LEVELS = [
+  {min:0,label:'Beginner'},{min:100,label:'Apprentice'},{min:250,label:'Practitioner'},
+  {min:500,label:'Intermediate'},{min:750,label:'Advanced'},{min:1000,label:'Expert'},
+  {min:1200,label:'Master'},{min:1500,label:'SQL God 🔥'}
+];
+const MAX_XP = ROADMAP.reduce((s,d)=>s+d.xp,0);
 
-function load(key, def) {
-  try {
-    const v = localStorage.getItem('sql_' + key);
-    return v !== null ? JSON.parse(v) : def;
-  } catch(e) { return def; }
-}
+function save(k,v){try{localStorage.setItem('sql_'+k,JSON.stringify(v));}catch(e){}}
+function load(k,d){try{const v=localStorage.getItem('sql_'+k);return v!==null?JSON.parse(v):d;}catch(e){return d;}}
 
-// State
-let taskState = load('tasks', {});
-let movedDays = load('moved', {});
+let taskState=load('tasks',{});
+let movedDays=load('moved',{});
+let dayNotes=load('notes',{});
+let startDate=load('startdate',null);
+let reviseModes={};
+let streakData=load('streak2',{count:0,last:null});
+let completedPhases=load('completedPhases',{});
+let currentFilter='all';
 
 // Toast
 let toastTimer;
-function showToast(msg, type='') {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = 'toast show ' + type;
+function showToast(msg,type=''){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.className='toast show '+type;
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.classList.remove('show'), 2500);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),2800);
 }
 
 // Toggle task
-function toggleTask(dayNum, taskIdx) {
-  const key = dayNum + '_' + taskIdx;
-  taskState[key] = !taskState[key];
-  save('tasks', taskState);
-  const el = document.querySelector(`[data-task="${key}"]`);
-  if (el) {
-    el.classList.toggle('done', taskState[key]);
-    el.querySelector('.task-check').textContent = taskState[key] ? '✓' : '';
-  }
+function toggleTask(dayNum,taskIdx){
+  const key=dayNum+'_'+taskIdx;
+  taskState[key]=!taskState[key];
+  save('tasks',taskState);
+  const el=document.querySelector(`[data-task="${key}"]`);
+  if(el){el.classList.toggle('done',taskState[key]);el.querySelector('.task-check').textContent=taskState[key]?'✓':'';}
   updateDayCard(dayNum);
   updateStats();
+  updateStreak();
+  checkPhaseComplete(ROADMAP.find(d=>d.day===dayNum).phase);
 }
 
-// Complete all tasks in a day
-function completeAll(dayNum) {
-  const day = ROADMAP.find(d => d.day === dayNum);
-  day.tasks.forEach((_, i) => {
-    const key = dayNum + '_' + i;
-    taskState[key] = true;
-    const el = document.querySelector(`[data-task="${key}"]`);
-    if (el) {
-      el.classList.add('done');
-      el.querySelector('.task-check').textContent = '✓';
-    }
+function completeAll(dayNum){
+  const day=ROADMAP.find(d=>d.day===dayNum);
+  day.tasks.forEach((_,i)=>{
+    const key=dayNum+'_'+i;taskState[key]=true;
+    const el=document.querySelector(`[data-task="${key}"]`);
+    if(el){el.classList.add('done');el.querySelector('.task-check').textContent='✓';}
   });
-  save('tasks', taskState);
-  updateDayCard(dayNum);
-  updateStats();
-  showToast('Day ' + dayNum + ' complete! 🔥', 'green');
+  save('tasks',taskState);updateDayCard(dayNum);updateStats();updateStreak();
+  checkPhaseComplete(day.phase);
+  showToast('Day '+dayNum+' complete! +'+day.xp+' XP 🔥','green');
 }
 
-// Reset day
-function resetDay(dayNum) {
-  const day = ROADMAP.find(d => d.day === dayNum);
-  day.tasks.forEach((_, i) => {
-    const key = dayNum + '_' + i;
-    taskState[key] = false;
-    const el = document.querySelector(`[data-task="${key}"]`);
-    if (el) {
-      el.classList.remove('done');
-      el.querySelector('.task-check').textContent = '';
-    }
+function resetDay(dayNum){
+  const day=ROADMAP.find(d=>d.day===dayNum);
+  day.tasks.forEach((_,i)=>{
+    const key=dayNum+'_'+i;taskState[key]=false;
+    const el=document.querySelector(`[data-task="${key}"]`);
+    if(el){el.classList.remove('done');el.querySelector('.task-check').textContent='';}
   });
-  save('tasks', taskState);
-  updateDayCard(dayNum);
-  updateStats();
-  showToast('Day ' + dayNum + ' reset', '');
+  // Also exit revise mode
+  reviseModes[dayNum]=false;
+  const card=document.querySelector(`[data-day="${dayNum}"]`);
+  if(card)card.classList.remove('revising','completed');
+  save('tasks',taskState);updateDayCard(dayNum);updateStats();
+  showToast('Day '+dayNum+' reset','');
 }
 
-// Move to next day
-function moveToNextDay(dayNum) {
-  movedDays[dayNum] = true;
-  save('moved', movedDays);
-  const card = document.querySelector(`[data-day="${dayNum}"]`);
-  if (card) {
-    card.classList.add('moved');
-    card.classList.remove('completed');
-    const notice = card.querySelector('.moved-notice');
-    if (notice) notice.style.display = 'block';
-    const statusEl = card.querySelector('.day-status');
-    if (statusEl) statusEl.innerHTML = '<span class="status-moved">→ moved</span>';
+function moveToNextDay(dayNum){
+  movedDays[dayNum]=true;save('moved',movedDays);
+  const card=document.querySelector(`[data-day="${dayNum}"]`);
+  if(card){
+    card.classList.add('moved');card.classList.remove('completed');
+    const n=card.querySelector('.moved-notice');if(n)n.style.display='block';
+    const s=card.querySelector('.day-status');if(s)s.innerHTML='<span class="status-moved">→ moved</span>';
   }
   updateStats();
-  showToast('Day ' + dayNum + ' moved to tomorrow 📅', 'yellow');
+  showToast('Day '+dayNum+' moved to tomorrow 📅','yellow');
 }
 
-// Toggle card open/close
-function toggleCard(dayNum) {
-  const card = document.querySelector(`[data-day="${dayNum}"]`);
-  if (card) card.classList.toggle('open');
-}
-
-// Update single day card visuals
-function updateDayCard(dayNum) {
-  const day = ROADMAP.find(d => d.day === dayNum);
-  const total = day.tasks.length;
-  const done = day.tasks.filter((_, i) => taskState[dayNum + '_' + i]).length;
-  const pct = Math.round((done / total) * 100);
-  const isComplete = done === total;
-
-  const card = document.querySelector(`[data-day="${dayNum}"]`);
-  if (!card) return;
-
-  card.classList.toggle('completed', isComplete);
-  if (isComplete) card.classList.remove('moved');
-
-  const fill = card.querySelector('.day-mini-fill');
-  if (fill) fill.style.width = pct + '%';
-
-  const countEl = card.querySelector('.task-count');
-  if (countEl) countEl.textContent = done + ' / ' + total + ' tasks done';
-
-  const statusEl = card.querySelector('.day-status');
-  if (statusEl && !movedDays[dayNum]) {
-    if (isComplete) {
-      statusEl.innerHTML = '<span class="status-done">✓ done</span>';
-    } else if (done > 0) {
-      statusEl.innerHTML = `<span class="status-pending">${pct}%</span>`;
-    } else {
-      statusEl.innerHTML = '<span class="status-pending">pending</span>';
-    }
+function toggleRevise(dayNum){
+  reviseModes[dayNum]=!reviseModes[dayNum];
+  const card=document.querySelector(`[data-day="${dayNum}"]`);
+  if(card){
+    card.classList.toggle('revising',reviseModes[dayNum]);
+    const btn=card.querySelector('.revise-btn');
+    if(btn)btn.textContent=reviseModes[dayNum]?'exit revise':'📖 revise';
+    const banner=card.querySelector('.revise-mode-banner');
+    if(banner)banner.style.display=reviseModes[dayNum]?'block':'none';
+  }
+  if(reviseModes[dayNum]){
+    // In revise mode, uncheck all tasks visually without saving as uncomplete
+    const day=ROADMAP.find(d=>d.day===dayNum);
+    day.tasks.forEach((_,i)=>{
+      const key=dayNum+'_'+i;
+      taskState[key]=false;
+      const el=document.querySelector(`[data-task="${key}"]`);
+      if(el){el.classList.remove('done');el.querySelector('.task-check').textContent='';}
+    });
+    save('tasks',taskState);
+    updateDayCard(dayNum);
+    showToast('Revise mode — redo the tasks, progress resets when done 📖','purple');
   }
 }
 
-// Update all stats
-function updateStats() {
-  let totalTasks = 0, doneTasks = 0, doneDays = 0, movedCount = 0;
-
-  ROADMAP.forEach(day => {
-    const total = day.tasks.length;
-    const done = day.tasks.filter((_, i) => taskState[day.day + '_' + i]).length;
-    totalTasks += total;
-    doneTasks += done;
-    if (done === total) doneDays++;
-  });
-
-  movedCount = Object.keys(movedDays).filter(k => movedDays[k]).length;
-
-  const pct = totalTasks > 0 ? Math.round((doneTasks / totalTasks) * 100) : 0;
-
-  document.getElementById('stat-done').textContent = doneDays;
-  document.getElementById('stat-tasks').textContent = doneTasks;
-  document.getElementById('stat-remaining').textContent = 36 - doneDays;
-  document.getElementById('stat-moved').textContent = movedCount;
-  document.getElementById('op-pct').textContent = pct + '%';
-  document.getElementById('op-fill').style.width = pct + '%';
+function toggleCard(dayNum){
+  const card=document.querySelector(`[data-day="${dayNum}"]`);
+  if(card)card.classList.toggle('open');
 }
 
-// Phase filter
-function filterPhase(phase) {
-  document.querySelectorAll('.phase-tab').forEach(t => t.classList.remove('active'));
+// Notes
+function saveNote(dayNum,val){
+  dayNotes[dayNum]=val;save('notes',dayNotes);
+  const saved=document.querySelector(`[data-notes-saved="${dayNum}"]`);
+  if(saved){saved.classList.add('show');setTimeout(()=>saved.classList.remove('show'),1500);}
+}
+
+// Start date
+function setStartDate(){
+  const d=prompt('Enter your start date (YYYY-MM-DD):',new Date().toISOString().slice(0,10));
+  if(d&&/^\d{4}-\d{2}-\d{2}$/.test(d)){
+    startDate=d;save('startdate',d);
+    updateETA();updateTodayHighlight();
+    showToast('Start date set to '+d,'green');
+  }
+}
+
+function updateETA(){
+  const el=document.getElementById('eta-text');
+  const sl=document.getElementById('start-label');
+  if(!startDate){el.textContent='set start date first';return;}
+  sl.textContent='📅 started: '+startDate;
+  const doneDays=ROADMAP.filter(d=>d.tasks.every((_,i)=>taskState[d.day+'_'+i])).length;
+  const start=new Date(startDate);
+  const today=new Date();
+  const elapsed=Math.max(1,Math.round((today-start)/(86400000)));
+  const pace=doneDays/elapsed;
+  const remaining=36-doneDays;
+  if(pace<=0){el.textContent='finish at least 1 day to get ETA';return;}
+  const daysNeeded=Math.ceil(remaining/pace);
+  const eta=new Date(today.getTime()+daysNeeded*86400000);
+  const opts={month:'short',day:'numeric',year:'numeric'};
+  el.textContent=eta.toLocaleDateString('en-IN',opts)+' ('+daysNeeded+' days at current pace)';
+}
+
+function updateTodayHighlight(){
+  document.querySelectorAll('.day-card').forEach(c=>c.classList.remove('today-card'));
+  document.querySelectorAll('.today-badge').forEach(b=>b.remove());
+  if(!startDate)return;
+  const start=new Date(startDate);start.setHours(0,0,0,0);
+  const today=new Date();today.setHours(0,0,0,0);
+  const dayNum=Math.round((today-start)/86400000)+1;
+  if(dayNum>=1&&dayNum<=36){
+    const card=document.querySelector(`[data-day="${dayNum}"]`);
+    if(card){
+      card.classList.add('today-card');
+      const badge=document.createElement('div');
+      badge.className='today-badge';badge.textContent='today';
+      card.appendChild(badge);
+    }
+  }
+}
+
+// Streak
+function updateStreak(){
+  const today=new Date().toDateString();
+  const doneDays=ROADMAP.filter(d=>d.tasks.every((_,i)=>taskState[d.day+'_'+i])).length;
+  if(doneDays>0&&streakData.last!==today){
+    const yesterday=new Date();yesterday.setDate(yesterday.getDate()-1);
+    if(streakData.last===yesterday.toDateString()){
+      streakData.count++;
+    } else if(streakData.last!==today){
+      streakData.count=1;
+    }
+    streakData.last=today;
+    save('streak2',streakData);
+  }
+  const el=document.getElementById('stat-streak');
+  if(el)el.textContent=streakData.count+'🔥';
+}
+
+// XP
+function getTotalXP(){
+  let xp=0;
+  ROADMAP.forEach(day=>{
+    const done=day.tasks.every((_,i)=>taskState[day.day+'_'+i]);
+    if(done)xp+=day.xp;
+  });
+  return xp;
+}
+
+function updateXP(){
+  const xp=getTotalXP();
+  const pct=Math.round((xp/MAX_XP)*100);
+  const el=document.getElementById('xp-fill');
+  if(el)el.style.width=pct+'%';
+  const num=document.getElementById('xp-num');
+  if(num)num.textContent=xp+' / '+MAX_XP+' XP';
+  const levelEl=document.getElementById('xp-level');
+  let level=XP_LEVELS[0].label;
+  for(const l of XP_LEVELS){if(xp>=l.min)level=l.label;}
+  if(levelEl)levelEl.textContent='Level: '+level;
+}
+
+// Phase completion
+function checkPhaseComplete(phaseNum){
+  const phaseDays=ROADMAP.filter(d=>d.phase===phaseNum);
+  const allDone=phaseDays.every(d=>d.tasks.every((_,i)=>taskState[d.day+'_'+i]));
+  if(allDone&&!completedPhases[phaseNum]){
+    completedPhases[phaseNum]=true;
+    save('completedPhases',completedPhases);
+    setTimeout(()=>showCelebration(phaseNum),500);
+  }
+}
+
+function showCelebration(phaseNum){
+  const msgs={
+    1:['Phase 1 Complete! 🎉','Foundations locked in. You now know more SQL than 60% of devs who just copy-paste Stack Overflow.'],
+    2:['Phase 2 Complete! 🔥','Intermediate done. Indexes, views, procedures, triggers, transactions — that\'s real SQL.'],
+    3:['All 36 Days Done! 👑','You finished the entire roadmap. If you can do Day 36 from memory, you\'re genuinely good at SQL.']
+  };
+  const [title,msg]=msgs[phaseNum]||['Phase Complete!','Keep going.'];
+  document.getElementById('celebration-title').textContent=title;
+  document.getElementById('celebration-msg').textContent=msg;
+  spawnConfetti();
+  document.getElementById('celebration').classList.add('show');
+}
+
+function closeCelebration(){
+  document.getElementById('celebration').classList.remove('show');
+}
+
+function spawnConfetti(){
+  const cel=document.getElementById('celebration');
+  const colors=['#5e6ad2','#4ade80','#fbbf24','#f87171','#a855f7','#f59e0b'];
+  for(let i=0;i<60;i++){
+    const p=document.createElement('div');
+    p.className='confetti-piece';
+    p.style.cssText=`left:${Math.random()*100}%;background:${colors[Math.floor(Math.random()*colors.length)]};width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;animation-duration:${2+Math.random()*2}s;animation-delay:${Math.random()*0.5}s;border-radius:${Math.random()>0.5?'50%':'2px'};`;
+    cel.appendChild(p);
+  }
+  setTimeout(()=>{document.querySelectorAll('.confetti-piece').forEach(p=>p.remove());},4000);
+}
+
+// Search
+let searchTimer;
+function handleSearch(val){
+  clearTimeout(searchTimer);
+  searchTimer=setTimeout(()=>doSearch(val),150);
+  const clearBtn=document.getElementById('search-clear');
+  if(clearBtn)clearBtn.style.display=val?'block':'none';
+}
+
+function doSearch(val){
+  const term=val.trim().toLowerCase();
+  const info=document.getElementById('search-info');
+  const noRes=document.getElementById('no-results');
+  if(!term){
+    // Reset
+    document.querySelectorAll('.day-card').forEach(c=>{c.classList.remove('search-highlight');c.style.display='';});
+    document.querySelectorAll('.task-text mark').forEach(m=>{const t=m.parentNode;t.innerHTML=t.textContent;});
+    document.querySelectorAll('.phase-section').forEach(s=>{if(currentFilter==='all'||s.dataset.phase===currentFilter)s.classList.remove('hidden');});
+    if(info)info.style.display='none';
+    if(noRes)noRes.style.display='none';
+    return;
+  }
+  let matchCount=0;
+  document.querySelectorAll('.day-card').forEach(card=>{
+    const dayNum=parseInt(card.dataset.day);
+    const day=ROADMAP.find(d=>d.day===dayNum);
+    let hasMatch=false;
+    // Reset highlights in this card
+    card.querySelectorAll('.task-text').forEach(t=>{t.innerHTML=t.textContent;});
+    day.tasks.forEach((task,i)=>{
+      const taskEl=card.querySelector(`[data-task="${dayNum+'_'+i}"] .task-text`);
+      if(taskEl&&task.toLowerCase().includes(term)){
+        hasMatch=true;
+        taskEl.innerHTML=task.replace(new RegExp(`(${term.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, 'gi'),'<mark>$1</mark>');
+      }
+    });
+    // Also check title
+    if(day.title.toLowerCase().includes(term))hasMatch=true;
+    card.style.display=hasMatch?'':'none';
+    card.classList.toggle('search-highlight',hasMatch);
+    if(hasMatch){matchCount++;if(!card.classList.contains('open'))card.classList.add('open');}
+  });
+  // Show/hide phase sections
+  document.querySelectorAll('.phase-section').forEach(s=>{
+    const visible=Array.from(s.querySelectorAll('.day-card')).some(c=>c.style.display!=='none');
+    s.classList.toggle('hidden',!visible);
+  });
+  if(info){info.style.display='block';info.textContent=matchCount+' day(s) match "'+val+'"';}
+  if(noRes)noRes.style.display=matchCount===0?'block':'none';
+}
+
+function clearSearch(){
+  const inp=document.getElementById('search-input');
+  if(inp)inp.value='';
+  doSearch('');
+  const clearBtn=document.getElementById('search-clear');
+  if(clearBtn)clearBtn.style.display='none';
+}
+
+// Filter phase
+function filterPhase(phase){
+  currentFilter=phase;
+  clearSearch();
+  document.querySelectorAll('.phase-tab').forEach(t=>t.classList.remove('active'));
   document.querySelector(`[data-phase="${phase}"]`).classList.add('active');
-
-  document.querySelectorAll('.phase-section').forEach(s => {
-    if (phase === 'all' || s.dataset.phase === phase) {
-      s.classList.remove('hidden');
-    } else {
-      s.classList.add('hidden');
-    }
+  document.querySelectorAll('.phase-section').forEach(s=>{
+    s.classList.toggle('hidden',phase!=='all'&&s.dataset.phase!==phase);
   });
 }
+
+// Update day card
+function updateDayCard(dayNum){
+  const day=ROADMAP.find(d=>d.day===dayNum);
+  const total=day.tasks.length;
+  const done=day.tasks.filter((_,i)=>taskState[dayNum+'_'+i]).length;
+  const pct=Math.round((done/total)*100);
+  const isComplete=done===total;
+  const card=document.querySelector(`[data-day="${dayNum}"]`);
+  if(!card)return;
+  card.classList.toggle('completed',isComplete&&!reviseModes[dayNum]);
+  if(isComplete)card.classList.remove('moved');
+  const fill=card.querySelector('.day-mini-fill');if(fill)fill.style.width=pct+'%';
+  const countEl=card.querySelector('.task-count');if(countEl)countEl.textContent=done+' / '+total+' tasks done';
+  const xpEl=card.querySelector('.day-xp-badge');if(xpEl)xpEl.textContent=isComplete?'✓ +'+day.xp+' XP earned':'⚡ '+day.xp+' XP';
+  const statusEl=card.querySelector('.day-status');
+  if(statusEl&&!movedDays[dayNum]){
+    if(isComplete)statusEl.innerHTML='<span class="status-done">✓ done</span>';
+    else if(done>0)statusEl.innerHTML=`<span class="status-pending">${pct}%</span>`;
+    else statusEl.innerHTML='<span class="status-pending">pending</span>';
+  }
+  updateXP();
+}
+
+// Update stats
+function updateStats(){
+  let totalTasks=0,doneTasks=0,doneDays=0;
+  ROADMAP.forEach(day=>{
+    const total=day.tasks.length;
+    const done=day.tasks.filter((_,i)=>taskState[day.day+'_'+i]).length;
+    totalTasks+=total;doneTasks+=done;
+    if(done===total)doneDays++;
+  });
+  const movedCount=Object.keys(movedDays).filter(k=>movedDays[k]).length;
+  const pct=totalTasks>0?Math.round((doneTasks/totalTasks)*100):0;
+  document.getElementById('stat-done').textContent=doneDays;
+  document.getElementById('stat-tasks').textContent=doneTasks;
+  document.getElementById('stat-remaining').textContent=36-doneDays;
+  document.getElementById('stat-moved').textContent=movedCount;
+  document.getElementById('op-pct').textContent=pct+'%';
+  document.getElementById('op-fill').style.width=pct+'%';
+  updateETA();updateXP();
+}
+
+// Back to top
+window.addEventListener('scroll',()=>{
+  const btn=document.getElementById('back-top');
+  if(btn)btn.classList.toggle('visible',window.scrollY>400);
+});
+
+// Keyboard shortcut: Space to toggle open card
+document.addEventListener('keydown',e=>{
+  if(e.code==='Space'&&e.target===document.body){
+    e.preventDefault();
+    const openCard=document.querySelector('.day-card.open');
+    if(openCard)openCard.classList.remove('open');
+  }
+});
 
 // Render
-function render() {
-  const container = document.getElementById('main-content');
-
-  const phases = [
-    { num: '1', title: 'Foundations', badge: 'p1', days: ROADMAP.filter(d => d.phase === 1) },
-    { num: '2', title: 'Intermediate', badge: 'p2', days: ROADMAP.filter(d => d.phase === 2) },
-    { num: '3', title: 'Advanced', badge: 'p3', days: ROADMAP.filter(d => d.phase === 3) },
+function render(){
+  const container=document.getElementById('main-content');
+  const phases=[
+    {num:'1',title:'Foundations',badge:'p1',days:ROADMAP.filter(d=>d.phase===1)},
+    {num:'2',title:'Intermediate',badge:'p2',days:ROADMAP.filter(d=>d.phase===2)},
+    {num:'3',title:'Advanced',badge:'p3',days:ROADMAP.filter(d=>d.phase===3)},
   ];
-
-  container.innerHTML = phases.map(phase => `
+  const phaseXP={1:ROADMAP.filter(d=>d.phase===1).reduce((s,d)=>s+d.xp,0),2:ROADMAP.filter(d=>d.phase===2).reduce((s,d)=>s+d.xp,0),3:ROADMAP.filter(d=>d.phase===3).reduce((s,d)=>s+d.xp,0)};
+  container.innerHTML=phases.map(phase=>`
     <div class="phase-section" data-phase="${phase.num}">
       <div class="phase-header">
         <span class="phase-badge ${phase.badge}">Phase ${phase.num}</span>
         <span class="phase-title">${phase.title}</span>
+        <span class="phase-xp">⚡ ${phaseXP[phase.num]} XP</span>
         <span class="phase-progress-text">${phase.days.length} days</span>
       </div>
-      <div class="day-grid">
-        ${phase.days.map(day => renderDayCard(day)).join('')}
-      </div>
+      <div class="day-grid">${phase.days.map(day=>renderDayCard(day)).join('')}</div>
     </div>
   `).join('');
-
-  // Init card states
-  ROADMAP.forEach(day => updateDayCard(day.day));
-  updateStats();
+  ROADMAP.forEach(day=>updateDayCard(day.day));
+  updateStats();updateStreak();updateTodayHighlight();
 }
 
-function renderDayCard(day) {
-  const total = day.tasks.length;
-  const done = day.tasks.filter((_, i) => taskState[day.day + '_' + i]).length;
-  const pct = Math.round((done / total) * 100);
-  const isComplete = done === total;
-  const isMoved = movedDays[day.day];
-
-  const statusHtml = isMoved && !isComplete
-    ? '<span class="status-moved">→ moved</span>'
-    : isComplete
-    ? '<span class="status-done">✓ done</span>'
-    : done > 0
-    ? `<span class="status-pending">${pct}%</span>`
-    : '<span class="status-pending">pending</span>';
-
+function renderDayCard(day){
+  const total=day.tasks.length;
+  const done=day.tasks.filter((_,i)=>taskState[day.day+'_'+i]).length;
+  const pct=Math.round((done/total)*100);
+  const isComplete=done===total;
+  const isMoved=movedDays[day.day];
+  const note=dayNotes[day.day]||'';
+  const statusHtml=isMoved&&!isComplete
+    ?'<span class="status-moved">→ moved</span>'
+    :isComplete?'<span class="status-done">✓ done</span>'
+    :done>0?`<span class="status-pending">${pct}%</span>`
+    :'<span class="status-pending">pending</span>';
   return `
-    <div class="day-card ${isComplete ? 'completed' : ''} ${isMoved && !isComplete ? 'moved' : ''}" data-day="${day.day}">
+    <div class="day-card ${isComplete?'completed':''} ${isMoved&&!isComplete?'moved':''}" data-day="${day.day}">
       <div class="day-header" onclick="toggleCard(${day.day})">
         <span class="day-num">DAY ${String(day.day).padStart(2,'0')}</span>
         <span class="day-type ${day.type}">${day.type}</span>
@@ -1314,30 +778,29 @@ function renderDayCard(day) {
         <span class="day-status">${statusHtml}</span>
         <span class="chevron">▼</span>
       </div>
-      <div class="day-mini-bar">
-        <div class="day-mini-fill" style="width:${pct}%"></div>
-      </div>
+      <div class="day-mini-bar"><div class="day-mini-fill" style="width:${pct}%"></div></div>
       <div class="task-count">${done} / ${total} tasks done</div>
+      <div class="day-xp-badge">${isComplete?'✓ +'+day.xp+' XP earned':'⚡ '+day.xp+' XP'}</div>
       <div class="day-tasks">
-        ${day.tasks.map((task, i) => {
-          const key = day.day + '_' + i;
-          const isDone = taskState[key];
-          return `
-            <div class="task-item ${isDone ? 'done' : ''}" data-task="${key}" onclick="toggleTask(${day.day}, ${i})">
-              <div class="task-check">${isDone ? '✓' : ''}</div>
-              <div class="task-text">${task}</div>
-            </div>
-          `;
+        <div class="revise-mode-banner" style="display:none">📖 Revise mode — redo tasks from scratch to reinforce memory</div>
+        ${day.tasks.map((task,i)=>{
+          const key=day.day+'_'+i;const isDone=taskState[key];
+          return `<div class="task-item ${isDone?'done':''}" data-task="${key}" onclick="toggleTask(${day.day},${i})"><div class="task-check">${isDone?'✓':''}</div><div class="task-text">${task}</div></div>`;
         }).join('')}
-        ${isMoved && !isComplete ? `<div class="moved-notice">📅 Moved — catch up when you can</div>` : ''}
+        ${isMoved&&!isComplete?`<div class="moved-notice">📅 Moved — catch up when you can</div>`:''}
+        <div class="day-notes-wrap">
+          <div class="notes-label">📝 your notes</div>
+          <textarea class="notes-textarea" placeholder="Write what you learned, commands to remember, issues you faced..." oninput="saveNote(${day.day},this.value)" onclick="event.stopPropagation()">${note}</textarea>
+          <div class="notes-saved" data-notes-saved="${day.day}">saved ✓</div>
+        </div>
         <div class="day-actions">
-          <button class="action-btn complete-all" onclick="event.stopPropagation(); completeAll(${day.day})">✓ complete all</button>
-          <button class="action-btn move-day" onclick="event.stopPropagation(); moveToNextDay(${day.day})">→ move to next day</button>
-          <button class="action-btn reset-day" onclick="event.stopPropagation(); resetDay(${day.day})">↺ reset</button>
+          <button class="action-btn complete-all" onclick="event.stopPropagation();completeAll(${day.day})">✓ complete all</button>
+          <button class="action-btn move-day" onclick="event.stopPropagation();moveToNextDay(${day.day})">→ move day</button>
+          ${isComplete?`<button class="revise-btn" onclick="event.stopPropagation();toggleRevise(${day.day})">📖 revise</button>`:''}
+          <button class="action-btn reset-day" onclick="event.stopPropagation();resetDay(${day.day})">↺ reset</button>
         </div>
       </div>
-    </div>
-  `;
+    </div>`;
 }
 
 render();
