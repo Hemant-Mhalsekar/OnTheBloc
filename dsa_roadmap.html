@@ -13,7 +13,7 @@
     --green:#4ade80;--green-dim:rgba(74,222,128,0.1);
     --yellow:#fbbf24;--yellow-dim:rgba(251,191,36,0.1);
     --red:#f87171;--red-dim:rgba(248,113,113,0.1);
-    --blue:#60a5fa;--purple:#a855f7;--orange:#f59e0b;--pink:#f472b6;--teal:#2dd4bf;
+    --purple:#a855f7;--orange:#f59e0b;--blue:#60a5fa;--pink:#f472b6;--teal:#2dd4bf;
     --mono:'JetBrains Mono',monospace;--display:'Epilogue',sans-serif;
   }
   *{box-sizing:border-box;margin:0;padding:0;}
@@ -21,26 +21,21 @@
   body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.03) 2px,rgba(0,0,0,0.03) 4px);pointer-events:none;z-index:9999;}
   body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(74,222,128,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(74,222,128,0.025) 1px,transparent 1px);background-size:32px 32px;pointer-events:none;z-index:0;}
   .app{position:relative;z-index:1;}
-
   header{padding:32px 24px 0;max-width:1100px;margin:0 auto;}
   .breadcrumb{font-size:11px;color:var(--muted);margin-bottom:20px;display:flex;align-items:center;gap:8px;}
-  .breadcrumb a{color:var(--accent);text-decoration:none;transition:opacity 0.2s;}
+  .breadcrumb a{color:var(--accent);text-decoration:none;}
   .breadcrumb a:hover{opacity:0.7;}
   .eyebrow{font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
   .eyebrow::before{content:'';display:inline-block;width:24px;height:1px;background:var(--accent);}
   h1{font-family:var(--display);font-size:clamp(28px,5vw,48px);font-weight:900;letter-spacing:-0.03em;line-height:1;margin-bottom:6px;}
   h1 span{background:linear-gradient(90deg,var(--accent),#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
   .header-desc{font-size:12px;color:var(--muted2);margin-top:6px;}
-
-  /* XP */
   .xp-bar-wrap{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 18px;margin:20px 0 8px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
   .xp-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;white-space:nowrap;}
   .xp-track{flex:1;min-width:120px;background:var(--surface3);border-radius:4px;height:8px;overflow:hidden;}
   .xp-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--accent),#60a5fa,var(--purple));transition:width 0.6s ease;}
   .xp-num{font-size:14px;font-weight:700;color:var(--accent);white-space:nowrap;font-family:var(--display);}
   .xp-level{font-size:11px;color:var(--muted2);}
-
-  /* Stats */
   .stats-bar{display:flex;gap:6px;flex-wrap:wrap;margin:16px 0;}
   .stat-pill{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 14px;}
   .stat-num{font-size:18px;font-weight:700;color:var(--text);font-family:var(--display);display:block;}
@@ -49,112 +44,96 @@
   .stat-pill.highlight .stat-num{color:var(--accent);}
   .stat-pill.streak-pill{border-color:rgba(245,158,11,0.4);background:rgba(245,158,11,0.08);}
   .stat-pill.streak-pill .stat-num{color:var(--orange);}
-
-  /* Toolbar */
   .toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:16px;}
-  .eta-pill{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 14px;font-size:11px;color:var(--muted2);display:flex;align-items:center;gap:6px;cursor:pointer;}
+  .eta-pill{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 14px;font-size:11px;color:var(--muted2);display:flex;align-items:center;gap:6px;cursor:pointer;transition:border-color 0.2s;}
+  .eta-pill:hover{border-color:var(--border2);}
   .eta-pill span{color:var(--accent);font-weight:600;}
-  .search-wrap{flex:1;min-width:180px;max-width:320px;position:relative;}
+  .search-wrap{flex:1;min-width:180px;max-width:340px;position:relative;}
   .search-input{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 14px 8px 34px;font-family:var(--mono);font-size:12px;color:var(--text);outline:none;transition:border-color 0.2s;}
   .search-input:focus{border-color:var(--accent);}
   .search-input::placeholder{color:var(--muted);}
   .search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--muted);pointer-events:none;}
   .search-clear{position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:11px;color:var(--muted);cursor:pointer;display:none;}
-
-  /* Progress */
   .overall-progress{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin-bottom:20px;}
   .op-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
   .op-label{font-size:11px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;}
   .op-pct{font-size:13px;font-weight:600;color:var(--accent);}
   .progress-track{background:var(--surface3);border-radius:4px;height:6px;overflow:hidden;}
   .progress-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--accent),#60a5fa,var(--purple));transition:width 0.5s ease;}
-
-  /* Phase tabs */
+  .error-log-section{background:var(--surface);border:1px solid rgba(248,113,113,0.2);border-radius:12px;padding:16px 20px;margin-bottom:20px;}
+  .error-log-title{font-size:12px;font-weight:600;color:var(--red);margin-bottom:8px;}
+  .error-log-sub{font-size:11px;color:var(--muted);margin-bottom:10px;}
+  .error-log-input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-family:var(--mono);font-size:12px;color:var(--muted2);resize:vertical;min-height:70px;outline:none;transition:border-color 0.2s;line-height:1.6;}
+  .error-log-input:focus{border-color:var(--red);color:var(--text);}
+  .error-log-input::placeholder{color:var(--muted);}
+  .saved-indicator{font-size:10px;color:var(--green);margin-top:4px;opacity:0;transition:opacity 0.3s;}
+  .saved-indicator.show{opacity:1;}
   .phase-tabs{display:flex;gap:6px;margin-bottom:20px;flex-wrap:wrap;}
   .phase-tab{font-family:var(--mono);font-size:11px;padding:7px 12px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--muted2);cursor:pointer;transition:all 0.15s;display:flex;align-items:center;gap:5px;}
   .phase-tab .tab-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
   .phase-tab:hover{border-color:var(--border2);color:var(--text);}
   .phase-tab.active{color:var(--text);background:var(--surface2);}
-
-  /* Error log */
-  .error-log-section{background:var(--surface);border:1px solid rgba(248,113,113,0.2);border-radius:12px;padding:16px 20px;margin-bottom:20px;}
-  .error-log-title{font-size:12px;font-weight:600;color:var(--red);margin-bottom:8px;display:flex;align-items:center;gap:8px;}
-  .error-log-input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-family:var(--mono);font-size:12px;color:var(--muted2);resize:vertical;min-height:60px;outline:none;transition:border-color 0.2s;line-height:1.6;}
-  .error-log-input:focus{border-color:var(--red);color:var(--text);}
-  .error-log-input::placeholder{color:var(--muted);}
-  .error-log-saved{font-size:10px;color:var(--green);margin-top:4px;opacity:0;transition:opacity 0.3s;}
-  .error-log-saved.show{opacity:1;}
-
-  /* Main */
   .main{max-width:1100px;margin:0 auto;padding:0 24px 120px;}
-  .phase-section{margin-bottom:40px;}
+  .phase-section{margin-bottom:48px;}
   .phase-section.hidden{display:none;}
-  .phase-header{display:flex;align-items:center;gap:12px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border);}
+  .phase-header{display:flex;align-items:center;gap:12px;margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid var(--border);}
   .phase-badge{font-size:10px;letter-spacing:0.12em;text-transform:uppercase;padding:4px 10px;border-radius:4px;font-weight:600;}
   .phase-title{font-family:var(--display);font-size:16px;font-weight:700;}
-  .phase-duration{font-size:11px;color:var(--muted);margin-left:4px;}
+  .phase-duration{font-size:11px;color:var(--muted);}
   .phase-xp{font-size:11px;color:var(--orange);margin-left:auto;}
-  .phase-progress-text{font-size:11px;color:var(--muted);margin-left:8px;}
-
-  /* Day grid */
+  .phase-note{font-size:12px;color:var(--muted2);margin-bottom:14px;padding:10px 14px;background:var(--surface);border-radius:8px;line-height:1.6;}
   .day-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:10px;}
-
-  /* Day card */
   .day-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:border-color 0.2s;position:relative;}
   .day-card:hover{border-color:var(--border2);}
   .day-card.completed{border-color:rgba(74,222,128,0.3);background:rgba(74,222,128,0.03);}
   .day-card.moved{border-color:rgba(251,191,36,0.3);background:rgba(251,191,36,0.03);}
-  .day-card.revision-card{border-color:rgba(168,85,247,0.3);background:rgba(168,85,247,0.03);}
-  .day-card.today-card{border-color:rgba(74,222,128,0.5);box-shadow:0 0 0 1px rgba(74,222,128,0.15);}
-  .today-badge{position:absolute;top:10px;right:10px;font-size:9px;background:var(--accent);color:#0a1a10;padding:2px 7px;border-radius:10px;letter-spacing:0.08em;text-transform:uppercase;font-weight:700;}
-  .search-highlight{border-color:rgba(251,191,36,0.5)!important;box-shadow:0 0 0 1px rgba(251,191,36,0.2);}
+  .day-card.search-highlight{border-color:rgba(251,191,36,0.5);box-shadow:0 0 0 1px rgba(251,191,36,0.2);}
   .task-text mark{background:rgba(251,191,36,0.2);color:var(--yellow);border-radius:2px;padding:0 2px;}
-
   .day-header{display:flex;align-items:center;gap:10px;padding:14px 16px 10px;cursor:pointer;user-select:none;}
-  .day-num{font-size:10px;font-weight:600;letter-spacing:0.1em;color:var(--muted);min-width:48px;flex-shrink:0;}
+  .topic-num{font-size:10px;font-weight:600;color:var(--muted);min-width:26px;flex-shrink:0;}
   .phase-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+  .diff-badge{font-size:9px;padding:2px 6px;border-radius:3px;flex-shrink:0;text-transform:uppercase;letter-spacing:0.08em;font-weight:600;}
+  .diff-beginner{background:rgba(74,222,128,0.12);color:var(--green);}
+  .diff-intermediate{background:rgba(96,165,250,0.12);color:var(--blue);}
+  .diff-advanced{background:rgba(248,113,113,0.12);color:var(--red);}
   .day-title{font-size:13px;font-weight:600;flex:1;line-height:1.3;}
-  .day-status{font-size:11px;margin-left:auto;flex-shrink:0;}
+  .day-status{font-size:11px;flex-shrink:0;}
   .status-done{color:var(--green);}
   .status-moved{color:var(--yellow);}
   .status-pending{color:var(--muted);}
-  .chevron{font-size:10px;color:var(--muted);transition:transform 0.2s;margin-left:6px;flex-shrink:0;}
+  .chevron{font-size:10px;color:var(--muted);transition:transform 0.2s;margin-left:4px;flex-shrink:0;}
   .day-card.open .chevron{transform:rotate(180deg);}
   .day-mini-bar{height:2px;background:var(--surface3);margin:0 16px;}
   .day-mini-fill{height:100%;transition:width 0.3s;border-radius:2px;}
   .day-card.completed .day-mini-fill{background:var(--green)!important;}
-  .task-count{font-size:10px;color:var(--muted);padding:4px 16px 4px;}
-  .day-xp-badge{font-size:10px;color:var(--orange);padding:0 16px 8px;}
-
-  /* Tasks */
+  .task-count{font-size:10px;color:var(--muted);padding:4px 16px 2px;}
+  .day-meta{display:flex;gap:12px;padding:2px 16px 8px;flex-wrap:wrap;}
+  .meta-item{font-size:10px;color:var(--muted2);}
+  .meta-item span{color:var(--orange);}
   .day-tasks{display:none;padding:8px 16px 14px;border-top:1px solid var(--border);margin-top:4px;}
   .day-card.open .day-tasks{display:block;animation:slideDown 0.2s ease;}
   @keyframes slideDown{from{opacity:0;transform:translateY(-4px);}to{opacity:1;transform:translateY(0);}}
-
-  .task-item{display:flex;align-items:flex-start;gap:10px;padding:8px 6px;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.15s;border-radius:4px;}
+  .tasks-section-label{font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);padding:8px 0 4px;display:flex;align-items:center;gap:8px;}
+  .tasks-section-label::after{content:'';flex:1;height:1px;background:var(--border);}
+  .task-item{display:flex;align-items:flex-start;gap:10px;padding:7px 6px;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.15s;border-radius:4px;}
   .task-item:last-of-type{border-bottom:none;}
   .task-item:hover{background:var(--surface2);}
   .task-check{width:16px;height:16px;border-radius:4px;border:1.5px solid var(--border2);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;font-size:10px;transition:all 0.15s;}
   .task-item.done .task-check{background:var(--green);border-color:var(--green);color:#0a1a10;}
   .task-text{font-size:12px;color:var(--muted2);line-height:1.5;flex:1;}
   .task-item.done .task-text{color:var(--muted);text-decoration:line-through;text-decoration-color:rgba(74,222,128,0.4);}
-
-  /* Stuck flag */
-  .stuck-btn{font-family:var(--mono);font-size:10px;padding:2px 8px;border-radius:4px;border:1px solid rgba(248,113,113,0.3);background:transparent;color:var(--muted);cursor:pointer;transition:all 0.15s;margin-left:auto;flex-shrink:0;}
-  .stuck-btn:hover,.task-item.stuck .stuck-btn{background:var(--red-dim);color:var(--red);border-color:rgba(248,113,113,0.5);}
   .task-item.stuck .task-text{color:var(--red)!important;text-decoration:none!important;}
   .task-item.stuck .task-check{border-color:var(--red);}
-
-  /* Notes */
+  .stuck-btn{font-family:var(--mono);font-size:9px;padding:2px 7px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all 0.15s;margin-left:auto;flex-shrink:0;}
+  .task-item.stuck .stuck-btn{background:var(--red-dim);color:var(--red);border-color:rgba(248,113,113,0.4);}
+  .stuck-btn:hover{background:var(--red-dim);color:var(--red);}
+  .mastery-check{background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.2);border-radius:8px;padding:10px 12px;margin-top:10px;font-size:12px;color:var(--muted2);line-height:1.6;}
+  .mastery-check strong{color:var(--orange);display:block;margin-bottom:4px;font-size:11px;}
   .day-notes-wrap{margin-top:10px;padding-top:10px;border-top:1px solid var(--border);}
   .notes-label{font-size:10px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;}
   .notes-textarea{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-family:var(--mono);font-size:12px;color:var(--muted2);resize:vertical;min-height:70px;outline:none;transition:border-color 0.2s;line-height:1.6;}
   .notes-textarea:focus{border-color:var(--accent);color:var(--text);}
   .notes-textarea::placeholder{color:var(--muted);}
-  .notes-saved{font-size:10px;color:var(--green);margin-top:4px;opacity:0;transition:opacity 0.3s;}
-  .notes-saved.show{opacity:1;}
-
-  /* Actions */
   .day-actions{display:flex;gap:6px;margin-top:12px;padding-top:12px;border-top:1px solid var(--border);flex-wrap:wrap;}
   .action-btn{font-family:var(--mono);font-size:10px;padding:5px 10px;border-radius:6px;border:1px solid var(--border);background:var(--surface2);color:var(--muted2);cursor:pointer;transition:all 0.15s;}
   .action-btn:hover{color:var(--text);border-color:var(--border2);}
@@ -167,134 +146,82 @@
   .revise-btn{font-family:var(--mono);font-size:10px;padding:5px 10px;border-radius:6px;border:1px solid rgba(168,85,247,0.3);background:rgba(168,85,247,0.08);color:var(--purple);cursor:pointer;transition:all 0.15s;}
   .revise-btn:hover{background:rgba(168,85,247,0.15);}
   .moved-notice{font-size:11px;color:var(--yellow);padding:6px 10px;background:var(--yellow-dim);border-radius:6px;margin-top:8px;border:1px solid rgba(251,191,36,0.2);}
-
-  /* Celebration */
   .celebration{display:none;position:fixed;inset:0;z-index:10000;pointer-events:none;overflow:hidden;}
   .celebration.show{display:block;}
-  .confetti-piece{position:absolute;width:8px;height:8px;border-radius:2px;animation:confettiFall linear forwards;}
+  .confetti-piece{position:absolute;animation:confettiFall linear forwards;}
   @keyframes confettiFall{0%{transform:translateY(-20px) rotate(0deg);opacity:1;}100%{transform:translateY(110vh) rotate(720deg);opacity:0;}}
-  .phase-complete-banner{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:var(--surface2);border:1px solid var(--accent);border-radius:16px;padding:32px 40px;text-align:center;z-index:10001;animation:popIn 0.4s ease;pointer-events:all;max-width:400px;width:90%;}
+  .phase-complete-banner{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:var(--surface2);border:1px solid var(--accent);border-radius:16px;padding:32px 40px;text-align:center;z-index:10001;animation:popIn 0.4s ease;pointer-events:all;max-width:420px;width:90%;}
   @keyframes popIn{from{transform:translate(-50%,-50%) scale(0.8);opacity:0;}to{transform:translate(-50%,-50%) scale(1);opacity:1;}}
   .phase-complete-banner h2{font-family:var(--display);font-size:26px;font-weight:900;background:linear-gradient(90deg,var(--accent),#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px;}
   .phase-complete-banner p{font-size:13px;color:var(--muted2);margin-bottom:20px;line-height:1.6;}
   .phase-complete-banner button{font-family:var(--mono);font-size:12px;padding:10px 24px;border-radius:8px;border:1px solid var(--accent);background:var(--accent-glow);color:var(--accent);cursor:pointer;}
-
-  /* Toast */
   .toast{position:fixed;bottom:80px;right:24px;background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:12px 18px;font-size:12px;color:var(--text);z-index:9998;transform:translateY(80px);opacity:0;transition:all 0.3s ease;max-width:300px;}
   .toast.show{transform:translateY(0);opacity:1;}
   .toast.green{border-color:rgba(74,222,128,0.4);}
   .toast.yellow{border-color:rgba(251,191,36,0.4);}
   .toast.purple{border-color:rgba(168,85,247,0.4);}
   .toast.red{border-color:rgba(248,113,113,0.4);}
-
-  /* Back to top */
   .back-top{position:fixed;bottom:24px;right:24px;background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:10px 14px;font-family:var(--mono);font-size:11px;color:var(--muted2);cursor:pointer;transition:all 0.2s;z-index:500;opacity:0;pointer-events:none;}
   .back-top.visible{opacity:1;pointer-events:all;}
   .back-top:hover{color:var(--text);border-color:var(--accent);}
-
   .search-results-info{font-size:11px;color:var(--yellow);padding:8px 0;display:none;}
   .no-results{text-align:center;padding:40px;color:var(--muted);font-size:13px;display:none;}
-
-  @media(max-width:600px){
-    .day-grid{grid-template-columns:1fr;}
-    .phase-tabs{gap:4px;}
-    .toolbar{flex-direction:column;align-items:stretch;}
-    .search-wrap{max-width:100%;}
-  }
-  ::-webkit-scrollbar{width:6px;}
-  ::-webkit-scrollbar-track{background:var(--bg);}
-  ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px;}
+  @media(max-width:600px){.day-grid{grid-template-columns:1fr;}.stats-bar{gap:6px;}.toolbar{flex-direction:column;align-items:stretch;}.search-wrap{max-width:100%;}}
+  ::-webkit-scrollbar{width:6px;}::-webkit-scrollbar-track{background:var(--bg);}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px;}
 </style>
 </head>
 <body>
 <div class="app">
   <header>
-    <div class="breadcrumb">
-      <a href="index.html">← onthebloc</a>
-      <span>/</span>
-      <span>dsa_roadmap</span>
-    </div>
-    <div class="eyebrow">10-phase roadmap</div>
-    <h1>DSA in <span>Java</span></h1>
-    <div class="header-desc">// 1 hr/day · campus placements · arrays → dp</div>
-
+    <div class="breadcrumb"><a href="index.html">← onthebloc</a><span>/</span><span>dsa_roadmap</span></div>
+    <div class="eyebrow">mastery roadmap · java</div>
+    <h1>DSA <span>Mastery</span></h1>
+    <div class="header-desc">// 5 phases · 28 topics · placement-ready · java edition</div>
     <div class="xp-bar-wrap">
       <div class="xp-label">XP</div>
       <div class="xp-track"><div class="xp-fill" id="xp-fill" style="width:0%"></div></div>
-      <div>
-        <div class="xp-num" id="xp-num">0 XP</div>
-        <div class="xp-level" id="xp-level">Beginner</div>
-      </div>
+      <div><div class="xp-num" id="xp-num">0 XP</div><div class="xp-level" id="xp-level">Beginner</div></div>
     </div>
-
     <div class="stats-bar">
-      <div class="stat-pill highlight">
-        <span class="stat-num" id="stat-done">0</span>
-        <div class="stat-label">topics done</div>
-      </div>
-      <div class="stat-pill">
-        <span class="stat-num" id="stat-tasks">0</span>
-        <div class="stat-label">problems done</div>
-      </div>
-      <div class="stat-pill">
-        <span class="stat-num" id="stat-remaining">0</span>
-        <div class="stat-label">topics left</div>
-      </div>
-      <div class="stat-pill">
-        <span class="stat-num" id="stat-stuck">0</span>
-        <div class="stat-label">flagged stuck</div>
-      </div>
-      <div class="stat-pill streak-pill">
-        <span class="stat-num" id="stat-streak">0🔥</span>
-        <div class="stat-label">day streak</div>
-      </div>
+      <div class="stat-pill highlight"><span class="stat-num" id="stat-done">0</span><div class="stat-label">topics done</div></div>
+      <div class="stat-pill"><span class="stat-num" id="stat-tasks">0</span><div class="stat-label">tasks done</div></div>
+      <div class="stat-pill"><span class="stat-num" id="stat-remaining">0</span><div class="stat-label">topics left</div></div>
+      <div class="stat-pill"><span class="stat-num" id="stat-stuck">0</span><div class="stat-label">stuck flags</div></div>
+      <div class="stat-pill streak-pill"><span class="stat-num" id="stat-streak">0🔥</span><div class="stat-label">day streak</div></div>
     </div>
-
     <div class="toolbar">
-      <div class="eta-pill" onclick="setStartDate()">
-        <span id="start-label">⚙ set start date</span>
-      </div>
+      <div class="eta-pill" onclick="setStartDate()"><span id="start-label">⚙ set start date</span></div>
       <div class="eta-pill">📅 ETA: <span id="eta-text">—</span></div>
       <div class="search-wrap">
         <span class="search-icon">🔍</span>
-        <input class="search-input" id="search-input" type="text" placeholder="search... (e.g. BFS, Kadane, DP)" oninput="handleSearch(this.value)">
+        <input class="search-input" id="search-input" type="text" placeholder="search... (e.g. Kadane, BFS, DP, HashMap)" oninput="handleSearch(this.value)">
         <span class="search-clear" id="search-clear" onclick="clearSearch()">✕</span>
       </div>
     </div>
     <div class="search-results-info" id="search-info"></div>
-
     <div class="overall-progress">
-      <div class="op-top">
-        <span class="op-label">overall progress</span>
-        <span class="op-pct" id="op-pct">0%</span>
-      </div>
+      <div class="op-top"><span class="op-label">overall progress</span><span class="op-pct" id="op-pct">0%</span></div>
       <div class="progress-track"><div class="progress-fill" id="op-fill" style="width:0%"></div></div>
     </div>
-
-    <!-- Error log -->
     <div class="error-log-section">
-      <div class="error-log-title">📋 Error log — patterns I keep forgetting</div>
-      <textarea class="error-log-input" id="error-log" placeholder="e.g. Keep forgetting Floyd's cycle detection condition... Two pointer setup for sorted arrays... " oninput="saveErrorLog(this.value)"></textarea>
-      <div class="error-log-saved" id="error-log-saved">saved ✓</div>
+      <div class="error-log-title">📋 Pattern Journal — patterns i keep forgetting</div>
+      <div class="error-log-sub">// for each pattern: what triggers it, what the template looks like, where you messed up</div>
+      <textarea class="error-log-input" id="error-log" placeholder="e.g. Floyd's cycle — move slow 1 step, fast 2 steps. Keep forgetting to reset slow to head for finding cycle start... Binary search — use lo + (hi - lo) / 2 NOT (lo + hi) / 2 to avoid overflow..." oninput="saveErrorLog(this.value)"></textarea>
+      <div class="saved-indicator" id="error-log-saved">saved ✓</div>
     </div>
-
     <div class="phase-tabs" id="phase-tabs">
-      <button class="phase-tab active" data-phase="all" onclick="filterPhase('all')">
-        <span class="tab-dot" style="background:var(--muted2)"></span> All
-      </button>
+      <button class="phase-tab active" data-phase="all" onclick="filterPhase('all')"><span class="tab-dot" style="background:var(--muted2)"></span>All</button>
     </div>
   </header>
-
   <div class="main">
     <div class="no-results" id="no-results">No topics match your search 🤷</div>
     <div id="main-content"></div>
   </div>
 </div>
-
 <button class="back-top" id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ top</button>
 <div class="toast" id="toast"></div>
 <div class="celebration" id="celebration">
-  <div class="phase-complete-banner" id="celebration-banner">
+  <div class="phase-complete-banner">
     <h2 id="celebration-title">Phase Complete!</h2>
     <p id="celebration-msg">Keep going.</p>
     <button onclick="closeCelebration()">continue →</button>
@@ -304,164 +231,261 @@
 <script>
 const PHASES = [
   {
-    id:1, name:'Arrays', color:'#5e6ad2', duration:'4–5 weeks', xpPer:15,
-    note:'The longest phase intentionally. Arrays are the base of everything.',
+    id:0, name:'Java Readiness', color:'#2dd4bf', duration:'1–2 weeks',
+    note:'Before DSA begins. Your Java must be invisible — you should not be thinking about syntax while solving problems.',
+    celebrationMsg:'Java foundation locked. Language is invisible. Time to actually start DSA.',
     topics:[
-      {title:'Basic Operations',tasks:['Traversal — iterate through array, print all elements','Sum of all elements','Find minimum element','Find maximum element','Reverse an array in-place']},
-      {title:'Searching',tasks:['Linear search — find index of target','Find duplicates in array','Frequency count of each element']},
-      {title:'Sorting-based Problems',tasks:['Sort array of 0s, 1s, 2s (Dutch National Flag)','Merge two sorted arrays','Check if array is sorted']},
-      {title:'Two Pointer Technique',tasks:['Two Sum — find pair with given sum','Move zeros to end','Move all negatives to left side']},
-      {title:'Sliding Window',tasks:['Maximum sum of K consecutive elements','Maximum consecutive 1s','Longest subarray with given sum']},
-      {title:'Prefix Sum',tasks:['Equilibrium point — index where left sum = right sum','Subarray with given sum using prefix','Count subarrays with equal 0s and 1s']},
-      {title:'Rotation',tasks:['Left rotate array by K positions','Right rotate array by K positions']},
-      {title:'Bit Manipulation on Arrays',tasks:['XOR tricks — what XOR of same number gives','Find missing number using XOR','Find duplicate + missing number','Swap two numbers without temp variable']},
-      {title:'Classic Hard Problems',tasks:["Kadane's algorithm — maximum subarray sum","Stock buy and sell — maximum profit","Trapping rainwater — water between bars","Product of array except self — no division"]},
-      {title:'2D Matrix',tasks:['Traversal — row by row and column by column','Transpose a matrix','Rotate matrix 90 degrees','Spiral order traversal','Diagonal traversal','Search in row-wise and column-wise sorted matrix']},
+      {title:'Primitives, Wrappers & Autoboxing', difficulty:'beginner', time:'1 day', problems:0, xp:10,
+       concepts:['int vs Integer, char vs Character — know the difference','Autoboxing and unboxing — when Java converts automatically','Integer cache gotcha: Integer a = 128; Integer b = 128; a == b is FALSE','Use .equals() for object comparison, == only for primitives'],
+       questions:['Write code that demonstrates the Integer cache issue','Explain why Integer.valueOf(127) == Integer.valueOf(127) is true but not for 128'],
+       mistakes:['Using == to compare Integer objects — classic bug that trips candidates in live interviews'],
+       mastery:''},
+      {title:'Arrays & String APIs', difficulty:'beginner', time:'2 days', problems:0, xp:10,
+       concepts:['Arrays.sort(), Arrays.fill(), Arrays.copyOf(), System.arraycopy()','Arrays are objects in Java — passed by reference','String immutability — every modification creates a new object','StringBuilder vs String for frequent modification — O(n) vs O(n²)','charAt(), substring(), indexOf(), split(), toCharArray(), String.valueOf()'],
+       questions:['Write a program reversing a string using toCharArray()','Explain why string concatenation in a loop is O(n²)'],
+       mistakes:['Concatenating strings in a loop — always use StringBuilder inside loops'],
+       mastery:''},
+      {title:'Collections Framework', difficulty:'beginner', time:'3 days', problems:0, xp:15,
+       concepts:['ArrayList — dynamic array, O(1) amortized add, O(n) insert/delete','LinkedList — O(1) insert/delete at ends, O(n) access','Stack — use ArrayDeque NOT java.util.Stack (legacy, slower)','Queue — use ArrayDeque or LinkedList','PriorityQueue — min-heap by default, O(log n) insert/poll','HashMap — O(1) average lookup. getOrDefault(), containsKey(), entrySet()','LinkedHashMap — insertion-order HashMap. Used for LRU Cache','TreeMap — sorted order, O(log n). floor(), ceiling(), firstKey()','HashSet, LinkedHashSet, TreeSet — same distinctions apply'],
+       questions:['When would you use TreeMap over HashMap?','Implement a frequency counter for words in a sentence using HashMap'],
+       mistakes:['Using java.util.Stack — use ArrayDeque instead','Using ArrayList when size is known — use int[] instead, faster and less memory'],
+       mastery:''},
+      {title:'Sorting with Comparators', difficulty:'beginner', time:'1 day', problems:0, xp:10,
+       concepts:['Arrays.sort(arr, (a,b) -> a-b) — ascending','Arrays.sort(arr, (a,b) -> b-a) — descending','Comparator.comparing() for custom objects','Collections.sort(), Collections.reverse()','Arrays.sort() on primitives: dual-pivot quicksort (not stable)','Arrays.sort() on objects: TimSort (stable)'],
+       questions:['Sort array of int[] pairs by second element descending','Sort list of strings by length, then alphabetically for ties'],
+       mistakes:['Forgetting that Arrays.sort on int[] is not stable — use Integer[] if stability matters'],
+       mastery:'Write a program that reads input, stores in HashMap, sorts entries by value using custom comparator, prints results — without referencing documentation.'},
     ]
   },
   {
-    id:2, name:'Strings', color:'#f472b6', duration:'2–3 weeks', xpPer:15,
-    note:'Java strings have their own quirks — immutability, StringBuilder, String pool.',
+    id:1, name:'Foundation Phase', color:'#5e6ad2', duration:'3–4 weeks',
+    note:'Complexity analysis and recursion. These are not topics — they are the lens through which you see all other topics.',
+    celebrationMsg:'Foundation solid. Complexity is your language now. Recursion is your thinking style. Phase 2 starts.',
     topics:[
-      {title:'Java String Basics',tasks:['Immutability — why Strings are immutable in Java','StringBuilder vs String — when to use each','charAt(), substring(), length(), indexOf()','String comparison — equals() vs == (important in Java)','String to char array and back']},
-      {title:'Classic Operations',tasks:['Reverse a string','Palindrome check','Anagram check — two strings have same characters']},
-      {title:'Character Frequency',tasks:['Frequency count using array (for lowercase a-z)','Frequency count using HashMap']},
-      {title:'Pattern Problems',tasks:['Isomorphic strings — one string maps to another','Valid anagram — confirm using sorted chars or map','Longest substring without repeating characters (sliding window)']},
-      {title:'String Manipulation',tasks:['String compression — aabccc → a2bc3','Count vowels and consonants in a string','Longest common prefix from array of strings']},
-      {title:'Stack-based String',tasks:['Valid parentheses — intro to stack thinking with strings']},
+      {title:'Time & Space Complexity', difficulty:'beginner', time:'3–4 days', problems:20, xp:15,
+       concepts:['Big O — upper bound (worst case). O(1), O(log n), O(n), O(n log n), O(n²), O(2^n), O(n!)','Big Omega — lower bound (best case). Rarely tested but understand conceptually','Big Theta — tight bound when best and worst case are same order','Space complexity includes call stack — recursive function of depth n has O(n) space','For loops: count iterations. Nested loops: multiply. Recursive: use recurrence relations','T(n) = T(n/2) + O(1) → O(log n) — binary search','T(n) = T(n-1) + O(n) → O(n²) — selection sort','T(n) = 2T(n/2) + O(n) → O(n log n) — merge sort'],
+       questions:['Analyze complexity of: nested loop with j starting from i','Analyze complexity of recursive fibonacci — why is it O(2^n)?','What is the space complexity of a recursive DFS on a tree of height h?'],
+       mistakes:['Confusing time complexity with actual runtime — O(n²) can be faster than O(n log n) for small n','Ignoring space complexity of recursive solutions in interviews'],
+       mastery:'Take 20 pieces of existing code and manually calculate time AND space complexity before checking answers. Do not write new code yet.'},
+      {title:'Recursion & the Call Stack', difficulty:'intermediate', time:'5–7 days', problems:25, xp:20,
+       concepts:['Base case and recursive case — always define stopping condition first','Call stack visualization — draw the stack for small inputs before coding','Recurrence relations — T(n) = f(T(smaller)) + work at this level','Tail recursion vs head recursion vs tree recursion','Tree recursion — multiple recursive calls per function. Foundation of trees and D&C'],
+       questions:['Factorial and Fibonacci — understand exponential cost of naive Fibonacci','Sum of array elements recursively','Power function x^n — introduces divide and conquer thinking','Reverse a string recursively','Check if array is sorted recursively','Binary search — recursive version','Print all subsets of an array','Print all permutations of a string','Tower of Hanoi — builds deep understanding','Flood fill — first recursive grid problem'],
+       mistakes:['Jumping to code before drawing the recursion tree','Missing base case or wrong order in recursive case','Not tracking return value — some recursions return, others just print. Know which you are writing'],
+       mastery:'Solve "Generate all permutations of a string" and "Generate all subsets of an array" independently with correct time complexity analysis.'},
     ]
   },
   {
-    id:3, name:'HashMap + HashSet', color:'#2dd4bf', duration:'2 weeks', xpPer:12,
-    note:'Core data structures for O(1) lookup. Used everywhere in interviews.',
+    id:2, name:'Core DSA Phase', color:'#60a5fa', duration:'8–10 weeks',
+    note:'Arrays through Hashing. The bread and butter of every interview. Do not rush this phase.',
+    celebrationMsg:'Core DSA complete. You can now solve easy problems in under 15 mins and recognize data structures within 2 mins. Phase 3 starts.',
     topics:[
-      {title:'Frequency Problems',tasks:['Count frequency of digits in a number','Count frequency of characters in a string','Count frequency of elements in an array']},
-      {title:'Classic HashMap Problems',tasks:['Two Sum using HashMap — store complement','Majority element — element appearing > n/2 times','First element with frequency >= K']},
-      {title:'HashSet Problems',tasks:['Find distinct elements in array','Subset check — is every element of A in B','Array equality check using sets','Intersection of two arrays — common elements','Any pair summing to K using HashSet']},
-      {title:'Sliding Window with HashMap',tasks:['Longest substring without repeating characters — revisit using HashSet/HashMap','Understand difference from string approach']},
+      {title:'Arrays', difficulty:'intermediate', time:'4–5 days learn, 10–14 days practice', problems:40, xp:25,
+       concepts:['In-place vs extra space — many problems want O(1) extra space','Prefix sum: prefix[i] = prefix[i-1] + arr[i]. Range sum l to r = prefix[r] - prefix[l-1]',"Kadane's algorithm — at each position, extend existing subarray or start fresh. O(n)",'Dutch National Flag — 3-way partition with low/mid/high pointers','Cyclic sort — for arrays with numbers in [1,n] range. Place at correct index, scan for mismatches','Two-pointer technique for in-place rearrangement'],
+       questions:['Maximum subarray sum (Kadane\'s)','Move zeros to end','Find the duplicate in [1,n] array','Rotate array by k positions','Merge two sorted arrays','Find all triplets summing to zero (3Sum)','Maximum product subarray','Longest consecutive sequence','Trapping rainwater','Product of array except self'],
+       mistakes:['Off-by-one errors in index calculations','Modifying array while iterating','Not handling edge cases: empty array, single element, all same elements','Using extra space when problem asks for in-place'],
+       mastery:'Solve easy array problems in under 10 minutes without hints. 40 problems minimum: ~20 easy, 15 medium, 5 hard.'},
+      {title:'Strings', difficulty:'intermediate', time:'3–4 days learn, 7–10 days practice', problems:30, xp:20,
+       concepts:['Immutability — convert to char[] for frequent modification: toCharArray(), then new String(arr)','StringBuilder.append() is O(1) amortized — total O(n) vs O(n²) for + concatenation','Frequency map using int[26] — faster than HashMap for lowercase English letters','Two pointers on strings — palindrome detection, reversing words','Sliding window on strings — hardest string patterns, covered deeper in Topic 16'],
+       questions:['Reverse words in a sentence','Check if two strings are anagrams','Longest palindromic substring','Group anagrams','Count and say','Decode string (e.g. "3[a2[bc]]")','Valid parentheses (introduction to stack)','Roman to integer'],
+       mistakes:['Using == instead of .equals() for String comparison','Forgetting substring() creates a new String object','Not handling uppercase/lowercase uniformly','charAt() without bounds checking'],
+       mastery:''},
+      {title:'Searching Algorithms', difficulty:'beginner', time:'2–3 days learn, 5–7 days practice', problems:20, xp:15,
+       concepts:['Linear search — O(n), no prerequisites on data','Binary search — O(log n), requires sorted data','CRITICAL: write mid = lo + (hi - lo) / 2 NOT (lo + hi) / 2 — avoids integer overflow','Template 1: find exact match — while (lo <= hi)','Template 2: find leftmost/rightmost — do not stop at first match, continue narrowing','Template 3: binary search on answer space — search for min/max value satisfying a condition'],
+       questions:['Find first and last position of element in sorted array','Search in rotated sorted array','Find minimum in rotated sorted array','Koko eating bananas (search on answer)','Aggressive cows / book allocation','Peak element in array','Square root of number (integer part)'],
+       mistakes:['lo < hi vs lo <= hi — wrong template for the problem','Not recognizing binary search on answer problems','Off-by-one on boundary conditions'],
+       mastery:''},
+      {title:'Sorting Algorithms', difficulty:'intermediate', time:'5–6 days learn, 5–7 days practice', problems:15, xp:15,
+       concepts:['Bubble sort O(n²) — understand, not used in practice','Selection sort O(n²) — O(1) space','Insertion sort — O(n²) worst, O(n) best. Used internally by Java for small subarrays','Merge sort — O(n log n) always. Divide-sort-merge. O(n) space. STABLE. Pattern reused in count inversions, sort linked list','Quick sort — O(n log n) average. Pivot, partition, recurse. NOT stable. Cache-efficient','Quick Select — O(n) average for kth smallest. Uses partition WITHOUT full sort','Counting/Radix/Bucket sort — O(n) for specific conditions. Know when they apply','Arrays.sort() on primitives: dual-pivot quicksort (not stable). On objects: TimSort (stable)'],
+       questions:['Sort colors — Dutch National Flag','Merge intervals','Kth largest element (Quick Select)','Meeting rooms I and II (sort by start time)','Count inversions in array (modified merge sort)'],
+       mistakes:['Implementing quicksort with worst-case pivot selection (always first/last element on sorted array)'],
+       mastery:''},
+      {title:'Linked Lists', difficulty:'intermediate', time:'5–6 days learn, 10–12 days practice', problems:35, xp:20,
+       concepts:['Implement ListNode class from scratch — interviewers want pointer manipulation, not built-in LinkedList','Fast and slow pointers (Floyd\'s) — MOST IMPORTANT LL technique. Move slow 1 step, fast 2 steps','Floyd\'s applications: cycle detection, find cycle start, find middle, palindrome check','Reversal — three pointers: prev, curr, next. Master this cold','Merge two sorted lists — classic recursion. Merge k sorted: use PriorityQueue'],
+       questions:['Reverse linked list (iterative + recursive)','Detect cycle and find cycle start','Find middle of linked list','Merge two sorted lists','Merge k sorted lists (PriorityQueue)','Remove nth node from end (two pointers with gap n)','Reorder list (find middle, reverse second half, merge)','Copy list with random pointer','LRU Cache (HashMap + Doubly Linked List)'],
+       mistakes:['Not handling 0 or 1 node edge cases','Losing next pointer before updating during reversal','Using Java\'s built-in LinkedList instead of implementing ListNode'],
+       mastery:''},
+      {title:'Stacks', difficulty:'intermediate', time:'3–4 days learn, 7–10 days practice', problems:25, xp:18,
+       concepts:['Use ArrayDeque NOT java.util.Stack — Stack is synchronized, slower, legacy','ArrayDeque methods: push/pop/peek for stack. offer/poll/peek for queue','Expression evaluation — infix to postfix, postfix evaluation','Balanced parentheses — push opening, pop on closing, verify match','Monotonic Stack (intro) — maintain increasing/decreasing order. Pop violators. O(n) for next greater/smaller element'],
+       questions:['Valid parentheses','Min stack (getMin in O(1))','Evaluate reverse polish notation','Daily temperatures (monotonic stack intro)','Next greater element I and II','Largest rectangle in histogram (hard but important)','Decode string'],
+       mistakes:['Using java.util.Stack in interviews'],
+       mastery:''},
+      {title:'Queues', difficulty:'intermediate', time:'2–3 days learn, 5–7 days practice', problems:15, xp:12,
+       concepts:['Queue: offer() to add, poll() to remove, peek() to view front','Circular queue — fixed array with modular arithmetic wrap-around','Deque (ArrayDeque) — insert/delete from both ends. CRITICAL for sliding window maximum','BFS uses queues — this topic prepares you for graphs'],
+       questions:['Implement queue using two stacks','Implement stack using two queues','Sliding window maximum (monotonic deque)','First non-repeating character in stream','BFS shortest path preview'],
+       mistakes:['Not using Deque for sliding window — regular Queue cannot do this'],
+       mastery:''},
+      {title:'Hashing', difficulty:'intermediate', time:'4–5 days learn, 8–10 days practice', problems:30, xp:20,
+       concepts:['HashMap vs HashSet — HashMap for key-value, HashSet for existence only','Java HashMap: chaining with linked list (upgrades to red-black tree at 8+ collisions). O(1) avg, O(n) worst','TreeMap/TreeSet — sorted order, O(log n). Use for floor/ceiling queries','LinkedHashMap — insertion order. Used in LRU Cache implementation','Frequency counting pattern: map.getOrDefault(key, 0) + 1','Index tracking pattern (Two Sum): if target - arr[i] exists in map, found the pair'],
+       questions:['Two sum (HashMap)','Subarray with given sum (prefix sum + HashMap)','Longest consecutive sequence','Group anagrams','Top K frequent elements','Isomorphic strings / word pattern','Subarrays with zero sum','4Sum count'],
+       mistakes:['Using HashMap when array in [1,n] — use int[] array, faster','Forgetting containsKey() check before get()'],
+       mastery:''},
     ]
   },
   {
-    id:4, name:'Linked List', color:'#f59e0b', duration:'3 weeks', xpPer:18,
-    note:'Most placement exams have at least one LL question.',
+    id:3, name:'Tree & Graph Structures', color:'#f59e0b', duration:'8–10 weeks',
+    note:'Trees test recursion deeply. Graphs are the most complex and most rewarding topic. Start Blind 75 in parallel after completing this phase.',
+    celebrationMsg:'Trees and Graphs done. You can identify graph problem types within 3 mins. Blind 75 at 70%+ is your next milestone.',
     topics:[
-      {title:'Singly Linked List Basics',tasks:['Node structure in Java — class with data and next','Insert at head, tail, and middle','Delete node by value and by position','Traverse and print all nodes','Search for a value']},
-      {title:'Classic LL Operations',tasks:['Reverse a linked list — iterative approach','Reverse a linked list — recursive approach','Find middle of LL using slow/fast pointer']},
-      {title:'Cycle Problems',tasks:["Detect loop using Floyd's cycle detection algorithm","Remove loop after detecting it"]},
-      {title:'Merge and Split',tasks:['Merge two sorted linked lists','Remove Nth node from end of list']},
-      {title:'Advanced LL Problems',tasks:['Check if linked list is palindrome','Add two numbers represented as linked lists']},
-      {title:'Doubly Linked List',tasks:['Node structure — data, prev, next','Insert at head and tail','Delete a node','Reverse a doubly linked list']},
+      {title:'Binary Trees', difficulty:'intermediate', time:'6–7 days learn, 14–16 days practice', problems:45, xp:25,
+       concepts:['TreeNode class: int val, TreeNode left, TreeNode right','Traversals: Inorder (L-Root-R), Preorder (Root-L-R), Postorder (L-R-Root), Level Order (BFS with queue)','Know recursive AND iterative for all four. Iterative inorder uses stack. Level order uses queue','Height = longest path from node to leaf. Depth = distance from root to node','Diameter = height of left subtree + height of right subtree at each node. Track max in single DFS pass','LCA: recurse left and right. If both non-null, current node is LCA','Path sum with prefix + HashMap: count all paths summing to target (can start anywhere)'],
+       questions:['Maximum depth of binary tree','Symmetric tree','Path sum I and II','Level order traversal','Zigzag level order traversal','Serialize and deserialize binary tree','Diameter of binary tree','Maximum path sum','Construct binary tree from inorder and preorder','Lowest common ancestor','Count good nodes','Invert binary tree'],
+       mistakes:['Not handling null in recursive functions','Confusing height and depth','Learning iterative before mastering recursive — do recursive first'],
+       mastery:''},
+      {title:'Binary Search Trees (BST)', difficulty:'intermediate', time:'3–4 days learn, 8–10 days practice', problems:25, xp:18,
+       concepts:['Key property: inorder traversal gives sorted order — many BST problems reduce to this','Search and insert follow BST property recursively','Delete: 3 cases — leaf (just remove), one child (replace with child), two children (find inorder successor)','Validate BST: pass valid range [min, max] down. Use Long.MIN_VALUE/MAX_VALUE to handle edge cases','Kth smallest: inorder traversal, stop at kth element'],
+       questions:['Validate BST','Kth smallest element in BST','LCA in BST','Convert BST to greater tree','Inorder successor in BST','Two Sum BST','Recover BST (two nodes swapped)'],
+       mistakes:['Validating by only checking left < root < right — must pass valid range down the tree'],
+       mastery:''},
+      {title:'Heaps & Priority Queues', difficulty:'intermediate', time:'4–5 days learn, 8–10 days practice', problems:25, xp:20,
+       concepts:['Min-heap by default: new PriorityQueue<>(). Max-heap: new PriorityQueue<>(Collections.reverseOrder())','Custom comparator: new PriorityQueue<>((a,b) -> a[1] - b[1]) — sorted by second element','Top K elements pattern: maintain min-heap of size K. When size exceeds K, poll. Final heap = K largest. O(n log k)','K-way merge: add first element from each sorted list. Poll min, add next from that list. O(n log k)','Median of data stream: max-heap for lower half, min-heap for upper half. Balance after each insert'],
+       questions:['Kth largest element in array','Kth largest in stream','Top K frequent elements','Merge K sorted lists','Find median from data stream','Task scheduler','K closest points to origin','Reorganize string'],
+       mistakes:[''],
+       mastery:''},
+      {title:'Tries (Prefix Trees)', difficulty:'intermediate', time:'3–4 days learn, 5–7 days practice', problems:15, xp:15,
+       concepts:['TrieNode: TrieNode[] children = new TrieNode[26]; boolean isEnd = false','Insert: traverse creating nodes for each character','Search: traverse checking nodes exist','startsWith: same as search but do not check isEnd','O(L) for all operations where L = word length','Use when: working with set of words, prefix matching, autocomplete'],
+       questions:['Implement trie (insert, search, startsWith)','Add and search word (with wildcards using .)','Word search II (trie + backtracking on grid)','Maximum XOR of two numbers (binary trie)','Longest word in dictionary'],
+       mistakes:[''],
+       mastery:''},
+      {title:'Graphs', difficulty:'advanced', time:'10–12 days learn, 18–20 days practice', problems:50, xp:30,
+       concepts:['Adjacency list: List<List<Integer>> — standard for interviews. For weighted: List<List<int[]>>','Adjacency matrix: int[][] — for dense graphs or when edge lookup by pair needed','BFS template: add source to queue + visited, while queue not empty: poll, process, add unvisited neighbors','DFS template: recursive or explicit stack, mark visited before recursing','Cycle in undirected: DFS with parent tracking. If visited node is not your parent, cycle exists','Cycle in directed: 3 colors — white (unvisited), gray (in stack), black (done). Gray-to-gray = cycle','Topological sort DFS: add node to result AFTER all neighbors processed, then reverse','Topological sort BFS (Kahn\'s): process nodes with in-degree 0, reduce neighbor in-degrees','Dijkstra: min-heap, relax neighbors. O((V+E) log V). Fails with negative edges','Bellman-Ford: relax all edges V-1 times. Handles negative weights. Detects negative cycles. O(VE)','Floyd-Warshall: all-pairs shortest path. O(V³)','Bipartite check: BFS/DFS with 2-coloring. No two adjacent nodes same color'],
+       questions:['Number of islands (DFS/BFS on grid)','Clone graph','Course schedule I and II (topological sort)','Network delay time (Dijkstra)','Cheapest flights within K stops','Number of connected components','Pacific Atlantic water flow','Word ladder (BFS shortest path)','Alien dictionary (topological sort on chars)','Rotting oranges (multi-source BFS)','Critical connections (Tarjan\'s bridges)'],
+       mistakes:['Not marking visited BEFORE adding to queue — causes re-processing','Confusing directed/undirected cycle detection algorithms','Using DFS for shortest path in unweighted graph — BFS gives shortest path','Not handling disconnected graphs (outer loop over all nodes)'],
+       mastery:''},
     ]
   },
   {
-    id:5, name:'Stack + Queue', color:'#a855f7', duration:'2–3 weeks', xpPer:15,
-    note:'Stack and Queue underlie a surprising number of interview problems.',
+    id:4, name:'Advanced Patterns & Algorithms', color:'#a855f7', duration:'10–14 weeks',
+    note:'This is where good candidates become great ones. Patterns, not formulas. DP especially — start only after recursion is solid.',
+    celebrationMsg:'Advanced patterns done. First instinct on new problems is now to identify the pattern, not search for a formula. That is the shift.',
     topics:[
-      {title:'Stack Implementation',tasks:['Stack using array — push, pop, peek, isEmpty','Stack using Java Stack class — same operations','Know time complexity of each operation']},
-      {title:'Queue Implementation',tasks:['Queue using array — enqueue, dequeue, front, isEmpty','Queue using Java Queue interface (LinkedList)','Know time complexity of each operation']},
-      {title:'Stack Problems',tasks:['Valid parentheses — classic stack application','Balanced brackets — extension of parentheses','Next greater element — monotonic stack','Min stack — getMin in O(1)']},
-      {title:'Infix/Postfix',tasks:['Understand infix, postfix, prefix notation','Infix to postfix conversion using stack']},
-      {title:'Queue Problems',tasks:['First non-repeating character in a stream']},
-      {title:'Deque and Advanced',tasks:['Deque concept — operations at both ends','Sliding window maximum using Deque']},
-      {title:'Implement One Using Other',tasks:['Implement stack using two queues','Implement queue using two stacks']},
+      {title:'Sliding Window', difficulty:'intermediate', time:'3–4 days learn, 7–8 days practice', problems:20, xp:18,
+       concepts:['Fixed size window: maintain running computation. Add new (right), subtract leaving (right - k)','Variable size window: expand right, shrink left when condition violated. Track optimal length','Two types of violation: exceeded count, or condition broken — know which shrink strategy applies'],
+       questions:['Maximum sum subarray of size k','Longest substring without repeating characters','Minimum window substring','Longest substring with at most k distinct characters','Find all anagrams in a string','Sliding window maximum (monotonic deque)','Fruit into baskets'],
+       mistakes:['Not resetting the window state correctly when shrinking','Confusing fixed vs variable window problems'],
+       mastery:''},
+      {title:'Two Pointers', difficulty:'intermediate', time:'2–3 days learn, 5–7 days practice', problems:20, xp:15,
+       concepts:['Opposite ends: left=0, right=n-1. Move based on condition. For: two sum sorted, 3sum, container with most water, trapping rainwater','Same direction (fast/slow): cycle detection, find middle, remove duplicates','Partition: separate elements by condition while iterating. Dutch national flag, move zeros'],
+       questions:['Two sum II (sorted input)','Three sum','Container with most water','Trapping rain water','Remove duplicates from sorted array','Valid palindrome'],
+       mistakes:['Not sorting first for 3Sum — skip duplicates after sorting','Moving both pointers when only one should move'],
+       mastery:''},
+      {title:'Prefix Sum', difficulty:'intermediate', time:'2 days learn, 4–5 days practice', problems:15, xp:12,
+       concepts:['prefix[i] = arr[0] + ... + arr[i]. Sum from l to r = prefix[r] - prefix[l-1]','Prefix sum + HashMap pattern: count subarrays with sum k. If runningSum - k in map, valid subarray found','Extend to 2D: for matrix range sum queries'],
+       questions:['Subarray sum equals k','Contiguous array (equal 0s and 1s)','Minimum size subarray sum','Product of array except self (prefix product + suffix product)','Range sum query'],
+       mistakes:['Forgetting to initialize prefix[-1] = 0 in the HashMap before the loop'],
+       mastery:''},
+      {title:'Advanced Binary Search', difficulty:'intermediate', time:'3–4 days learn, 7–8 days practice', problems:20, xp:15,
+       concepts:['Binary search on answer space: answer in range [lo, hi], feasibility function is monotonic','Binary search on monotonic function: function strictly increasing/decreasing, find target value','Binary search in 2D matrix: treat as 1D. row = mid/cols, col = mid%cols'],
+       questions:['Search a 2D matrix','Find peak element','Minimum in rotated sorted array','Search in rotated sorted array','Koko eating bananas','Capacity to ship packages within D days','Split array largest sum'],
+       mistakes:['Not identifying binary search on answer problems — they do not look like binary search initially'],
+       mastery:''},
+      {title:'Monotonic Stack', difficulty:'intermediate', time:'3–4 days learn, 7–8 days practice', problems:15, xp:18,
+       concepts:['Maintain stack in monotonically increasing or decreasing order','When you pop x because new element y is smaller: y is Next Smaller Element to right of x','When y is larger: y is Next Greater Element. O(n) solutions to O(n²) problems','For increasing monotonic stack: pop when current < stack top. For decreasing: pop when current > stack top'],
+       questions:['Daily temperatures','Next greater element I and II','Largest rectangle in histogram (uses monotonic stack twice — hardest)','Trapping rain water (monotonic stack approach)','Remove k digits to make smallest number','132 pattern'],
+       mistakes:['Not recognizing monotonic stack problems — trigger: "next greater", "next smaller", "span", "histogram"'],
+       mastery:''},
+      {title:'Greedy Algorithms', difficulty:'intermediate', time:'4–5 days learn, 8–10 days practice', problems:20, xp:18,
+       concepts:['Greedy: locally optimal choice at each step → globally optimal result','Greedy choice property: must be able to prove local optimum leads to global optimum','Interval scheduling: sort by end time, greedily pick non-overlapping intervals','Meeting rooms: count simultaneous intervals — sort starts and ends separately','Jump game: at each position, track furthest reachable index'],
+       questions:['Jump game I and II','Meeting rooms I and II','Non-overlapping intervals','Partition labels','Gas station','Candy distribution','Assign cookies','Minimum arrows to burst balloons'],
+       mistakes:['Applying greedy without verifying greedy choice property','Greedy fails for 0/1 knapsack — DP required. If you cannot prove why greedy works, it probably does not'],
+       mastery:''},
+      {title:'Backtracking', difficulty:'advanced', time:'5–6 days learn, 10–12 days practice', problems:25, xp:25,
+       concepts:['Exhaustive search with pruning — explore all possibilities, prune invalid paths','Template: for each choice, if valid: makeChoice → recurse → undoChoice (backtrack)','The undo step is CRITICAL — without it state bleeds into sibling branches','Subsets: include/exclude each element. O(2^n)','Permutations: every ordering. O(n!)','Combinations: choose k from n. Controlled by start index','Constraint satisfaction: N-Queens, Sudoku. Prune aggressively'],
+       questions:['Subsets I and II (with duplicates)','Permutations I and II (with duplicates)','Combination sum I and II','N-Queens','Sudoku solver','Word search (backtracking on grid — mark visited, unmark after)','Palindrome partitioning','Letter combinations of phone number'],
+       mistakes:['Not deep-copying path when adding to results: result.add(new ArrayList<>(current))','Not undoing state after recursive call','Not handling duplicates: sort first, skip equal elements at same recursion level'],
+       mastery:''},
+      {title:'Divide and Conquer', difficulty:'advanced', time:'3–4 days learn, 5–7 days practice', problems:15, xp:15,
+       concepts:['Break into same-type subproblems, solve independently, combine','Merge sort and quick sort are the canonical examples','QuickSelect — partition step without full sort, O(n) average for kth smallest'],
+       questions:['Count inversions (modified merge sort)','Find kth element in sorted matrix','Median of two sorted arrays (top-tier problem — binary search on partition)','Closest pair of points','Majority element (Boyer-Moore)'],
+       mistakes:[''],
+       mastery:'Median of two sorted arrays: binary search on smaller array to find correct partition. O(log(min(m,n))). Understanding this demonstrates strong skills in both binary search and D&C.'},
+      {title:'Dynamic Programming', difficulty:'advanced', time:'14–18 days learn, 25–30 days practice', problems:60, xp:40,
+       concepts:['DP = recursion + memoization. Applies when: overlapping subproblems + optimal substructure','CORRECT learning order: recursion first → identify subproblem → add memoization (top-down) → convert to tabulation (bottom-up) → optimize space','NEVER start with tabulation formula — it hides the insight','1D DP (linear sequence): Fibonacci, climbing stairs, house robber. State = index','1D DP (subarray): LIS, coin change, word break. State = ending index','2D DP (two sequences): LCS, edit distance. State = dp[i][j] for first i of seq1, first j of seq2','2D DP (grid): unique paths, min path sum. State = dp[row][col]','DP on intervals: burst balloons, matrix chain. State = dp[i][j] for subarray i to j','Knapsack: 0/1 (each item once), unbounded (reuse items), subset sum, partition equal subset'],
+       questions:['Climbing stairs / Fibonacci','House robber I and II','Coin change I and II','Longest increasing subsequence','Longest common subsequence','Edit distance','Unique paths I and II','Minimum path sum','Word break','Decode ways','Partition equal subset sum','Target sum','Maximum product subarray','Palindromic substrings / Longest palindromic subsequence','Best time to buy and sell stock (all variants I–IV + cooldown)','Jump game I and II','Burst balloons','Interleaving string'],
+       mistakes:['Memorizing solutions without understanding state definition. ALWAYS define: what does dp[i] (or dp[i][j]) represent?','Wrong base case initialization — responsible for 80% of DP bugs'],
+       mastery:''},
+      {title:'Advanced Graph Algorithms', difficulty:'advanced', time:'5–6 days learn, 10–12 days practice', problems:25, xp:25,
+       concepts:['SCC (Kosaraju\'s / Tarjan\'s): groups where every node can reach every other node','Bridges and articulation points (Tarjan\'s): edges/nodes whose removal disconnects graph','Euler path/circuit: visits every edge once. Condition: 0 or 2 nodes with odd degree','Network flow (conceptual): max-flow min-cut theorem. Ford-Fulkerson','Minimum spanning tree: Prim\'s (greedy, min-heap like Dijkstra) and Kruskal\'s (sort edges, Union-Find)'],
+       questions:['Critical connections in a network (Tarjan\'s bridges)','Reconstruct itinerary (Euler path)','Minimum spanning tree (Kruskal\'s with Union-Find)','Number of provinces','Redundant connection'],
+       mistakes:[''],
+       mastery:''},
+      {title:'Union-Find (Disjoint Set Union)', difficulty:'advanced', time:'2–3 days learn, 4–5 days practice', problems:15, xp:15,
+       concepts:['find(x): returns representative of x\'s group. With path compression: parent[x] = find(parent[x])','union(x,y): merge groups. Use union by rank to keep tree flat','With both optimizations: nearly O(1) amortized — O(α(n)), inverse Ackermann, practically constant'],
+       questions:['Number of provinces','Redundant connection','Accounts merge','Number of islands II','Minimum spanning tree (Kruskal\'s)','Satisfiability of equality equations'],
+       mistakes:['Forgetting path compression — makes find O(log n) without it'],
+       mastery:''},
+      {title:'Bit Manipulation', difficulty:'intermediate', time:'3–4 days learn, 5–7 days practice', problems:20, xp:15,
+       concepts:['AND &, OR |, XOR ^, NOT ~, left shift <<, right shift >>','XOR key property: a^a=0, a^0=a. Use to cancel duplicates or find single non-duplicate','Check kth bit: (n>>k)&1. Set: n|(1<<k). Clear: n&~(1<<k)','Count set bits: Integer.bitCount(n) or Brian Kernighan: n&(n-1) removes lowest set bit','Power of 2: n>0 && (n&(n-1))==0','Integer overflow: Integer.MAX_VALUE = 2^31-1 = 2147483647'],
+       questions:['Single number I, II, III','Number of 1 bits','Counting bits','Reverse bits','Missing number','Power of two','Sum of two integers without arithmetic operators'],
+       mistakes:['Using int when result might overflow — use long','Forgetting n&(n-1) trick for clearing lowest set bit'],
+       mastery:''},
+      {title:'Segment Trees & Fenwick Trees', difficulty:'advanced', time:'5–6 days learn, 7–8 days practice', problems:10, xp:20,
+       concepts:['Both support range queries + point updates. Static queries only: just use prefix sum','Segment Tree: O(n) build, O(log n) query and update. Supports range min/max/sum','Fenwick Tree (BIT): simpler to implement, O(n) build, O(log n) query/update, prefix-type queries only','NOTE: these are advanced topics. Service-based and mid-tier product companies rarely test them. Do only after mastering all previous topics'],
+       questions:['Range sum query with updates (classic segment tree)','Range minimum query','Count of smaller numbers after self (BIT)','Number of range sums'],
+       mistakes:[''],
+       mastery:''},
     ]
   },
   {
-    id:6, name:'Recursion + Backtracking', color:'#f87171', duration:'2 weeks', xpPer:20,
-    note:"Don't skip this. Recursion underlies trees, graphs, and DP.",
+    id:5, name:'Interview Preparation Phase', color:'#f472b6', duration:'ongoing',
+    note:'Not a new topic phase — this is the execution layer. Practice methodology, LeetCode strategy, and mock interview habits.',
+    celebrationMsg:'You have completed the full DSA Mastery Roadmap. The preparation does not make you ready — the hours struggling with problems do. Go apply.',
     topics:[
-      {title:'Recursion Basics',tasks:['Factorial using recursion','Fibonacci using recursion — understand exponential time','Sum of digits of a number','Power function — x to the n']},
-      {title:'Recursion on Arrays/Strings',tasks:['Binary search using recursion','Print all subsets of an array']},
-      {title:'String Permutations',tasks:['Generate all permutations of a string','Understand how recursion tree grows']},
-      {title:'Classic Recursion',tasks:['Tower of Hanoi — understand the pattern','Reverse a string using recursion']},
-      {title:'Backtracking Introduction',tasks:['What backtracking is — try, fail, undo, try again','N-Queens problem — understand the approach, trace through manually','Rat in a maze — grid backtracking']},
+      {title:'Problem-Solving Methodology', difficulty:'intermediate', time:'study and internalize', problems:0, xp:20,
+       concepts:['Step 1 — Understand (2–3 min): read twice, identify input/output/constraints, ask clarifying questions. State assumptions explicitly','Step 2 — Examples (2–3 min): work through 2–3 examples manually. Edge cases: empty input, single element, all same values','Step 3 — Brute force (1–2 min): identify brute force, state its complexity. Shows interviewer you understand the baseline','Step 4 — Optimize (3–5 min): identify bottleneck. Ask: precompute? better data structure? sort input? mathematical pattern? sliding window? DP?','Step 5 — Code (15–20 min): meaningful variable names, handle edge cases explicitly, comment complex logic','Step 6 — Test (3–5 min): trace through examples from Step 2, run an edge case, identify bugs'],
+       questions:['Apply this methodology to every problem you practice from now on','Time yourself — Step 1-4 should take under 10 minutes for medium problems','Practice explaining your thinking out loud — the interviewer is evaluating your process, not just the output'],
+       mistakes:['Jumping straight to code (Step 5) without Steps 1-4','Not stating assumptions — interviewers dock points for this','Not testing your own code before declaring it done'],
+       mastery:''},
+      {title:'LeetCode Progression Strategy', difficulty:'beginner', time:'ongoing', problems:0, xp:15,
+       concepts:['Phase 0-1: no LeetCode. Complexity exercises and recursion practice from books/GFG only','Phase 2 (arrays through hashing): 8–10 easy per topic before mediums. Target 80–100 easy total','Phase 3 (trees through graphs): mix easy and medium. Target 120–150 problems. Begin Blind 75 in parallel','Phase 4 (advanced patterns): primarily medium and hard. Target 100–120. NeetCode 150 + Striver A2Z as primary guides','Total for product-based companies: 400–500 problems. Service-based: 200–250 solid problems','Quality over quantity: student who genuinely solved 300 independently > student who "did" 600 with solutions'],
+       questions:['Blind 75: start after completing arrays, strings, hashing, linked lists (around week 8–10). Do NOT start earlier','NeetCode 150: primary list from week 12 onward. Use explanations ONLY after genuine attempt','Striver A2Z: supplementary. After NeetCode/Blind 75 per topic, pick 10–15 more from Striver for depth'],
+       mistakes:['Starting Blind 75 too early — you will not have foundations to learn from the problems','Looking at solutions before making a genuine 30–40 min attempt','Counting "done" problems that you needed to look up — those are studied, not solved'],
+       mastery:''},
+      {title:'Weekly Study Schedule', difficulty:'beginner', time:'apply every week', problems:0, xp:10,
+       concepts:['Monday: learn new concept (2–3 hrs theory + concept problems). Solve 3–4 easy on new concept','Tuesday: solve 5–6 problems (easy-medium mix) on current concept','Wednesday: solve 3–4 mediums. Revise notes on previous week\'s topic','Thursday: mixed practice — 2–3 current topic, 2 previous topics (spaced repetition)','Friday: solve 4–5 problems including at least 1 hard problem — attempt genuinely before hints','Saturday: mock contest or timed session — 3–4 problems in 2 hours as if in real interview','Sunday: revision only. Rewrite important algorithms from memory. Review wrong problems. Update notes. NO new concepts'],
+       questions:['Follow this schedule consistently for at least 4 weeks before evaluating','Daily minimum: 2 hours weekdays, 3–4 hours weekends during active prep','If you skip a day, do not double the next day — just continue from where you are'],
+       mistakes:['Doing 7 days of new concepts with no revision','Skipping the Saturday mock contest — timed practice is irreplaceable'],
+       mastery:''},
+      {title:'Mock Interview Strategy', difficulty:'intermediate', time:'start after Phase 3', problems:0, xp:15,
+       concepts:['When to start: after completing Phase 3 (Trees + Graphs). Do NOT wait until everything is done','Peer mocks: find partner at same level. Interviewer asks follow-ups on complexity, optimization, edge cases','Pramp and InterviewBit: free platforms for live peer mock interviews','LeetCode contests: weekly (Sunday). Target consistently solving 2/4 problems within time limit before applying','Self-mock: set 45 min timer, random medium problem you have not seen, solve on paper/blank editor without running code. Most realistic simulation'],
+       questions:['Schedule at least 1 mock interview per week after Phase 3','For every failed interview: retrospective — what pattern/topic caused failure? Study it for 1 week, then continue applying','Do not wait until "ready" to start applying — apply from Phase 3 onward'],
+       mistakes:['Waiting until Phase 4 is complete to start mocks — too late','Practicing on LeetCode with test cases running — real interviews do not have this. Practice on paper or blank editor'],
+       mastery:''},
+      {title:'Revision Strategy', difficulty:'beginner', time:'apply throughout', problems:0, xp:10,
+       concepts:['Revision is NOT re-reading notes — it is active recall','Weekly revision: every Sunday, pick 10 problems from current + previous week, re-solve from scratch. If you cannot do it in under half original time, concept is not retained','Topic revision: after completing a major topic, wait 5–7 days, solve 10 mixed problems without notes. This is spaced repetition','Pattern journal: for each pattern — Pattern Name, Trigger Condition, Template Code, 3 example problems. Review weekly'],
+       questions:['Maintain pattern journal from Phase 2 onward — do not wait until you have everything','After completing trees, wait 1 week then do 10 mixed tree problems cold','After completing graphs, do the same'],
+       mistakes:['Re-reading notes and calling it revision','Not maintaining a pattern journal — you will forget trigger conditions'],
+       mastery:''},
     ]
-  },
-  {
-    id:7, name:'Binary Search', color:'#60a5fa', duration:'1–2 weeks', xpPer:15,
-    note:'Binary search is deceptively tricky. Get the boundary conditions right.',
-    topics:[
-      {title:'Classic Binary Search',tasks:['Binary search on sorted array — iterative','Binary search on sorted array — recursive','Find boundary conditions — lo, hi, mid, when to update']},
-      {title:'Variants',tasks:['Search in rotated sorted array','First occurrence of element in sorted array','Last occurrence of element in sorted array','Find peak element — element greater than neighbors']},
-      {title:'Binary Search on Answer',tasks:['Find square root of a number (integer part)','Allocate books — minimize max pages assigned','Aggressive cows — maximize minimum distance']},
-    ]
-  },
-  {
-    id:8, name:'Trees', color:'#4ade80', duration:'3–4 weeks', xpPer:20,
-    note:'Trees are heavily tested. Get comfortable with recursion first.',
-    topics:[
-      {title:'Binary Tree Basics',tasks:['Node structure in Java — data, left, right','Insert into binary tree','Inorder traversal (Left Root Right)','Preorder traversal (Root Left Right)','Postorder traversal (Left Right Root)','Level order traversal (BFS using queue)']},
-      {title:'Tree Properties',tasks:['Height of binary tree','Diameter of binary tree — longest path between two nodes','Count total nodes','Count leaf nodes']},
-      {title:'Tree Checks',tasks:['Check if tree is balanced — height difference at every node','Check if two trees are identical','Check if tree is symmetric / mirror of itself']},
-      {title:'Tree Paths',tasks:['Lowest common ancestor of two nodes','Path from root to a given node']},
-      {title:'Binary Search Tree',tasks:['Insert into BST','Delete from BST','Search in BST','Validate BST — check BST property','Convert BST to sorted array']},
-      {title:'BST Problems',tasks:['Kth smallest element in BST','Check if two BSTs have same set of elements']},
-      {title:'Advanced Traversals',tasks:['Zigzag / spiral level order traversal','Boundary traversal of binary tree']},
-    ]
-  },
-  {
-    id:9, name:'Graphs', color:'#f59e0b', duration:'2–3 weeks', xpPer:20,
-    note:'Graphs feel hard but most problems are BFS/DFS variations. Learn those well.',
-    topics:[
-      {title:'Graph Representation',tasks:['Adjacency matrix — 2D array, space O(V²)','Adjacency list — ArrayList of lists, space O(V+E)','When to use which representation']},
-      {title:'Graph Traversals',tasks:['BFS — iterative using queue, level by level','DFS — iterative using stack','DFS — recursive approach','Print BFS and DFS order for a given graph']},
-      {title:'Cycle Detection',tasks:['Detect cycle in undirected graph — BFS approach','Detect cycle in undirected graph — DFS approach','Detect cycle in directed graph — DFS with visited + recStack']},
-      {title:'Topological Sort',tasks:['What topological sort is — ordering of vertices','Topological sort using DFS','Topological sort using Kahn\'s BFS algorithm (in-degree)']},
-      {title:'Shortest Path',tasks:["Dijkstra's algorithm — shortest path from source","Understand why Dijkstra fails with negative edges"]},
-      {title:'Island and Component Problems',tasks:['Number of islands — classic grid BFS/DFS','Count connected components in a graph']},
-    ]
-  },
-  {
-    id:10, name:'Dynamic Programming', color:'#a855f7', duration:'3–4 weeks', xpPer:25,
-    note:'Start only after recursion is solid. DP = recursion + memory.',
-    topics:[
-      {title:'DP Fundamentals',tasks:['What memoization is — top-down, store results of subproblems','What tabulation is — bottom-up, fill table iteratively','When to use DP — overlapping subproblems + optimal substructure','Identify DP problems — choices at each step, minimize/maximize']},
-      {title:'1D DP',tasks:['Fibonacci with memoization — compare to pure recursion','Climbing stairs — how many ways to reach nth step','House robber — max sum with no two adjacent elements']},
-      {title:'2D DP',tasks:['0/1 Knapsack — include or exclude each item','Subset sum — can we get target sum from array','Longest common subsequence — classic 2D DP']},
-      {title:'String DP',tasks:['Edit distance — min operations to convert one string to another','Longest palindromic subsequence']},
-      {title:'DP on Grids',tasks:['Minimum path sum — grid from top-left to bottom-right','Unique paths — count ways to reach bottom-right corner']},
-    ]
-  },
-];
-
-// Revision weeks (after every 2 phases)
-const REVISION_TOPICS = [
-  {afterPhase:2, title:'Revision Week 1 — Arrays + Strings', color:'#a855f7', tasks:['Re-solve 3 array problems without hints','Re-solve 2 string problems without hints','Pick 2 mixed problems from Arrays + Strings','Update error log — patterns you kept forgetting']},
-  {afterPhase:4, title:'Revision Week 2 — HashMap + LL', color:'#a855f7', tasks:['Re-solve 2 HashMap problems without hints','Re-solve 2 Linked List problems without hints','Pick 3 mixed problems from all 4 phases','Update error log']},
-  {afterPhase:6, title:'Revision Week 3 — Stack + Recursion', color:'#a855f7', tasks:['Re-solve 2 Stack/Queue problems without hints','Re-solve 2 recursion problems without hints','Pick 3 mixed problems from all 6 phases','Update error log']},
-  {afterPhase:8, title:'Revision Week 4 — Trees + Binary Search', color:'#a855f7', tasks:['Re-solve 3 tree problems without hints','Re-solve 2 binary search variants without hints','Pick 4 mixed problems from all 8 phases','Update error log']},
-  {afterPhase:10, title:'Final Revision — All Phases', color:'#4ade80', tasks:['Pick 2 random problems from each phase — do without hints','Solve 5 mixed medium problems from LeetCode','Review entire error log — fix blind spots','Time yourself — aim to solve mediums in under 20 mins']},
-];
-
-const XP_LEVELS=[
-  {min:0,label:'Beginner'},{min:100,label:'Novice'},{min:300,label:'Apprentice'},
-  {min:600,label:'Practitioner'},{min:1000,label:'Intermediate'},{min:1500,label:'Advanced'},
-  {min:2000,label:'Expert'},{min:2500,label:'Master'},{min:3000,label:'DSA God 🔥'}
-];
-
-// Build flat topic list with IDs
-let TOPICS = [];
-let topicId = 0;
-PHASES.forEach(phase => {
-  phase.topics.forEach(topic => {
-    TOPICS.push({...topic, id: topicId++, phase: phase.id, phaseColor: phase.color, xp: phase.xpPer});
-  });
-  // Insert revision after phase if applicable
-  const rev = REVISION_TOPICS.find(r => r.afterPhase === phase.id);
-  if(rev) {
-    TOPICS.push({title: rev.title, tasks: rev.tasks, id: topicId++, phase: phase.id + 0.5, phaseColor: rev.color, xp: 30, isRevision: true, revisionTitle: rev.title});
   }
+];
+
+const XP_LEVELS=[{min:0,label:'Beginner'},{min:100,label:'Novice'},{min:300,label:'Apprentice'},{min:600,label:'Practitioner'},{min:1000,label:'Intermediate'},{min:1500,label:'Advanced'},{min:2200,label:'Expert'},{min:3000,label:'Master'},{min:4000,label:'DSA God 🔥'}];
+
+let TOPICS=[];
+PHASES.forEach(phase=>{
+  phase.topics.forEach(topic=>{
+    TOPICS.push({...topic,phaseId:phase.id,phaseColor:phase.color,phaseName:phase.name});
+  });
 });
+const MAX_XP=TOPICS.reduce((s,t)=>s+t.xp,0);
 
-const MAX_XP = TOPICS.reduce((s,t)=>s+t.xp, 0);
+// Build task lists per topic
+function getTaskList(topic){
+  const tasks=[];
+  topic.concepts.forEach(c=>tasks.push({type:'concept',text:c}));
+  topic.questions.filter(q=>q).forEach(q=>tasks.push({type:'question',text:q}));
+  topic.mistakes.filter(m=>m).forEach(m=>tasks.push({type:'mistake',text:m}));
+  return tasks;
+}
 
-function save(k,v){try{localStorage.setItem('dsa_'+k,JSON.stringify(v));}catch(e){}}
-function load(k,d){try{const v=localStorage.getItem('dsa_'+k);return v!==null?JSON.parse(v):d;}catch(e){return d;}}
+function save(k,v){try{localStorage.setItem('dsam_'+k,JSON.stringify(v));}catch(e){}}
+function load(k,d){try{const v=localStorage.getItem('dsam_'+k);return v!==null?JSON.parse(v):d;}catch(e){return d;}}
 
 let taskState=load('tasks',{});
 let stuckState=load('stuck',{});
 let movedTopics=load('moved',{});
 let topicNotes=load('notes',{});
+let masteryChecked=load('mastery',{});
 let startDate=load('startdate',null);
 let streakData=load('streak',{count:0,last:null});
 let completedPhases=load('completedPhases',{});
@@ -476,6 +500,11 @@ function showToast(msg,type=''){
   clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2800);
 }
 
+function getTopicTasks(tid){
+  const topic=TOPICS.find(t=>t.id===tid);
+  return getTaskList(topic);
+}
+
 function toggleTask(tid,taskIdx){
   const key=tid+'_'+taskIdx;
   taskState[key]=!taskState[key];
@@ -484,7 +513,18 @@ function toggleTask(tid,taskIdx){
   if(el){el.classList.toggle('done',taskState[key]);el.querySelector('.task-check').textContent=taskState[key]?'✓':'';}
   updateTopicCard(tid);updateStats();updateStreak();
   const topic=TOPICS.find(t=>t.id===tid);
-  if(topic)checkPhaseComplete(Math.floor(topic.phase));
+  if(topic)checkPhaseComplete(topic.phaseId);
+}
+
+function toggleMastery(tid){
+  masteryChecked[tid]=!masteryChecked[tid];
+  save('mastery',masteryChecked);
+  const el=document.querySelector(`[data-mastery="${tid}"]`);
+  if(el){
+    el.classList.toggle('checked',masteryChecked[tid]);
+    el.querySelector('.mastery-check-box').textContent=masteryChecked[tid]?'✓ mastery confirmed':'☐ confirm mastery';
+  }
+  if(masteryChecked[tid])showToast('Mastery confirmed! 🎯','green');
 }
 
 function toggleStuck(tid,taskIdx,e){
@@ -499,42 +539,40 @@ function toggleStuck(tid,taskIdx,e){
     if(btn)btn.textContent=stuckState[key]?'unstuck':'stuck?';
   }
   updateStats();
-  if(stuckState[key])showToast('Flagged as stuck — note it, move on, come back 📝','red');
+  if(stuckState[key])showToast('Flagged — note it in pattern journal, move on 📋','red');
 }
 
 function completeAll(tid){
-  const topic=TOPICS.find(t=>t.id===tid);
-  topic.tasks.forEach((_,i)=>{
+  const tasks=getTopicTasks(tid);
+  tasks.forEach((_,i)=>{
     const key=tid+'_'+i;taskState[key]=true;
     const el=document.querySelector(`[data-task="${key}"]`);
     if(el){el.classList.add('done');el.querySelector('.task-check').textContent='✓';}
   });
   save('tasks',taskState);updateTopicCard(tid);updateStats();updateStreak();
-  checkPhaseComplete(Math.floor(topic.phase));
+  const topic=TOPICS.find(t=>t.id===tid);
+  if(topic)checkPhaseComplete(topic.phaseId);
   showToast(topic.title+' done! +'+topic.xp+' XP 🔥','green');
 }
 
 function resetTopic(tid){
-  const topic=TOPICS.find(t=>t.id===tid);
-  topic.tasks.forEach((_,i)=>{
+  const tasks=getTopicTasks(tid);
+  tasks.forEach((_,i)=>{
     const key=tid+'_'+i;taskState[key]=false;stuckState[key]=false;
     const el=document.querySelector(`[data-task="${key}"]`);
     if(el){el.classList.remove('done','stuck');el.querySelector('.task-check').textContent='';const b=el.querySelector('.stuck-btn');if(b)b.textContent='stuck?';}
   });
-  reviseModes[tid]=false;
+  reviseModes[tid]=false;masteryChecked[tid]=false;
   const card=document.querySelector(`[data-topic="${tid}"]`);
   if(card)card.classList.remove('revising','completed');
-  save('tasks',taskState);save('stuck',stuckState);updateTopicCard(tid);updateStats();
-  showToast('Reset','');
+  save('tasks',taskState);save('stuck',stuckState);save('mastery',masteryChecked);
+  updateTopicCard(tid);updateStats();showToast('Reset','');
 }
 
 function moveToNext(tid){
   movedTopics[tid]=true;save('moved',movedTopics);
   const card=document.querySelector(`[data-topic="${tid}"]`);
-  if(card){
-    card.classList.add('moved');card.classList.remove('completed');
-    const s=card.querySelector('.day-status');if(s)s.innerHTML='<span class="status-moved">→ moved</span>';
-  }
+  if(card){card.classList.add('moved');card.classList.remove('completed');}
   updateStats();showToast('Moved — come back to it 📅','yellow');
 }
 
@@ -544,13 +582,14 @@ function toggleRevise(tid){
   if(card)card.classList.toggle('revising',reviseModes[tid]);
   const topic=TOPICS.find(t=>t.id===tid);
   if(reviseModes[tid]){
-    topic.tasks.forEach((_,i)=>{
+    const tasks=getTopicTasks(tid);
+    tasks.forEach((_,i)=>{
       const key=tid+'_'+i;taskState[key]=false;
       const el=document.querySelector(`[data-task="${key}"]`);
       if(el){el.classList.remove('done');el.querySelector('.task-check').textContent='';}
     });
     save('tasks',taskState);updateTopicCard(tid);
-    showToast('Revise mode — redo without hints 📖','purple');
+    showToast('Revise mode — redo without looking up solutions 📖','purple');
   }
   const btn=card&&card.querySelector('.revise-btn');
   if(btn)btn.textContent=reviseModes[tid]?'exit revise':'📖 revise';
@@ -563,8 +602,8 @@ function toggleCard(tid){
 
 function saveNote(tid,val){
   topicNotes[tid]=val;save('notes',topicNotes);
-  const saved=document.querySelector(`[data-notes-saved="${tid}"]`);
-  if(saved){saved.classList.add('show');setTimeout(()=>saved.classList.remove('show'),1400);}
+  const s=document.querySelector(`[data-notes-saved="${tid}"]`);
+  if(s){s.classList.add('show');setTimeout(()=>s.classList.remove('show'),1400);}
 }
 
 function saveErrorLog(val){
@@ -576,7 +615,7 @@ function saveErrorLog(val){
 function setStartDate(){
   const d=prompt('Enter start date (YYYY-MM-DD):',new Date().toISOString().slice(0,10));
   if(d&&/^\d{4}-\d{2}-\d{2}$/.test(d)){
-    startDate=d;save('startdate',d);updateETA();updateTodayHighlight();
+    startDate=d;save('startdate',d);updateETA();
     showToast('Start date set!','green');
     document.getElementById('start-label').textContent='📅 started: '+d;
   }
@@ -586,39 +625,19 @@ function updateETA(){
   const el=document.getElementById('eta-text');
   if(!startDate){el.textContent='set start date';return;}
   document.getElementById('start-label').textContent='📅 started: '+startDate;
-  const doneTopics=TOPICS.filter(t=>t.tasks.every((_,i)=>taskState[t.id+'_'+i])).length;
+  const done=TOPICS.filter(t=>{const tasks=getTopicTasks(t.id);return tasks.every((_,i)=>taskState[t.id+'_'+i]);}).length;
   const start=new Date(startDate);const today=new Date();
   const elapsed=Math.max(1,Math.round((today-start)/86400000));
-  const pace=doneTopics/elapsed;const remaining=TOPICS.length-doneTopics;
+  const pace=done/elapsed;const remaining=TOPICS.length-done;
   if(pace<=0){el.textContent='finish at least 1 topic';return;}
   const daysNeeded=Math.ceil(remaining/pace);
   const eta=new Date(today.getTime()+daysNeeded*86400000);
-  el.textContent=eta.toLocaleDateString('en-IN',{month:'short',day:'numeric',year:'numeric'})+' ('+daysNeeded+'d at current pace)';
-}
-
-function updateTodayHighlight(){
-  document.querySelectorAll('.day-card').forEach(c=>c.classList.remove('today-card'));
-  document.querySelectorAll('.today-badge').forEach(b=>b.remove());
-  if(!startDate)return;
-  const start=new Date(startDate);start.setHours(0,0,0,0);
-  const today=new Date();today.setHours(0,0,0,0);
-  const dayNum=Math.round((today-start)/86400000);
-  // Highlight the current topic based on roughly 1 topic every 2 days
-  const topicIdx=Math.min(Math.floor(dayNum/2),TOPICS.length-1);
-  if(topicIdx>=0){
-    const card=document.querySelector(`[data-topic="${TOPICS[topicIdx].id}"]`);
-    if(card){
-      card.classList.add('today-card');
-      const badge=document.createElement('div');badge.className='today-badge';badge.textContent='current';
-      card.appendChild(badge);
-    }
-  }
+  el.textContent=eta.toLocaleDateString('en-IN',{month:'short',day:'numeric',year:'numeric'})+' ('+daysNeeded+'d)';
 }
 
 function updateStreak(){
   const today=new Date().toDateString();
-  const doneAny=Object.values(taskState).some(v=>v);
-  if(doneAny&&streakData.last!==today){
+  if(Object.values(taskState).some(v=>v)&&streakData.last!==today){
     const yesterday=new Date();yesterday.setDate(yesterday.getDate()-1);
     streakData.count=streakData.last===yesterday.toDateString()?streakData.count+1:1;
     streakData.last=today;save('streak',streakData);
@@ -627,46 +646,30 @@ function updateStreak(){
   if(el)el.textContent=streakData.count+'🔥';
 }
 
-function getTotalXP(){
-  return TOPICS.reduce((s,t)=>s+(t.tasks.every((_,i)=>taskState[t.id+'_'+i])?t.xp:0),0);
-}
+function getTotalXP(){return TOPICS.reduce((s,t)=>{const tasks=getTopicTasks(t.id);return s+(tasks.every((_,i)=>taskState[t.id+'_'+i])?t.xp:0);},0);}
 
 function updateXP(){
   const xp=getTotalXP();const pct=Math.round((xp/MAX_XP)*100);
-  const fill=document.getElementById('xp-fill');if(fill)fill.style.width=pct+'%';
-  const num=document.getElementById('xp-num');if(num)num.textContent=xp+' / '+MAX_XP+' XP';
-  const levelEl=document.getElementById('xp-level');
+  document.getElementById('xp-fill').style.width=pct+'%';
+  document.getElementById('xp-num').textContent=xp+' / '+MAX_XP+' XP';
   let level=XP_LEVELS[0].label;
   for(const l of XP_LEVELS)if(xp>=l.min)level=l.label;
-  if(levelEl)levelEl.textContent='Level: '+level;
+  document.getElementById('xp-level').textContent='Level: '+level;
 }
 
-function checkPhaseComplete(phaseNum){
-  const phaseTopics=TOPICS.filter(t=>Math.floor(t.phase)===phaseNum&&!t.isRevision);
-  const allDone=phaseTopics.every(t=>t.tasks.every((_,i)=>taskState[t.id+'_'+i]));
-  if(allDone&&!completedPhases[phaseNum]){
-    completedPhases[phaseNum]=true;save('completedPhases',completedPhases);
-    setTimeout(()=>showCelebration(phaseNum),500);
+function checkPhaseComplete(phaseId){
+  const phaseTopics=TOPICS.filter(t=>t.phaseId===phaseId);
+  const allDone=phaseTopics.every(t=>{const tasks=getTopicTasks(t.id);return tasks.every((_,i)=>taskState[t.id+'_'+i]);});
+  if(allDone&&!completedPhases[phaseId]){
+    completedPhases[phaseId]=true;save('completedPhases',completedPhases);
+    setTimeout(()=>showCelebration(phaseId),600);
   }
 }
 
-function showCelebration(phaseNum){
-  const phase=PHASES.find(p=>p.id===phaseNum);
-  const msgs={
-    1:['Arrays ✓','Foundation complete. Every other topic builds on this.'],
-    2:['Strings ✓','Java string quirks mastered. StringBuilder is your friend.'],
-    3:['HashMap + HashSet ✓','O(1) lookup in your toolkit. Half of interview problems just got easier.'],
-    4:['Linked List ✓','Pointers, cycles, merges. LL done.'],
-    5:['Stack + Queue ✓','Monotonic stack, sliding window deque. Solid.'],
-    6:['Recursion + Backtracking ✓','If you understand this, trees and DP will click faster.'],
-    7:['Binary Search ✓','The boundary condition is always the tricky part. You got it.'],
-    8:['Trees ✓','BST, DFS, BFS, LCA. Trees done. Graphs up next.'],
-    9:['Graphs ✓','BFS, DFS, Dijkstra, topo sort. Graph chapter closed.'],
-    10:['DP ✓','All 10 phases complete. That\'s the full DSA roadmap 👑']
-  };
-  const [title,msg]=msgs[phaseNum]||['Phase Complete!','Keep going.'];
-  document.getElementById('celebration-title').textContent=title;
-  document.getElementById('celebration-msg').textContent=msg;
+function showCelebration(phaseId){
+  const phase=PHASES.find(p=>p.id===phaseId);
+  document.getElementById('celebration-title').textContent='Phase '+phaseId+' Complete! 🎉';
+  document.getElementById('celebration-msg').textContent=phase?phase.celebrationMsg:'Keep going.';
   spawnConfetti(phase?phase.color:'#4ade80');
   document.getElementById('celebration').classList.add('show');
 }
@@ -678,13 +681,12 @@ function spawnConfetti(mainColor){
   const colors=[mainColor,'#4ade80','#60a5fa','#fbbf24','#f87171','#a855f7'];
   for(let i=0;i<70;i++){
     const p=document.createElement('div');p.className='confetti-piece';
-    p.style.cssText=`left:${Math.random()*100}%;background:${colors[Math.floor(Math.random()*colors.length)]};width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;animation-duration:${2+Math.random()*2}s;animation-delay:${Math.random()*0.6}s;border-radius:${Math.random()>0.5?'50%':'2px'};`;
+    p.style.cssText=`left:${Math.random()*100}%;background:${colors[Math.floor(Math.random()*colors.length)]};width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;animation-duration:${2+Math.random()*2}s;animation-delay:${Math.random()*0.6}s;border-radius:${Math.random()>0.5?'50%':'2px'};position:absolute;`;
     cel.appendChild(p);
   }
   setTimeout(()=>document.querySelectorAll('.confetti-piece').forEach(p=>p.remove()),4500);
 }
 
-// Search
 let searchTimer;
 function handleSearch(val){
   clearTimeout(searchTimer);searchTimer=setTimeout(()=>doSearch(val),150);
@@ -698,20 +700,22 @@ function doSearch(val){
   if(!term){
     document.querySelectorAll('.day-card').forEach(c=>{c.style.display='';c.classList.remove('search-highlight');});
     document.querySelectorAll('.task-text mark').forEach(m=>{const t=m.parentNode;t.innerHTML=t.textContent;});
-    document.querySelectorAll('.phase-section').forEach(s=>{if(currentFilter==='all'||s.dataset.phase===currentFilter)s.classList.remove('hidden');});
+    document.querySelectorAll('.phase-section').forEach(s=>{if(currentFilter==='all'||s.dataset.phase===String(s.dataset.phase))s.classList.remove('hidden');});
+    filterPhase(currentFilter);
     if(info)info.style.display='none';if(noRes)noRes.style.display='none';
     return;
   }
   let matchCount=0;
   document.querySelectorAll('.day-card').forEach(card=>{
     const tid=parseInt(card.dataset.topic);const topic=TOPICS.find(t=>t.id===tid);
+    const tasks=getTaskList(topic);
     let hasMatch=false;
     card.querySelectorAll('.task-text').forEach(t=>{t.innerHTML=t.textContent;});
-    topic.tasks.forEach((task,i)=>{
+    tasks.forEach((task,i)=>{
       const taskEl=card.querySelector(`[data-task="${tid+'_'+i}"] .task-text`);
-      if(taskEl&&task.toLowerCase().includes(term)){
+      if(taskEl&&task.text.toLowerCase().includes(term)){
         hasMatch=true;
-        taskEl.innerHTML=task.replace(new RegExp(`(${term.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`,'gi'),'<mark>$1</mark>');
+        taskEl.innerHTML=task.text.replace(new RegExp(`(${term.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`,'gi'),'<mark>$1</mark>');
       }
     });
     if(topic.title.toLowerCase().includes(term))hasMatch=true;
@@ -728,14 +732,16 @@ function doSearch(val){
 }
 
 function clearSearch(){
-  document.getElementById('search-input').value='';doSearch('');
+  document.getElementById('search-input').value='';
+  doSearch('');
   document.getElementById('search-clear').style.display='none';
 }
 
 function filterPhase(phase){
   currentFilter=phase;clearSearch();
   document.querySelectorAll('.phase-tab').forEach(t=>t.classList.remove('active'));
-  document.querySelector(`[data-phase="${phase}"]`).classList.add('active');
+  const activeTab=document.querySelector(`[data-phase="${phase}"]`);
+  if(activeTab)activeTab.classList.add('active');
   document.querySelectorAll('.phase-section').forEach(s=>{
     s.classList.toggle('hidden',phase!=='all'&&s.dataset.phase!==phase);
   });
@@ -743,17 +749,17 @@ function filterPhase(phase){
 
 function updateTopicCard(tid){
   const topic=TOPICS.find(t=>t.id===tid);
-  const total=topic.tasks.length;
-  const done=topic.tasks.filter((_,i)=>taskState[tid+'_'+i]).length;
-  const pct=Math.round((done/total)*100);
-  const isComplete=done===total;
+  const tasks=getTopicTasks(tid);
+  const total=tasks.length;
+  const done=tasks.filter((_,i)=>taskState[tid+'_'+i]).length;
+  const pct=total>0?Math.round((done/total)*100):0;
+  const isComplete=done===total&&total>0;
   const card=document.querySelector(`[data-topic="${tid}"]`);
   if(!card)return;
   card.classList.toggle('completed',isComplete&&!reviseModes[tid]);
   if(isComplete)card.classList.remove('moved');
   const fill=card.querySelector('.day-mini-fill');if(fill)fill.style.width=pct+'%';
   const countEl=card.querySelector('.task-count');if(countEl)countEl.textContent=done+' / '+total+' done';
-  const xpEl=card.querySelector('.day-xp-badge');if(xpEl)xpEl.textContent=isComplete?'✓ +'+topic.xp+' XP':'⚡ '+topic.xp+' XP';
   const statusEl=card.querySelector('.day-status');
   if(statusEl&&!movedTopics[tid]){
     if(isComplete)statusEl.innerHTML='<span class="status-done">✓ done</span>';
@@ -766,11 +772,12 @@ function updateTopicCard(tid){
 function updateStats(){
   let totalTasks=0,doneTasks=0,doneTopics=0,stuckCount=0;
   TOPICS.forEach(topic=>{
-    const total=topic.tasks.length;
-    const done=topic.tasks.filter((_,i)=>taskState[topic.id+'_'+i]).length;
+    const tasks=getTopicTasks(topic.id);
+    const total=tasks.length;
+    const done=tasks.filter((_,i)=>taskState[topic.id+'_'+i]).length;
     totalTasks+=total;doneTasks+=done;
-    if(done===total)doneTopics++;
-    topic.tasks.forEach((_,i)=>{if(stuckState[topic.id+'_'+i])stuckCount++;});
+    if(done===total&&total>0)doneTopics++;
+    tasks.forEach((_,i)=>{if(stuckState[topic.id+'_'+i])stuckCount++;});
   });
   const pct=totalTasks>0?Math.round((doneTasks/totalTasks)*100):0;
   document.getElementById('stat-done').textContent=doneTopics;
@@ -787,9 +794,7 @@ window.addEventListener('scroll',()=>{
   if(btn)btn.classList.toggle('visible',window.scrollY>400);
 });
 
-document.addEventListener('keydown',e=>{
-  if(e.code==='Escape'){clearSearch();}
-});
+document.addEventListener('keydown',e=>{if(e.code==='Escape')clearSearch();});
 
 function buildPhaseTabs(){
   const tabsEl=document.getElementById('phase-tabs');
@@ -797,27 +802,18 @@ function buildPhaseTabs(){
     const btn=document.createElement('button');
     btn.className='phase-tab';btn.dataset.phase=String(phase.id);
     btn.onclick=()=>filterPhase(String(phase.id));
-    btn.innerHTML=`<span class="tab-dot" style="background:${phase.color}"></span> P${phase.id}: ${phase.name}`;
+    btn.innerHTML=`<span class="tab-dot" style="background:${phase.color}"></span>P${phase.id}: ${phase.name}`;
     tabsEl.appendChild(btn);
   });
 }
 
+let topicIdCounter=0;
 function render(){
   buildPhaseTabs();
+  TOPICS.forEach(t=>t.id=topicIdCounter++);
   const container=document.getElementById('main-content');
-
-  // Group topics by phase
-  const phaseGroups={};
-  PHASES.forEach(p=>{phaseGroups[p.id]=[];});
-
-  TOPICS.forEach(topic=>{
-    const phaseId=Math.floor(topic.phase);
-    if(!phaseGroups[phaseId])phaseGroups[phaseId]=[];
-    phaseGroups[phaseId].push(topic);
-  });
-
   container.innerHTML=PHASES.map(phase=>{
-    const topics=phaseGroups[phase.id]||[];
+    const topics=TOPICS.filter(t=>t.phaseId===phase.id);
     const phaseXP=topics.reduce((s,t)=>s+t.xp,0);
     return `
       <div class="phase-section" data-phase="${phase.id}">
@@ -825,62 +821,96 @@ function render(){
           <span class="phase-badge" style="background:${phase.color}22;color:${phase.color};border:1px solid ${phase.color}44;">Phase ${phase.id}</span>
           <span class="phase-title">${phase.name}</span>
           <span class="phase-duration">${phase.duration}</span>
-          <span class="phase-xp">⚡ ${phaseXP} XP</span>
-          <span class="phase-progress-text">${topics.length} topics</span>
+          <span class="phase-xp">⚡ ${phaseXP} XP · ${topics.length} topics</span>
         </div>
-        ${phase.note?`<div style="font-size:12px;color:var(--muted2);margin-bottom:14px;padding:10px 14px;background:var(--surface);border-radius:8px;border-left:3px solid ${phase.color};">// ${phase.note}</div>`:''}
-        <div class="day-grid">${topics.map(topic=>renderTopicCard(topic,phase.color)).join('')}</div>
-      </div>
-    `;
+        <div class="phase-note" style="border-left:3px solid ${phase.color}22;">// ${phase.note}</div>
+        <div class="day-grid">${topics.map(topic=>renderTopicCard(topic)).join('')}</div>
+      </div>`;
   }).join('');
-
   TOPICS.forEach(t=>updateTopicCard(t.id));
-  updateStats();updateStreak();updateTodayHighlight();
-
-  // Load error log
-  const elInput=document.getElementById('error-log');
-  if(elInput&&errorLog)elInput.value=errorLog;
+  updateStats();updateStreak();
+  const el=document.getElementById('error-log');
+  if(el&&errorLog)el.value=errorLog;
+  if(startDate)document.getElementById('start-label').textContent='📅 started: '+startDate;
 }
 
-function renderTopicCard(topic,phaseColor){
-  const total=topic.tasks.length;
-  const done=topic.tasks.filter((_,i)=>taskState[topic.id+'_'+i]).length;
-  const pct=Math.round((done/total)*100);
-  const isComplete=done===total;
+function getDiffClass(diff){
+  if(!diff)return '';
+  if(diff.includes('beginner'))return 'diff-beginner';
+  if(diff.includes('advanced'))return 'diff-advanced';
+  return 'diff-intermediate';
+}
+
+function renderTopicCard(topic){
+  const tasks=getTaskList(topic);
+  const total=tasks.length;
+  const done=tasks.filter((_,i)=>taskState[topic.id+'_'+i]).length;
+  const pct=total>0?Math.round((done/total)*100):0;
+  const isComplete=done===total&&total>0;
   const isMoved=movedTopics[topic.id];
   const note=topicNotes[topic.id]||'';
+  const hasMastery=topic.mastery&&topic.mastery.length>0;
   const statusHtml=isMoved&&!isComplete
     ?'<span class="status-moved">→ moved</span>'
     :isComplete?'<span class="status-done">✓ done</span>'
     :done>0?`<span class="status-pending">${pct}%</span>`
     :'<span class="status-pending">pending</span>';
-  const color=topic.phaseColor||phaseColor;
+
+  // Group tasks by type
+  const concepts=tasks.filter(t=>t.type==='concept');
+  const questions=tasks.filter(t=>t.type==='question');
+  const mistakes=tasks.filter(t=>t.type==='mistake');
+  let taskIdx=0;
+
+  function renderTaskGroup(label,items,startIdx){
+    if(!items.length)return{html:'',nextIdx:startIdx};
+    let html=`<div class="tasks-section-label">${label}</div>`;
+    items.forEach((task,i)=>{
+      const key=topic.id+'_'+(startIdx+i);
+      const isDone=taskState[key];const isStuck=stuckState[key];
+      html+=`<div class="task-item ${isDone?'done':''} ${isStuck?'stuck':''}" data-task="${key}" onclick="toggleTask(${topic.id},${startIdx+i})">
+        <div class="task-check">${isDone?'✓':''}</div>
+        <div class="task-text">${task.text}</div>
+        <button class="stuck-btn" onclick="toggleStuck(${topic.id},${startIdx+i},event)">${isStuck?'unstuck':'stuck?'}</button>
+      </div>`;
+    });
+    return{html,nextIdx:startIdx+items.length};
+  }
+
+  const cGroup=renderTaskGroup('core concepts',concepts,0);
+  const qGroup=renderTaskGroup('interview questions',questions,cGroup.nextIdx);
+  const mGroup=renderTaskGroup('common mistakes',mistakes,qGroup.nextIdx);
+
   return `
-    <div class="day-card ${isComplete?'completed':''} ${isMoved&&!isComplete?'moved':''} ${topic.isRevision?'revision-card':''}" data-topic="${topic.id}">
+    <div class="day-card ${isComplete?'completed':''} ${isMoved&&!isComplete?'moved':''}" data-topic="${topic.id}">
       <div class="day-header" onclick="toggleCard(${topic.id})">
-        <span class="day-num">${topic.isRevision?'REV':'TOPIC'}</span>
-        <span class="phase-dot" style="background:${color}"></span>
+        <span class="topic-num">T${topic.id+1}</span>
+        <span class="phase-dot" style="background:${topic.phaseColor}"></span>
+        <span class="diff-badge ${getDiffClass(topic.difficulty)}">${topic.difficulty||''}</span>
         <span class="day-title">${topic.title}</span>
         <span class="day-status">${statusHtml}</span>
         <span class="chevron">▼</span>
       </div>
-      <div class="day-mini-bar"><div class="day-mini-fill" style="width:${pct}%;background:${color};"></div></div>
+      <div class="day-mini-bar"><div class="day-mini-fill" style="width:${pct}%;background:${topic.phaseColor};"></div></div>
       <div class="task-count">${done} / ${total} done</div>
-      <div class="day-xp-badge">${isComplete?'✓ +'+topic.xp+' XP':'⚡ '+topic.xp+' XP'}</div>
+      <div class="day-meta">
+        ${topic.time?`<span class="meta-item">⏱ <span>${topic.time}</span></span>`:''}
+        ${topic.problems?`<span class="meta-item">🎯 min <span>${topic.problems} problems</span></span>`:''}
+        <span class="meta-item">⚡ <span>${topic.xp} XP</span></span>
+      </div>
       <div class="day-tasks">
-        ${topic.tasks.map((task,i)=>{
-          const key=topic.id+'_'+i;const isDone=taskState[key];const isStuck=stuckState[key];
-          return `<div class="task-item ${isDone?'done':''} ${isStuck?'stuck':''}" data-task="${key}" onclick="toggleTask(${topic.id},${i})">
-            <div class="task-check">${isDone?'✓':''}</div>
-            <div class="task-text">${task}</div>
-            <button class="stuck-btn" onclick="toggleStuck(${topic.id},${i},event)">${isStuck?'unstuck':'stuck?'}</button>
-          </div>`;
-        }).join('')}
-        ${isMoved&&!isComplete?`<div class="moved-notice">📅 Moved — catch up when you can</div>`:''}
+        ${cGroup.html}${qGroup.html}${mGroup.html}
+        ${isMoved&&!isComplete?`<div class="moved-notice">📅 Moved — come back to it</div>`:''}
+        ${hasMastery?`
+          <div class="mastery-check" data-mastery="${topic.id}">
+            <strong>🎯 mastery check</strong>
+            ${topic.mastery}
+            <br><br><button class="mastery-check-box" style="font-family:var(--mono);font-size:11px;padding:5px 12px;border-radius:6px;border:1px solid rgba(245,158,11,0.3);background:rgba(245,158,11,0.06);color:var(--orange);cursor:pointer;margin-top:6px;" onclick="event.stopPropagation();toggleMastery(${topic.id})">${masteryChecked[topic.id]?'✓ mastery confirmed':'☐ confirm mastery'}</button>
+          </div>`:''}
         <div class="day-notes-wrap">
           <div class="notes-label">📝 notes</div>
-          <textarea class="notes-textarea" placeholder="What you learned, patterns to remember, mistakes..." oninput="saveNote(${topic.id},this.value)" onclick="event.stopPropagation()">${note}</textarea>
-          <div class="notes-saved" data-notes-saved="${topic.id}">saved ✓</div>
+          <textarea class="notes-textarea" placeholder="Key insights, pattern triggers, mistakes to remember..." oninput="saveNote(${topic.id},this.value)" onclick="event.stopPropagation()">${note}</textarea>
+          <div class="saved-indicator" data-notes-saved="${topic.id}">saved ✓</div>
         </div>
         <div class="day-actions">
           <button class="action-btn complete-all" onclick="event.stopPropagation();completeAll(${topic.id})">✓ complete all</button>
